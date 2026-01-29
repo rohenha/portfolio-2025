@@ -1,0 +1,49 @@
+{
+  "name": "portfolio-2025",
+  "type": "module",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohenha/portfolio-2025.git"
+  },
+  "keywords": [
+    "astro",
+    "vite",
+    "typescript",
+    "tsx",
+    "sass",
+    "vitest",
+    "low",
+    "code",
+    "vanilla",
+    "js",
+    "eco",
+    "low",
+    "carbon",
+    "jamstack"
+  ],
+  "author": "Romain Breton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohenha/portfolio-2025/issues"
+  },
+  "homepage": "https://github.com/rohenha/portfolio-2025#readme",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.15",
+    "astro-critical-css": "^0.0.7",
+    "sass": "^1.97.3",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2"
+  }
+}

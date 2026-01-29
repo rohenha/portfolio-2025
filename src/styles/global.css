@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --*: initial;
+  /* Breakpoints */
+  --breakpoint-sm: 64rem;
+  --breakpoint-md: 76.8rem;
+  --breakpoint-lg: 102.4rem;
+  --breakpoint-xl: 136rem;
+  --breakpoint-2xl: 160rem;
+  /* Colors */
+  --color-gray-900: #11100F;
+  --color-gray-500: #DBDBDB;
+  --color-gray-300: #E3E3E3;
+  --color-green-700: #6E7F6A;
+  /* Fonts */
+  /* --font-serif: 'Iowan Old Style', serif; */
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Font Sizes */
+  --text-thuge: 4.5rem;
+  --text-thuge--line-height: calc(170 / 224);
+  --text-txlg: 4.5rem;
+  --text-txlg--line-height: calc(160 / 150);
+  --text-tlg: 4.5rem;
+  --text-tlg--line-height: 1;
+  --text-tmd: 3.4rem;
+  --text-tmd--line-height: 0.88;
+  --text-tsm: 2.4rem;
+  --text-tmd--line-height: 0.95;
+  --text-quote: 2.2rem;
+  --text-quote--line-height: 1.1;
+  --text-base: 1.6rem;
+  --text-base--line-height: 1.3;
+  --text-input: 3rem;
+  --text-input--line-height: 0.95;
+  --text-tag: 1.2rem;
+  --text-tag--line-height: 1.09;
+  --text-btn: 1.4rem;
+  --text-btn--line-height: 1.09;
+  --text-base: 1.6rem;
+  /* Line Heights */
+  --leading-xsm: 0.88;
+  --leading-sm: 0.95;
+  --leading-md: 1;
+  --leading-lg: 1.09;
+  --leading-xlg: 1.33;
+  /* Tracking */
+  --tracking-md: -0.06em;
+  --tracking-sm: -0.04em;
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-700: 700;
+  /* Spacing */
+  --spacing-giant: 17rem;
+  --spacing-xxlg: 8rem;
+  --spacing-xlg: 6rem;
+  --spacing-lg: 4.5rem;
+  --spacing-md: 3rem;
+  --spacing-sm: 1.5rem;
+  --spacing-xsm: 1rem;
+  --spacing-tiny: 0.5rem;
+  /* Border Radius */
+  --radius-md: 0.5rem;
+  --radius-sm: 0.3rem;
+}

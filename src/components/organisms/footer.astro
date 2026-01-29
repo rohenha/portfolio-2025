@@ -1,0 +1,12 @@
+---
+import nav from '@content/nav'
+---
+
+<footer class="bg-gray-900 text-gray-300 py-xxlg">
+  <p class="text-huge">Romain Breton</p>
+  <ul>
+    {nav.socials.map(social => (
+			<li><a href={social.url} target="_blank">{social.name}</a></li>
+		))}
+  </ul>
+</footer>
