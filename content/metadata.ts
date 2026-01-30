@@ -1,5 +1,3 @@
-import type { Props as MetadataProps } from "@types/metadata";
-
 const metadata: MetadataProps = {
   siteName: "Romain Breton",
   siteUrl: "https://ww.romain-breton.com",

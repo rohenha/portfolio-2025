@@ -1,12 +1,31 @@
 ---
 import nav from '@content/nav'
+import { getFont } from '@utils/fonts'
 ---
 
 <footer class="bg-gray-900 text-gray-300 py-xxlg">
-  <p class="text-huge">Romain Breton</p>
-  <ul>
-    {nav.socials.map(social => (
-			<li><a href={social.url} target="_blank">{social.name}</a></li>
-		))}
-  </ul>
+  <div class="px-sm lg-px-md grid grid-cols-24 gap-sm max-w-[140rem] mx-auto">
+    <ul role="list" class="flex flex-col gap-tiny">
+      {nav.footerPrimary.map(item => (
+        <li><a href={item.url} target="_blank">{item.name}</a></li>
+      ))}
+    </ul>
+    <ul role="list" class="flex flex-col gap-tiny">
+      {nav.footerSecondary.map(item => (
+        <li><a href={item.url} target="_blank">{item.name}</a></li>
+      ))}
+    </ul>
+    <ul role="list" class="flex flex-col gap-tiny">
+      {nav.socials.map(social => (
+        <li><a href={social.url} target="_blank">{social.name}</a></li>
+      ))}
+    </ul>
+    <!-- <Text variant="xl" class="test">Romain Breton</Text> -->
+    <p class={getFont('pmd')}>Romain Breton</p>
+    <ul role="list" class="flex gap-sm">
+      {nav.footerThird.map(item => (
+        <li><a href={item.url} target="_blank">{item.name}</a></li>
+      ))}
+    </ul>
+  </div>
 </footer>

@@ -1,0 +1,6 @@
+{
+  "grid": {
+    "prefix": "cgrid",
+    "body": ["px-sm lg-px-md grid grid-cols-24 gap-sm max-w-[140rem] mx-auto"],
+  },
+}

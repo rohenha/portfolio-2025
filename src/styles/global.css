@@ -9,14 +9,16 @@
   --breakpoint-xl: 136rem;
   --breakpoint-2xl: 160rem;
   /* Colors */
-  --color-gray-900: #11100F;
-  --color-gray-500: #DBDBDB;
-  --color-gray-300: #E3E3E3;
-  --color-green-700: #6E7F6A;
+  --color-gray-900: #11100f;
+  --color-gray-500: #dbdbdb;
+  --color-gray-300: #e3e3e3;
+  --color-green-700: #6e7f6a;
   /* Fonts */
   /* --font-serif: 'Iowan Old Style', serif; */
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   /* Font Sizes */
   --text-thuge: 4.5rem;
   --text-thuge--line-height: calc(170 / 224);
@@ -63,4 +65,10 @@
   /* Border Radius */
   --radius-md: 0.5rem;
   --radius-sm: 0.3rem;
+}
+
+@layer base {
+  html {
+    font-size: calc(100% / 1.6);
+  }
 }

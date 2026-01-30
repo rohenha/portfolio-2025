@@ -1,4 +1,4 @@
-export interface Props {
+interface MetadataProps {
   siteName: string;
   siteUrl: string;
   lang: string;
