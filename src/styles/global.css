@@ -20,7 +20,7 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   /* Font Sizes */
-  --text-thuge: 4.5rem;
+  --text-thuge: 16vw;
   --text-thuge--line-height: calc(170 / 224);
   --text-txlg: 4.5rem;
   --text-txlg--line-height: calc(160 / 150);

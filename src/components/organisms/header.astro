@@ -1,6 +1,15 @@
 ---
+import nav from '@content/nav'
 ---
 
-<header class="fixed top-0 left-0 py-md w-full flex justify-end ">
+<header class="fixed top-0 left-0 py-md w-full flex justify-end">
+  <div class="px-sm lg-px-md grid grid-cols-24 gap-sm max-w-[140rem] mx-auto"></div>
   <a href="#">Romain Breton</a>
+  <nav>
+    <ul role="list" class="flex flex-col gap-tiny">
+      {nav.header.map(item => (
+        <li><a href={item.url} target="_blank">{item.name}</a></li>
+      ))}
+    </ul>
+  </nav>
 </header>
