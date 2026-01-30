@@ -1,15 +1,22 @@
 ---
 import Text from '@components/atoms/text.astro'
 import Grid from '@components/organisms/grid.astro'
+
 export interface Props {
   title?: string;
+  description?: string;
+  suptitle?: string;
 }
 
 const {
-  title = ''
+  title = '',
+  description = '',
+  suptitle = '',
 } = Astro.props
 ---
 
-<Grid Tag="header" class="pt-[15rem] pb-[2rem]">
+<Grid Tag="header" class="pt-[43rem] pb-[2rem]">
+  <Text variant="tsm" class="col-span-full mb-tiny">{suptitle}</Text>
+  <Text variant="pmd" class="col-span-full mb-sm">{description}</Text>
   <Text variant="thuge" class="col-span-full">{title}</Text>
 </Grid>

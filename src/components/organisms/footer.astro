@@ -1,10 +1,11 @@
 ---
 import nav from '@content/nav'
-import { getFont } from '@utils/fonts'
+import Text from '@components/atoms/text.astro'
+import Grid from '@components/organisms/grid.astro'
 ---
 
 <footer class="bg-gray-900 text-gray-300 py-xxlg">
-  <div class="px-sm lg-px-md grid grid-cols-24 gap-sm max-w-[140rem] mx-auto">
+  <Grid Tag="div" class="pt-[43rem] pb-[2rem]">
     <ul role="list" class="flex flex-col gap-tiny">
       {nav.footerPrimary.map(item => (
         <li><a href={item.url} target="_blank">{item.name}</a></li>
@@ -20,12 +21,11 @@ import { getFont } from '@utils/fonts'
         <li><a href={social.url} target="_blank">{social.name}</a></li>
       ))}
     </ul>
-    <!-- <Text variant="xl" class="test">Romain Breton</Text> -->
-    <p class={getFont('pmd')}>Romain Breton</p>
+    <Text variant="thuge" class="col-span-full">Romain Breton</Text>
     <ul role="list" class="flex gap-sm">
       {nav.footerThird.map(item => (
         <li><a href={item.url} target="_blank">{item.name}</a></li>
       ))}
     </ul>
-  </div>
+  </Grid>
 </footer>
