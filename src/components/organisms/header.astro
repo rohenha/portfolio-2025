@@ -1,13 +1,16 @@
 ---
+// Content
 import nav from '@content/nav'
+// Tools
 import { formatLink } from '@utils/helpers'
+// Components
 import Button from '@components/atoms/button.astro'
 
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname
 ---
 
 <header class="fixed top-0 left-0 py-md w-full">
-  <div class="px-md md:px-xlg max-w-[140rem] mx-auto flex">
+  <div class="px-sm md:px-xlg max-w-[140rem] mx-auto flex">
     <nav class="ml-auto">
       <ul role="list" class="flex flex-row gap-sm items-center">
         <li class="relative -top-px">

@@ -2,13 +2,13 @@
 import Text from "@components/atoms/text.astro"
 
 export const variants = {
-  'primary-gray-900' : 'bg-gray-900 text-gray-300 border border-gray-900 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-300 hover:text-gray-900 hover:border-gray-900',
-  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-900 hover:text-gray-300',
-  'primary-gray-300' : 'bg-gray-300 text-gray-900 border border-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-900 hover:text-gray-300 hover:border-gray-300',
+  'primary-gray-900' : 'bg-gray-900 text-gray-300 border border-gray-900 rounded-sm px-[1.2rem] py-[0.7rem] gap-xsm hover:bg-gray-300 hover:text-gray-900 hover:border-gray-900',
+  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] gap-xsm hover:bg-gray-900 hover:text-gray-300',
+  'primary-gray-300' : 'bg-gray-300 text-gray-900 border border-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] gap-xsm hover:bg-gray-900 hover:text-gray-300 hover:border-gray-300',
   'secondary-gray-900' : 'a-btnSecondary text-gray-900 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-900 hover:text-gray-300',
   'secondary-gray-300' : 'a-btnSecondary text-gray-300 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-300 hover:text-gray-900',
-  'link-gray-900' : 'text-gray-900 underline px-[0.2rem] py-[0.3rem] hover:text-green-700',
-  'link-gray-300' : 'text-gray-300 underline px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'link-gray-900' : 'text-gray-900 underline px-[0.2rem] py-[0.3rem] hover:text-green-700 gap-tiny',
+  'link-gray-300' : 'text-gray-300 underline px-[0.2rem] py-[0.3rem] hover:text-green-700 gap-tiny',
   'nav-gray-300' : 'a-btnNav text-gray-300 px-[0.2rem] py-[0.3rem] hover:text-green-700',
   'nav-gray-900' : 'a-btnNav text-gray-900 px-[0.2rem] py-[0.3rem] hover:text-green-700',
   'nav-alt-gray-300' : 'a-btnNav -alt text-gray-300 px-[0.2rem] py-[0.3rem] hover:text-green-700',
@@ -46,7 +46,7 @@ const list = [variants[variant], className]
 
 // Icons a-btnIcon -arrow
 if (icon) {
-  list.push('a-btnIcon -' + icon)
+  list.push('flex items-center a-btnIcon -' + icon)
 }
 
 // add href attribute if needed
