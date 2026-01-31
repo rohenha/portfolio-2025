@@ -1,0 +1,19 @@
+---
+import Text from '@components/atoms/text.astro'
+const variants = {
+  'gray-900': 'inline-block bg-gray-900 text-gray-300 px-tiny py-[0.3rem] rounded-sm',
+  'gray-500': 'inline-block bg-gray-500 text-gray-900 px-tiny py-[0.3rem] rounded-sm',
+  'gray-300': 'inline-block bg-gray-300 text-gray-900 px-tiny py-[0.3rem] rounded-sm',
+};
+export interface Props {
+  variant?: keyof typeof variants;
+  class?: string;
+}
+
+const { 
+  variant = 'gray-900',
+  class: className
+} = Astro.props;
+
+---
+<Text class:list={[variants[variant], className]} variant="bmd"><slot/></Text>

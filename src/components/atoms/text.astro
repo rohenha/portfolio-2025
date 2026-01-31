@@ -1,7 +1,7 @@
 ---
-const variants = {
+export const variants = {
   thuge: 'text-thuge font-serif tracking-md md:text-txhuge whitespace-nowrap',
-  txlg: 'text-txlg font-serif tracking-md',
+  tlg: 'text-tlg font-serif tracking-md',
   tmd: 'text-tmd font-serif tracking-md',
   tsm: 'text-tsm font-serif tracking-sm ',
   quote: 'text-quote font-serif',
@@ -22,7 +22,7 @@ export interface Props {
 
 const { 
   Tag = 'p', 
-  variant= "thuge", 
+  variant= "pmd", 
   attributes = {},
   class: className
 } = Astro.props

@@ -5,6 +5,13 @@ import Hero from '@components/organisms/hero.astro'
 
 <DefaultLayout>
 	<main>
-		<Hero title="Romain Breton" suptitle="Développeur Front-end / Full-stack" description="orienté éco-conception, accessibilité et performances"  />
+		<Hero 
+			title="Romain Breton"
+			suptitle="Développeur Front-end / Full-stack"
+			description="orienté éco-conception, accessibilité et performances" 
+			link={{ 
+				url: "mailto:romain.breton.pro@gmail.com", 
+				label: 'Discutons ensemble'
+			}}  />
 	</main>
 </DefaultLayout>

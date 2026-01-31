@@ -1,10 +1,12 @@
 ---
 import Text from "@components/atoms/text.astro"
 
-const variants = {
-  'primary-gray-900' : 'bg-gray-900 text-gray-300 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
-  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
-  'primary-gray-300' : 'bg-gray-300 text-gray-900 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
+export const variants = {
+  'primary-gray-900' : 'bg-gray-900 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem]',
+  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem]',
+  'primary-gray-300' : 'bg-gray-300 text-gray-900 rounded-sm px-[1.2rem] py-[0.7rem]',
+  'secondary-gray-900' : 'btn-secondary text-gray-300 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-300 hover:text-gray-900',
+  'secondary-gray-300' : 'btn-secondary text-gray-900 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-900 hover:text-gray-300',
 }
 export interface Props {
   icon?: string;
@@ -15,8 +17,7 @@ export interface Props {
   class?: string;
 }
 
-const { 
-  icon,
+const {
   variant = 'primary-gray-900',
   attributes = {},
   url,
@@ -24,11 +25,18 @@ const {
 } = Astro.props;
 
 let { 
+  icon,
   tag = 'button',
 } = Astro.props;
 
+// Remove icon for non-primary variants
+if (!variant.startsWith('primary')) {
+  icon = ''
+}
 
 const list = [variants[variant], className]
+
+
 // Icons btn-icon-arrow
 if (icon) {
   list.push('btn-icon-' + icon)

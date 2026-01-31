@@ -1,0 +1,67 @@
+---
+import DefaultLayout from '@layouts/default.astro'
+import Hero from '@components/organisms/hero.astro'
+// Styleguide components
+import Section from '@components/styleguide/section.astro'
+import Tag from '@components/styleguide/tag.astro'
+
+// Atoms
+import Text, { variants as textVariants} from '@components/atoms/text.astro'
+import Button, { variants as ButtonVariants } from '@components/atoms/button.astro'
+
+// Design system data
+const fonts = {
+  serif: 'font-serif',
+  mono: 'font-mono',
+}
+const textKeys = Object.keys(textVariants) as (keyof typeof textVariants)[];
+const buttonKeys = Object.keys(ButtonVariants) as (keyof typeof ButtonVariants)[];
+---
+
+<DefaultLayout>
+	<main>
+    <Hero 
+			title="Design System"
+			description="Le design system de mon portfolio, construit avec Astro et Tailwind CSS."
+	  />
+    <Section 
+      title="Typographie" 
+      description="Voici les différentes variantes typographiques utilisées dans le design system."
+      class="bg-gray-900 text-gray-300"
+    >
+      <div class="border border-gray-300 rounded-md p-md col-span-full grid grid-cols-2 gap-sm mb-md md:mb-lg">
+        <Text variant="tsm" class="mb-sm col-span-full">Fonts</Text>
+        {Object.entries(fonts).map(([key, value]) => (
+          <div class="flex flex-col items-start">
+            <p class={`text-thuge tracking-md md:text-txhuge whitespace-nowrap mb-sm ${value}`}>Aa</p>
+            <Tag variant="gray-300" class="">{key}</Tag>
+          </div>
+        ))}
+      </div>
+      <div class="col-span-full overflow-hidden">
+        {textKeys.map((key) => (
+          <div class="mb-md">
+            <Tag variant="gray-300" class="mb-tiny">text-{key}</Tag>
+            <Text variant={key}>Exemple de texte pour la variante {key}</Text>
+          </div>
+        ))}
+      </div>
+    </Section>
+    <Section 
+      title="Bouttons" 
+      description="Voici les différentes variantes de boutons utilisés dans le design system."
+    >
+      <div class="col-span-full overflow-hidden">
+        {buttonKeys.map((key) => (
+          <div class="mb-md flex flex-col items-start">
+            <Tag variant="gray-500" class="mb-sm">text-{key}</Tag>
+            <Button variant={key} class="mb-tiny">Discutons ensemble</Button>
+            {key.startsWith('primary') && (
+              <Button variant={key} icon="arrow" class="">Discutons ensemble</Button>
+            )}
+          </div>
+        ))}
+      </div>
+    </Section>
+  </main>
+</DefaultLayout>

@@ -3,7 +3,7 @@
 [class*="btn-icon-"] {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 
   &::after {
     content: '';
@@ -12,8 +12,30 @@
     height: 1rem;
     background-repeat: no-repeat;
     @extend .icon-arrow;
-    // filter: invert(1);
-    // filter: 
+  }
+
+  &.text-gray-300 {
+    &::after {
+      filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);   
+    }
+  }
+  
+  &.text-gray-500 {
+    &::after {
+      filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);   
+    }
+  }
+  
+  &.text-gray-900 {
+    &::after {
+      filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);   
+    }
+  }
+  
+  &.text-green-700 {
+    &::after {
+      filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
+    }
   }
 }
 
@@ -23,26 +45,13 @@
   }
 }
 
-.text-gray-300 {
-  &::after {
-    filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);   
+.btn-secondary {
+  &::before {
+    content: "[";
+    margin-right: 0.5rem;
   }
-}
-
-.text-gray-500 {
   &::after {
-    filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);   
-  }
-}
-
-.text-gray-900 {
-  &::after {
-    filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);   
-  }
-}
-
-.text-green-700 {
-  &::after {
-    filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
+    content: "]";
+    margin-left: 0.5rem;
   }
 }
