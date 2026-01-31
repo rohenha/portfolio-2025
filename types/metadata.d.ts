@@ -3,6 +3,7 @@ interface MetadataProps {
   siteUrl: string;
   lang: string;
   locale: string;
+  suffixTitle: string;
   seoTitle: string;
   seoDescription: string;
   ogImage: string;

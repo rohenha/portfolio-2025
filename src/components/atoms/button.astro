@@ -19,7 +19,7 @@ export interface Props {
   icon?: string;
   variant?: keyof typeof variants;
   attributes?: Record<string, string>;
-  url?: string;
+  href?: string;
   tag?: keyof HTMLElementTagNameMap;
   class?: string;
 }
@@ -27,7 +27,7 @@ export interface Props {
 const {
   variant = 'primary-gray-900',
   attributes = {},
-  url,
+  href,
   class: className
 } = Astro.props;
 
@@ -50,8 +50,8 @@ if (icon) {
 }
 
 // add href attribute if needed
-if (url) {
-  attributes.href = url
+if (href) {
+  attributes.href = href
   tag = 'a'
 }
 

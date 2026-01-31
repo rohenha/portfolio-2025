@@ -3,7 +3,8 @@ const metadata: MetadataProps = {
   siteUrl: "https://ww.romain-breton.com",
   lang: "fr",
   locale: "fr_FR",
-  seoTitle: "Romain Breton - Portfolio",
+  suffixTitle: " - Romain Breton",
+  seoTitle: "Portfolio",
   seoDescription:
     "Portfolio of Romain Breton, a web developer specializing in modern web technologies",
   ogImage: "/assets/og-image.png",

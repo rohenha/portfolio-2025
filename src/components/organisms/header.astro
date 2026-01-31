@@ -1,15 +1,22 @@
 ---
 import nav from '@content/nav'
+import { formatLink } from '@utils/helpers'
+import Button from '@components/atoms/button.astro'
+
+const currentPath = Astro.url.pathname;
 ---
 
-<header class="fixed top-0 left-0 py-md w-full flex justify-end">
-  <div class="px-sm lg-px-md grid grid-cols-24 gap-sm max-w-[140rem] mx-auto"></div>
-  <a href="#">Romain Breton</a>
-  <nav>
-    <ul role="list" class="flex flex-col gap-tiny">
-      {nav.header.map(item => (
-        <li><a href={item.url} target="_blank">{item.name}</a></li>
-      ))}
-    </ul>
-  </nav>
+<header class="fixed top-0 left-0 py-md w-full">
+  <div class="px-md md:px-xlg max-w-[140rem] mx-auto flex">
+    <nav class="ml-auto">
+      <ul role="list" class="flex flex-row gap-sm items-center">
+        <li class="relative -top-px">
+          <a href="/" class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 hover:text-green-700">R<span class="sr-only">omain</span> B<span class="sr-only">reton</span></a>
+        </li>
+        {nav.header.map(item => (
+          <li><Button attributes={formatLink(item)} href={item.url} variant="nav-alt-gray-900" class={currentPath === item.url ? ' -active' : ''}>{item.name}</Button></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
 </header>
