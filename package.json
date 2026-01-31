@@ -33,7 +33,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sprite": "node ./utils/sprite.js"
+    "sprite": "node ./tools/sprite.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

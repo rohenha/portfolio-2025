@@ -53,15 +53,13 @@ const currentPath = Astro.url.pathname
     <div class="col-span-full flex flex-col items-center gap-sm lg:flex-row lg:justify-between ">
       <p class="flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start">··· · −·−· ·−· <Button variant="primary-gray-300" icon="arrow">Rapporter les codes d'erreur</Button></p>
       <ul role="list" class="flex flex-wrap gap-x-sm gap-y-tiny justify-center lg:justify-end">
-        {nav.footerThird.map(item => (
-          <li>
-            {item.url ? (
-              <Button attributes={formatLink(item)} href={item.url} variant="link-gray-300" class={currentPath === item.url ? ' -active' : ''}>{item.name}</Button>
-            ) : (
-              <Text variant="bmd">{item.name}</Text>
-            )}
-          </li>
-        ))}
+        {nav.footerThird.map(item => {
+          return item.url ? (
+            <li><Button attributes={formatLink(item)} href={item.url} variant="link-gray-300" class={currentPath === item.url ? ' -active' : ''}>{item.name}</Button></li>
+          ) : (
+            <Text variant="bmd" Tag="li">{item.name}</Text>
+        )
+        })}
       </ul>
     </div>
   </Grid>

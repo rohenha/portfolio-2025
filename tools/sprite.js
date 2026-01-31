@@ -6,8 +6,7 @@ const config = {
   input: "svgs",
   output: {
     sprite: "public/images/",
-    css: "src/",
-    scss: "../src/styles/utils/_sprite.scss",
+    scss: "../../src/styles/utils/_sprite.scss",
   },
   name: (id) => `icon-${id}`,
 };
@@ -26,7 +25,7 @@ const sprite = SVGSpriter({
     inline: true,
     css: {
       // Create a «css» sprite
-      dest: config.output.css,
+      dest: config.output.sprite,
       prefix: ".%s", // CSS class prefix
       bust: false,
       example: false,
