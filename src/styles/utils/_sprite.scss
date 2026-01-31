@@ -1,0 +1,14 @@
+%svg-common {
+    background: url("src/svg/sprite.css.svg") no-repeat;
+}
+
+.icon-arrow {
+    @extend %svg-common;
+    background-position: 0 0;
+}
+
+.icon-arrow-dims {
+    width: 10px;
+    height: 10px;
+}
+

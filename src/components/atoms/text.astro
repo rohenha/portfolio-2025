@@ -1,6 +1,6 @@
 ---
 const variants = {
-  thuge: 'text-thuge font-serif tracking-md',
+  thuge: 'text-thuge font-serif tracking-md md:text-txhuge whitespace-nowrap',
   txlg: 'text-txlg font-serif tracking-md',
   tmd: 'text-tmd font-serif tracking-md',
   tsm: 'text-tsm font-serif tracking-sm ',
@@ -15,6 +15,7 @@ const variants = {
 
 export interface Props {
   Tag?: keyof HTMLElementTagNameMap;
+  attributes?: Record<string, string>;
   variant?: keyof typeof variants;
   class?: string;
 }
@@ -22,10 +23,11 @@ export interface Props {
 const { 
   Tag = 'p', 
   variant= "thuge", 
+  attributes = {},
   class: className
 } = Astro.props
 
 ---
 
 
-<Tag class:list={[variants[variant], className]}><slot/></Tag>
+<Tag class:list={[variants[variant], className]} {...attributes}><slot/></Tag>

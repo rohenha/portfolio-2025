@@ -1,0 +1,48 @@
+@use "../utils/_sprite.scss";
+
+[class*="btn-icon-"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    background-repeat: no-repeat;
+    @extend .icon-arrow;
+    // filter: invert(1);
+    // filter: 
+  }
+}
+
+.btn-icon-arrow {
+  &::after {
+    @extend .icon-arrow;
+  }
+}
+
+.text-gray-300 {
+  &::after {
+    filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);   
+  }
+}
+
+.text-gray-500 {
+  &::after {
+    filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);   
+  }
+}
+
+.text-gray-900 {
+  &::after {
+    filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);   
+  }
+}
+
+.text-green-700 {
+  &::after {
+    filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
+  }
+}

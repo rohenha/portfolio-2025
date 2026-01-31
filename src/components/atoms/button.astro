@@ -1,9 +1,44 @@
 ---
+import Text from "@components/atoms/text.astro"
+
+const variants = {
+  'primary-gray-900' : 'bg-gray-900 text-gray-300 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
+  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
+  'primary-gray-300' : 'bg-gray-300 text-gray-900 rounded-sm px-[1.2rem] py-[0.8rem] text-bmd',
+}
 export interface Props {
-  text: string;
+  icon?: string;
+  variant?: keyof typeof variants;
+  attributes?: Record<string, string>;
+  url?: string;
+  tag?: keyof HTMLElementTagNameMap;
+  class?: string;
 }
 
-const { text } = Astro.props;
+const { 
+  icon,
+  variant = 'primary-gray-900',
+  attributes = {},
+  url,
+  class: className
+} = Astro.props;
+
+let { 
+  tag = 'button',
+} = Astro.props;
+
+
+const list = [variants[variant], className]
+// Icons btn-icon-arrow
+if (icon) {
+  list.push('btn-icon-' + icon)
+}
+
+// add href attribute if needed
+if (url) {
+  attributes.href = url
+  tag = 'a'
+}
 ---
 
-<button class="bg-gray-900 text-gray-300 rounded-sm px-xsm py-tiny text-bmd">{text}</button>
+<Text class:list={list} variant="bmd" Tag={tag} attributes={attributes}><slot/></Text>

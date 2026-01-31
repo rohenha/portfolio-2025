@@ -1,26 +1,29 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
-import tailwindcss from "@tailwindcss/vite"
+import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 
-import criticalCss from 'astro-critical-css';
+import criticalCss from "astro-critical-css";
 
-import mdx from '@astrojs/mdx';
+import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'static',
+  output: "static",
   vite: {
     plugins: [tailwindcss()],
   },
 
-  build: {
-    inlineStylesheets: 'never'
-  },
+  // build: {
+  //   inlineStylesheets: 'never'
+  // },
 
-  integrations: [criticalCss({
-    // silent: true,
-    // htmlPathRegex: "**/test.html",
-    height: 1080,
-    width: 1920,
-  }), mdx()],
+  integrations: [
+    criticalCss({
+      // silent: true,
+      // htmlPathRegex: "**/test.html",
+      height: 1080,
+      width: 1920,
+    }),
+    mdx(),
+  ],
 });
