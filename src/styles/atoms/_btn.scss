@@ -1,6 +1,7 @@
 @use "../utils/_sprite.scss";
 
-[class*="btn-icon-"] {
+// Btn Icon
+.a-btnIcon {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
@@ -19,10 +20,30 @@
       filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);   
     }
   }
+
+  &.hover\:text-gray-300 {
+    &:hover {
+      @media (hover: hover) {
+        &::after {
+          filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);    
+        }
+      }
+    }
+  }
   
   &.text-gray-500 {
     &::after {
       filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);   
+    }
+  }
+
+  &.hover\:text-gray-500 {
+    &:hover {
+      @media (hover: hover) {
+        &::after {
+          filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);     
+        }
+      }
     }
   }
   
@@ -31,21 +52,40 @@
       filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);   
     }
   }
+  &.hover\:text-gray-900 {
+    &:hover {
+      @media (hover: hover) {
+        &::after {
+          filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);    
+        }
+      }
+    }
+  }
   
   &.text-green-700 {
     &::after {
       filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
     }
   }
+  &.hover\:text-green-700 {
+    &:hover {
+      @media (hover: hover) {
+        &::after {
+          filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
+        }
+      }
+    }
+  }
 }
 
-.btn-icon-arrow {
+.a-btnIcon.-arrow {
   &::after {
     @extend .icon-arrow;
   }
 }
 
-.btn-secondary {
+// Btn Secondary
+.a-btnSecondary {
   &::before {
     content: "[";
     margin-right: 0.5rem;
@@ -53,5 +93,85 @@
   &::after {
     content: "]";
     margin-left: 0.5rem;
+  }
+}
+
+// Btn nav
+.a-btnNav {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    background-repeat: no-repeat;
+    background-color: currentColor;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+
+  &:not(.-alt) {
+    padding-left: 0.9rem;
+
+    span {
+      margin-left: -0.9rem;
+      display: inline-block;
+    }
+
+    &::before {
+      top: 50%;
+      transform: translate(-90%, -50%);
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      span {
+        transition: transform 0.3s ease;
+      }
+      &::before {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+    }
+
+    &:hover {
+      @media (hover: hover) {
+        span {
+          transform: translate(0.9rem, 0);
+        }
+        &::before {
+          opacity: 1;
+          transform: translate(0, -50%);
+        }
+      }
+    }
+  }
+
+  &.-alt {
+    padding-bottom: 0.6rem;
+    &::before {
+      bottom: 0;
+      left: 50%;
+      opacity: 0;
+      transform: translate(-50%, 30%);
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      &::before {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+    }
+
+    &:hover {
+      @media (hover: hover) {
+        &::before {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+    }
   }
 }

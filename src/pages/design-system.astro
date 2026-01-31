@@ -51,12 +51,12 @@ const buttonKeys = Object.keys(ButtonVariants) as (keyof typeof ButtonVariants)[
       title="Bouttons" 
       description="Voici les différentes variantes de boutons utilisés dans le design system."
     >
-      <div class="col-span-full overflow-hidden">
+      <div class="col-span-full grid grid-cols-2 gap-md">
         {buttonKeys.map((key) => (
           <div class="mb-md flex flex-col items-start">
-            <Tag variant="gray-500" class="mb-sm">text-{key}</Tag>
-            <Button variant={key} class="mb-tiny">Discutons ensemble</Button>
-            {key.startsWith('primary') && (
+            <Tag variant="gray-500" class="mb-sm">{key}</Tag>
+            <Button variant={key} class={(key.startsWith('primary') ||  key.startsWith('link')) ? 'mb-tiny' : ''}>Discutons ensemble</Button>
+            {(key.startsWith('primary') ||  key.startsWith('link')) && (
               <Button variant={key} icon="arrow" class="">Discutons ensemble</Button>
             )}
           </div>

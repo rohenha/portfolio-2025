@@ -2,12 +2,19 @@
 import Text from "@components/atoms/text.astro"
 
 export const variants = {
-  'primary-gray-900' : 'bg-gray-900 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem]',
-  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem]',
-  'primary-gray-300' : 'bg-gray-300 text-gray-900 rounded-sm px-[1.2rem] py-[0.7rem]',
-  'secondary-gray-900' : 'btn-secondary text-gray-300 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-300 hover:text-gray-900',
-  'secondary-gray-300' : 'btn-secondary text-gray-900 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-900 hover:text-gray-300',
+  'primary-gray-900' : 'bg-gray-900 text-gray-300 border border-gray-900 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-300 hover:text-gray-900 hover:border-gray-900',
+  'primary-green-700' : 'bg-green-700 text-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-900 hover:text-gray-300',
+  'primary-gray-300' : 'bg-gray-300 text-gray-900 border border-gray-300 rounded-sm px-[1.2rem] py-[0.7rem] hover:bg-gray-900 hover:text-gray-300 hover:border-gray-300',
+  'secondary-gray-900' : 'a-btnSecondary text-gray-900 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-900 hover:text-gray-300',
+  'secondary-gray-300' : 'a-btnSecondary text-gray-300 rounded-sm px-[0.2rem] py-[0.3rem] hover:bg-gray-300 hover:text-gray-900',
+  'link-gray-900' : 'text-gray-900 underline px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'link-gray-300' : 'text-gray-300 underline px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'nav-gray-300' : 'a-btnNav text-gray-300 px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'nav-gray-900' : 'a-btnNav text-gray-900 px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'nav-alt-gray-300' : 'a-btnNav -alt text-gray-300 px-[0.2rem] py-[0.3rem] hover:text-green-700',
+  'nav-alt-gray-900' : 'a-btnNav -alt text-gray-900 px-[0.2rem] py-[0.3rem] hover:text-green-700',
 }
+
 export interface Props {
   icon?: string;
   variant?: keyof typeof variants;
@@ -30,16 +37,16 @@ let {
 } = Astro.props;
 
 // Remove icon for non-primary variants
-if (!variant.startsWith('primary')) {
+if (!variant.startsWith('primary') && !variant.startsWith('link')) {
   icon = ''
 }
 
 const list = [variants[variant], className]
 
 
-// Icons btn-icon-arrow
+// Icons a-btnIcon -arrow
 if (icon) {
-  list.push('btn-icon-' + icon)
+  list.push('a-btnIcon -' + icon)
 }
 
 // add href attribute if needed
@@ -47,6 +54,16 @@ if (url) {
   attributes.href = url
   tag = 'a'
 }
+
+if (['a', 'button'].includes(tag)) {
+  list.push('cursor-pointer')
+}
 ---
 
-<Text class:list={list} variant="bmd" Tag={tag} attributes={attributes}><slot/></Text>
+<Text class:list={list} variant="bmd" Tag={tag} attributes={attributes}>
+  {(variant.startsWith('nav') && !variant.startsWith('nav-alt')) ? (
+    <span><slot/></span>
+  ) : (
+    <slot/>
+  )}
+</Text>
