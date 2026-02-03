@@ -1,25 +1,29 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --*: initial;
+
   /* Breakpoints */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1360px;
   --breakpoint-2xl: 1600px;
+
   /* Colors */
   --color-gray-900: #11100f;
   --color-gray-500: #dbdbdb;
   --color-gray-300: #e3e3e3;
   --color-green-700: #6e7f6a;
+
   /* Fonts */
   --font-serif:
-    "Iowan Old Style", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    'Iowan Old Style', ui-serif, georgia, cambria, 'Times New Roman', times,
     serif;
   --font-mono:
-    Menlo, ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    menlo, ui-monospace, sfmono-regular, monaco, consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
   /* Font Sizes */
   --text-txhuge: 14.5vw;
   --text-txhuge--line-height: calc(170 / 224);
@@ -41,18 +45,22 @@
   --text-tag--line-height: 1.09;
   --text-btn: 1.4rem;
   --text-btn--line-height: 1.09;
+
   /* Line Heights */
   --leading-xsm: 0.88;
   --leading-sm: 0.95;
   --leading-md: 1;
   --leading-lg: 1.09;
   --leading-xlg: 1.33;
+
   /* Tracking */
   --tracking-md: -0.06em;
   --tracking-sm: -0.04em;
+
   /* Font weights */
   --font-weight-normal: 400;
   --font-weight-700: 700;
+
   /* Spacing */
   --spacing-giant: 17rem;
   --spacing-xxlg: 8rem;
@@ -63,6 +71,7 @@
   --spacing-xsm: 1rem;
   --spacing-tiny: 0.5rem;
   --spacing-0: 0;
+
   /* Border Radius */
   --radius-md: 0.5rem;
   --radius-sm: 0.3rem;
