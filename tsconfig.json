@@ -1,17 +1,21 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./types",
-    "paths": {
-      "@layouts/*": ["./src/layouts/*"],
-      "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@content/*": ["./content/*"],
-      "@utils/*": ["./utils/*"]
-    }
-  }
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "**/*"],
+	"exclude": ["dist", "node_modules"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"moduleResolution": "Bundler",
+		"declaration": true,
+		"declarationDir": "./types",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"paths": {
+			"@layouts/*": ["./src/layouts/*"],
+			"@components/*": ["./src/components/*"],
+			"@assets/*": ["./src/assets/*"],
+			"@styles/*": ["./src/styles/*"],
+			"@content/*": ["./content/*"],
+			"@utils/*": ["./utils/*"]
+		}
+	}
 }

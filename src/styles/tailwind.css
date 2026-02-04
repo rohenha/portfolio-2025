@@ -82,3 +82,9 @@
     font-size: calc(100% / 1.6);
   }
 }
+
+div {
+  margin: 0;
+  border: 0;
+  background-color: red;
+}
