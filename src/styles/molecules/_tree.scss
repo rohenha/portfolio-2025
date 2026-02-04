@@ -1,0 +1,32 @@
+.m-tree {
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		background-color: currentColor;
+		width: 0.1rem;
+	}
+
+	&.text-gray-300 {
+		.a-treeItem__content {
+			&::before {
+				filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg)
+					brightness(95%) contrast(90%);
+			}
+		}
+	}
+}
+
+.m-subTree {
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: var(--spacing-xlg);
+		background-color: currentColor;
+		width: 0.1rem;
+	}
+}
