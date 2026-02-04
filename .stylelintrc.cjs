@@ -1,6 +1,7 @@
 module.exports = {
 	extends: [
-		"stylelint-config-standard-scss",
+		"stylelint-config-recommended",
+		"stylelint-config-recommended-scss",
 		"stylelint-config-html",
 		"stylelint-config-tailwindcss",
 	],
@@ -32,6 +33,57 @@ module.exports = {
 				// Ajoute ici l'ordre que tu préfères pour tes attributs CSS
 			],
 			{ unspecified: "bottomAlphabetical" },
+		],
+		// Ignore l'at-rule @use (SCSS natif)
+		"at-rule-no-unknown": [
+			true,
+			{
+				ignoreAtRules: [
+					"use",
+					"forward",
+					"import",
+					"mixin",
+					"include",
+					"function",
+					"if",
+					"else",
+					"for",
+					"each",
+					"while",
+					"theme",
+					"tailwind",
+					"apply",
+					"variants",
+					"responsive",
+					"screen",
+					"extend",
+				],
+			},
+		],
+		"scss/at-rule-no-unknown": [
+			true,
+			{
+				ignoreAtRules: [
+					"use",
+					"forward",
+					"import",
+					"mixin",
+					"include",
+					"function",
+					"if",
+					"else",
+					"for",
+					"each",
+					"while",
+					"theme",
+					"tailwind",
+					"apply",
+					"variants",
+					"responsive",
+					"screen",
+					"extend",
+				],
+			},
 		],
 	},
 }

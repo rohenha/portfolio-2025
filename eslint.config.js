@@ -13,6 +13,8 @@ export default [
 		plugins: { "@typescript-eslint": tseslint },
 		rules: {
 			"@typescript-eslint/no-unused-vars": "error",
+			...jsxA11y.flatConfigs.recommended.rules,
+			"jsx-a11y/no-redundant-roles": ["error", { ul: "never" }],
 		},
 	},
 	{

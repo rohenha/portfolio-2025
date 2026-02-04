@@ -1,17 +1,21 @@
 ---
-import DefaultLayout from '@layouts/default.astro'
-import Hero from '@components/organisms/hero.astro'
+// Content
+import contact from "@content/contact"
+// Components
+import DefaultLayout from "@layouts/default.astro"
+import Hero from "@components/organisms/hero.astro"
 ---
 
 <DefaultLayout>
-	<main>
-		<Hero 
+	<main id="main">
+		<Hero
 			title="Romain Breton"
 			suptitle="Développeur Front-end / Full-stack"
-			description="orienté éco-conception, accessibilité et performances" 
-			link={{ 
-				url: "mailto:romain.breton.pro@gmail.com", 
-				label: 'Discutons ensemble'
-			}}  />
+			description="orienté éco-conception, accessibilité et performances"
+			link={{
+				url: `mailto:${contact.email}`,
+				label: "Discutons ensemble",
+			}}
+		/>
 	</main>
 </DefaultLayout>

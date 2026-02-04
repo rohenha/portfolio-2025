@@ -1,40 +1,52 @@
 ---
-import Text from '@components/atoms/text.astro'
-import Grid from '@components/organisms/grid.astro'
-import Button from '@components/atoms/button.astro'
+import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+import Button from "@components/atoms/button.astro"
 
 export interface Props {
-  title?: string;
-  description?: string;
-  suptitle?: string;
-  link?: { 
-    url: string;
-    label: string,
-    attributes?: Record<string, string>
-  }
+	title?: string
+	description?: string
+	suptitle?: string
+	link?: {
+		url: string
+		label: string
+		attributes?: Record<string, string>
+	}
 }
 
-const {
-  title = '',
-  description = '',
-  suptitle = '',
-  link = null
-} = Astro.props
+const { title = "", description = "", suptitle = "", link = null } = Astro.props
 ---
 
 <Grid Tag="header" class="pt-[43rem] pb-[2rem] items-end">
-  {suptitle || description ? (
-    <div class="col-span-full md:col-span-16">
-      {suptitle ? (
-        <Text variant="tsm" class="mb-tiny">{suptitle}</Text>
-      ) : null}
-      {description ? (
-        <Text variant="pmd" class="mb-sm md:mb-0">{description}</Text>
-      ) : null}
-    </div>
-  ) : null}
-  { link ? (
-    <Button class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2" icon="arrow" url={link.url} attributes={link.attributes}>{link.label}</Button>
-  ) : null }
-  <Text variant="thuge" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2">{title}</Text>
+	{
+		suptitle || description ? (
+			<div class="col-span-full md:col-span-16">
+				{suptitle ? (
+					<Text variant="tsm" class="mb-tiny">
+						{suptitle}
+					</Text>
+				) : null}
+				{description ? (
+					<Text variant="pmd" class="mb-sm md:mb-0">
+						{description}
+					</Text>
+				) : null}
+			</div>
+		) : null
+	}
+	{
+		link ? (
+			<Button
+				class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2"
+				icon="arrow"
+				href={link.url}
+				attributes={link.attributes}
+			>
+				{link.label}
+			</Button>
+		) : null
+	}
+	<Text variant="thuge" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
+		>{title}</Text
+	>
 </Grid>
