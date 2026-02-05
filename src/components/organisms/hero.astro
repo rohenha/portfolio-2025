@@ -1,26 +1,52 @@
 ---
-import Text from '@components/atoms/text.astro'
-import Grid from '@components/organisms/grid.astro'
-import Button from '@components/atoms/button.astro'
+import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+import Button from "@components/atoms/button.astro"
 
 export interface Props {
-  title?: string;
-  description?: string;
-  suptitle?: string;
+	title?: string
+	description?: string
+	suptitle?: string
+	link?: {
+		url: string
+		label: string
+		attributes?: Record<string, string>
+	}
 }
 
-const {
-  title = '',
-  description = '',
-  suptitle = '',
-} = Astro.props
+const { title = "", description = "", suptitle = "", link = null } = Astro.props
 ---
 
 <Grid Tag="header" class="pt-[43rem] pb-[2rem] items-end">
-  <div class="col-span-full md:col-span-16 mb-md md:mb-0">
-    <Text variant="tsm" class="mb-tiny">{suptitle}</Text>
-    <Text variant="pmd" class="mb-sm md:mb-0">{description}</Text>
-  </div>
-  <Button class="col-span-full md:col-span-8 md:justify-self-end" icon="arrow" url="mailto:romain.breton.pro@gmail.com">Discutons ensemble</Button>
-  <Text variant="thuge" class="col-span-full md:mt-sm">{title}</Text>
+	{
+		suptitle || description ? (
+			<div class="col-span-full md:col-span-16">
+				{suptitle ? (
+					<Text variant="tsm" class="mb-tiny">
+						{suptitle}
+					</Text>
+				) : null}
+				{description ? (
+					<Text variant="pmd" class="mb-sm md:mb-0">
+						{description}
+					</Text>
+				) : null}
+			</div>
+		) : null
+	}
+	{
+		link ? (
+			<Button
+				class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2"
+				icon="arrow"
+				href={link.url}
+				attributes={link.attributes}
+			>
+				{link.label}
+			</Button>
+		) : null
+	}
+	<Text variant="thuge" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
+		>{title}</Text
+	>
 </Grid>

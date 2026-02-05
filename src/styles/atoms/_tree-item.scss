@@ -1,0 +1,27 @@
+@use "../utils/sprite";
+
+.a-treeItem {
+	&__content {
+		&::before {
+			content: "";
+			display: inline-block;
+			background-repeat: no-repeat;
+			height: 1rem;
+			width: 1rem;
+			@extend .icon-point;
+		}
+
+		&::after {
+			content: "";
+			display: inline-block;
+			order: -1;
+			background-color: currentcolor;
+			height: 1px;
+			width: 3rem;
+		}
+
+		~ span {
+			margin-left: var(--spacing-xlg);
+		}
+	}
+}

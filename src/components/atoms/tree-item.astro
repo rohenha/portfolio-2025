@@ -1,0 +1,98 @@
+---
+const variants = {
+	default: "text-pmd tracking-sm",
+	ahead: "text-pmd tracking-sm font-bold",
+}
+export interface Props {
+	title: string
+	variant?: keyof typeof variants
+	class?: string
+	date?: string
+	details?: string
+	children?: Array<string>
+	href?: string
+	Tag?: keyof HTMLElementTagNameMap
+}
+
+const {
+	title,
+	variant = "default",
+	class: className,
+	children,
+	date,
+	href,
+	details,
+	Tag = "p",
+} = Astro.props
+---
+
+{
+	details || date || children ? (
+		<Tag class:list={["", className]}>
+			{details || date ? (
+				<span class="flex flex-col items-start">
+					{href ? (
+						<a
+							href={href}
+							target="_blank"
+							class:list={[
+								"a-treeItem__content flex flex-wrap items-center gap-xsm hover:text-green-700 focus:outline-2 focus:outline-green-700",
+								variants[variant],
+							]}
+						>
+							{title}
+						</a>
+					) : (
+						<span
+							class:list={[
+								"a-treeItem__content flex flex-wrap items-center gap-xsm",
+								variants[variant],
+							]}
+						>
+							{title}
+						</span>
+					)}
+					{details && <span class="text-btn tracking-sm">{details}</span>}
+					{date && <span class="text-tag tracking-sm">{date}</span>}
+				</span>
+			) : href ? (
+				<a
+					href={href}
+					target="_blank"
+					class:list={[
+						"a-treeItem__content flex flex-wrap items-center gap-xsm focus:outline-2 focus:outline-gray-900 focus:outline-offset-1",
+						variants[variant],
+					]}
+				>
+					{title}
+				</a>
+			) : (
+				<span
+					class:list={[
+						"a-treeItem__content flex flex-wrap items-center gap-xsm",
+						variants[variant],
+					]}
+				>
+					{title}
+				</span>
+			)}
+			{children && (
+				<ul class="m-subTree relative mt-xsm pl-xlg pt-xsm grid grid-col-1 gap-tiny">
+					{children.map((child) => (
+						<li>
+							<span class="a-treeItem__content flex items-center gap-xsm text-tag tracking-sm">
+								{child}
+							</span>
+						</li>
+					))}
+				</ul>
+			)}
+		</Tag>
+	) : (
+		<Tag class:list={["a-treeItem", variants[variant], className]}>
+			<span class="a-treeItem__content flex flex-wrap items-center gap-xsm">
+				{title}
+			</span>
+		</Tag>
+	)
+}

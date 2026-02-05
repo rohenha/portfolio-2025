@@ -1,14 +1,25 @@
 %svg-common {
-    background: url("src/svg/sprite.css.svg") no-repeat;
+	background: url("/images/svg/sprite.css.svg") no-repeat;
 }
 
 .icon-arrow {
-    @extend %svg-common;
-    background-position: 0 0;
+	@extend %svg-common;
+	background-position: 0 0;
+	background-size: 2rem;
 }
 
 .icon-arrow-dims {
-    width: 10px;
-    height: 10px;
+	height: 10px;
+	width: 10px;
 }
 
+.icon-point {
+	@extend %svg-common;
+	background-position: 100% 0;
+	background-size: 2rem;
+}
+
+.icon-point-dims {
+	height: 10px;
+	width: 10px;
+}

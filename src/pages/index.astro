@@ -1,10 +1,90 @@
 ---
-import DefaultLayout from '@layouts/default.astro'
-import Hero from '@components/organisms/hero.astro'
+// Content
+import contact from "@content/contact"
+// Components
+import DefaultLayout from "@layouts/default.astro"
+import Hero from "@components/organisms/hero.astro"
+import Grid from "@components/organisms/grid.astro"
+import Text from "@components/atoms/text.astro"
+import TreeItem from "@components/atoms/tree-item.astro"
+import Button from "@components/atoms/button.astro"
 ---
 
 <DefaultLayout>
-	<main>
-		<Hero title="Romain Breton" suptitle="Développeur Front-end / Full-stack" description="orienté éco-conception, accessibilité et performances"  />
-	</main>
-</DefaultLayout>
+	<main id="main">
+		<Hero
+			title="Romain Breton"
+			suptitle="Développeur Front-end / Full-stack"
+			description="orienté éco-conception, accessibilité et performances"
+			link={{
+				url: `mailto:${contact.email}`,
+				label: "Discutons ensemble",
+			}}
+		/>
+
+		<section class="bg-gray-900 text-gray-300 py-giant">
+			<Grid class="md:relative">
+				<Text
+					variant="tlg"
+					class="text mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-11"
+				>
+					Pour la beauté du code et l'immersion
+				</Text>
+				<div
+					class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-14 mb-md md:mb-giant"
+				>
+					<Text variant="pmd" class="">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
+						nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
+						feugiat fringilla, massa diam mattis nulla, a pulvinar purus justo
+						sed sapien. Vivamus imperdiet lorem ac sem ultricies, quis aliquam
+						odio placerat. Nulla faucibus vel arcu in sodales.
+					</Text>
+					<Text variant="pmd">
+						Curabitur sagittis laoreet ligula. Aliquam ac vestibulum augue.
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+						rhoncus enim id odio tempus, vel interdum odio pellentesque. Nam
+						eget placerat libero, vitae posuere dui. Suspendisse lectus dolor,
+						pretium eu tristique eget, tempus quis nisl. Aenean massa nibh,
+						bibendum quis urna et, suscipit ultricies elit.
+					</Text>
+				</div>
+				<ul
+					class="m-tree relative pt-sm grid grid-col-1 gap-xsm text-gray-300 col-span-full md:col-start-17 md:col-end-24 md:self-start lg:col-start-18 mb-md md:md-0"
+				>
+					<!-- <TreeItem
+						Tag="li"
+						title="Les poupées russes"
+						href="https://www.lespoupees.paris/"
+						variant="ahead"
+						details="Développement Front-end"
+						date="2019-2020"
+						children={[
+							"HTML/CSS",
+							"JavaScript/TypeScript",
+							"React/Vue/Svelte",
+							"Astro/Next.js/Nuxt.js",
+							"Node.js/Deno",
+							"Git/GitHub/GitLab",
+							"Figma/Adobe XD",
+						]}
+					/> -->
+
+					<TreeItem Tag="li" title="Kirby CMS" />
+					<TreeItem Tag="li" title="Wordpress" />
+					<TreeItem Tag="li" title="Adonis JS" />
+					<TreeItem Tag="li" title="Eleventy JS" />
+					<TreeItem Tag="li" title="Astro" />
+					<TreeItem Tag="li" title="Vue JS" />
+					<TreeItem Tag="li" title="React JS" />
+					<TreeItem Tag="li" title="Node JS" />
+				</ul>
+				<Button
+					variant="secondary-gray-300"
+					class="col-span-full justify-self-start md:justify-self-end"
+					>En savoir plus sur ma méthodologie</Button
+				>
+			</Grid>
+		</section>
+	</main></DefaultLayout
+>

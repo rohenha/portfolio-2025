@@ -1,15 +1,15 @@
 ---
 export interface Props {
-  Tag?: keyof HTMLElementTagNameMap;
-  class?: string;
+	Tag?: keyof HTMLElementTagNameMap
+	class?: string
 }
 
-const { 
-  Tag = 'div', 
-  class: className
-} = Astro.props
-
+const { Tag = "div", class: className } = Astro.props
 ---
 
-
-<Tag class:list={['px-md md:px-xlg grid grid-cols-24 gap-x-sm max-w-[140rem] mx-auto', className]}><slot/></Tag>
+<Tag
+	class:list={[
+		"px-sm md:px-lg grid grid-cols-24 gap-x-sm max-w-[140rem] mx-auto",
+		className,
+	]}><slot /></Tag
+>

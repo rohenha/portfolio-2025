@@ -1,48 +1,216 @@
-@use "../utils/_sprite.scss";
+@use "../utils/sprite";
 
-[class*="btn-icon-"] {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+// Btn Icon
+.a-btnIcon {
+	// display: inline-flex;
+	// align-items: center;
+	// gap: 1rem;
 
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    background-repeat: no-repeat;
-    @extend .icon-arrow;
-    // filter: invert(1);
-    // filter: 
-  }
+	&::after {
+		content: "";
+		display: inline-block;
+		background-repeat: no-repeat;
+		height: 1rem;
+		width: 1rem;
+		@extend .icon-arrow;
+	}
+
+	&.text-gray-300 {
+		&::after {
+			filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg)
+				brightness(95%) contrast(90%);
+		}
+	}
+
+	&.hover\:text-gray-300 {
+		&:hover {
+			@media (hover: hover) {
+				&::after {
+					filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg)
+						brightness(95%) contrast(90%);
+				}
+			}
+		}
+	}
+
+	&.text-gray-500 {
+		&::after {
+			filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg)
+				brightness(90%) contrast(85%);
+		}
+	}
+
+	&.hover\:text-gray-500 {
+		&:hover {
+			@media (hover: hover) {
+				&::after {
+					filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg)
+						brightness(90%) contrast(85%);
+				}
+			}
+		}
+	}
+
+	&.text-gray-900 {
+		&::after {
+			filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg)
+				brightness(85%) contrast(80%);
+		}
+	}
+	&.hover\:text-gray-900 {
+		&:hover {
+			@media (hover: hover) {
+				&::after {
+					filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg)
+						brightness(85%) contrast(80%);
+				}
+			}
+		}
+	}
+
+	&.text-green-700 {
+		&::after {
+			filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg)
+				brightness(90%) contrast(85%);
+		}
+	}
+	&.hover\:text-green-700 {
+		&:hover {
+			@media (hover: hover) {
+				&::after {
+					filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg)
+						brightness(90%) contrast(85%);
+				}
+			}
+		}
+	}
 }
 
-.btn-icon-arrow {
-  &::after {
-    @extend .icon-arrow;
-  }
+.a-btnIcon.-arrow {
+	&::after {
+		@extend .icon-arrow;
+	}
 }
 
-.text-gray-300 {
-  &::after {
-    filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);   
-  }
+// Btn Secondary
+.a-btnSecondary {
+	&::before {
+		content: "[";
+		margin-right: 0.5rem;
+	}
+	&::after {
+		content: "]";
+		margin-left: 0.5rem;
+	}
 }
 
-.text-gray-500 {
-  &::after {
-    filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);   
-  }
+// Btn nav
+.a-btnNav {
+	position: relative;
+	&::before {
+		content: "";
+		position: absolute;
+		display: inline-block;
+		background-color: currentColor;
+		background-repeat: no-repeat;
+		border-radius: 50%;
+		height: 0.4rem;
+		vertical-align: middle;
+		width: 0.4rem;
+	}
+
+	&:not(.-alt) {
+		padding-left: 0.9rem;
+
+		span {
+			display: inline-block;
+			margin-left: -0.9rem;
+		}
+
+		&::before {
+			top: 50%;
+			left: 0;
+			opacity: 0;
+			pointer-events: none;
+			transform: translate(-90%, -50%);
+		}
+
+		@media (hover: hover) {
+			span {
+				transition: transform 0.3s ease;
+			}
+			&::before {
+				transition:
+					opacity 0.3s ease,
+					transform 0.3s ease;
+			}
+		}
+
+		&:hover {
+			@media (hover: hover) {
+				span {
+					transform: translate(0.9rem, 0);
+				}
+				&::before {
+					opacity: 1;
+					transform: translate(0, -50%);
+				}
+			}
+		}
+
+		&.-active {
+			color: var(--color-green-700);
+			span {
+				transform: translate(0.9rem, 0);
+			}
+			&::before {
+				opacity: 1;
+				transform: translate(0, -50%);
+			}
+		}
+	}
+
+	&.-alt {
+		padding-bottom: 0.6rem;
+		&::before {
+			bottom: 0;
+			left: 50%;
+			opacity: 0;
+			pointer-events: none;
+			transform: translate(-50%, 30%);
+		}
+
+		@media (hover: hover) {
+			&::before {
+				transition:
+					opacity 0.3s ease,
+					transform 0.3s ease;
+			}
+		}
+
+		&:hover {
+			@media (hover: hover) {
+				&::before {
+					opacity: 1;
+					transform: translate(-50%, 0);
+				}
+			}
+		}
+
+		&.-active {
+			color: var(--color-green-700);
+			&::before {
+				opacity: 1;
+				transform: translate(-50%, 0);
+			}
+		}
+	}
 }
 
-.text-gray-900 {
-  &::after {
-    filter: invert(10%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(85%) contrast(80%);   
-  }
-}
-
-.text-green-700 {
-  &::after {
-    filter: invert(40%) sepia(30%) saturate(200%) hue-rotate(80deg) brightness(90%) contrast(85%);   
-  }
+.a-btnTop {
+	padding-bottom: 1.2rem;
+	padding-top: 1.2rem;
+	&::after {
+		transform: rotate(-45deg);
+	}
 }

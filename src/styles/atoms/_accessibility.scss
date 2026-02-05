@@ -1,0 +1,12 @@
+.focusable:active,
+.focusable:focus {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 99999;
+	clip-path: inherit;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	width: auto;
+}

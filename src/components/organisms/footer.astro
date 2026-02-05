@@ -1,31 +1,149 @@
 ---
-import nav from '@content/nav'
-import Text from '@components/atoms/text.astro'
-import Grid from '@components/organisms/grid.astro'
+// Content
+import nav from "@content/nav"
+// Tools
+import { formatLink } from "@utils/helpers"
+// Components
+import Button from "@components/atoms/button.astro"
+import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+
+const currentPath = Astro.url.pathname
 ---
 
 <footer class="bg-gray-900 text-gray-300 py-xxlg">
-  <Grid Tag="div" class="">
-    <ul role="list" class="flex flex-col gap-tiny">
-      {nav.footerPrimary.map(item => (
-        <li><a href={item.url} target="_blank">{item.name}</a></li>
-      ))}
-    </ul>
-    <ul role="list" class="flex flex-col gap-tiny">
-      {nav.footerSecondary.map(item => (
-        <li><a href={item.url} target="_blank">{item.name}</a></li>
-      ))}
-    </ul>
-    <ul role="list" class="flex flex-col gap-tiny">
-      {nav.socials.map(social => (
-        <li><a href={social.url} target="_blank">{social.name}</a></li>
-      ))}
-    </ul>
-    <Text variant="thuge" class="col-span-full">Romain Breton</Text>
-    <ul role="list" class="flex gap-sm">
-      {nav.footerThird.map(item => (
-        <li><a href={item.url} target="_blank">{item.name}</a></li>
-      ))}
-    </ul>
-  </Grid>
+	<Grid Tag="div">
+		<div
+			class="col-span-full md:col-span-12 flex flex-col md:flex-row md:flex-wrap gap-y-sm md:gap-x-xlg md:gap-y-sm mb-lg md:mb-0"
+		>
+			<ul
+				role="list"
+				class="flex flex-col gap-xsm md:gap-tiny items-center md:items-start"
+			>
+				<li class="relative -top-px">
+					<a
+						href="/"
+						class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 hover:text-green-700 focus:outline-2 focus:outline-gray-300 focus:outline-offset-1"
+					>
+						R<span class="sr-only">omain</span> B<span class="sr-only">
+							reton
+						</span>
+					</a>
+				</li>
+				{
+					nav.footerPrimary.map((item) => (
+						<li>
+							{item.url ? (
+								<Button
+									attributes={formatLink(item)}
+									href={item.url}
+									variant="nav-gray-300"
+									class={currentPath === item.url ? " -active" : ""}
+								>
+									{item.name}
+								</Button>
+							) : (
+								<Text variant="bmd">{item.name}</Text>
+							)}
+						</li>
+					))
+				}
+			</ul>
+			<ul
+				role="list"
+				class="flex flex-wrap gap-md justify-center md:flex-col md:gap-tiny md:justify-start"
+			>
+				{
+					nav.footerSecondary.map((item) => (
+						<li>
+							{item.url ? (
+								<Button
+									attributes={formatLink(item)}
+									href={item.url}
+									variant="link-gray-300"
+									class={currentPath === item.url ? " -active" : ""}
+									icon="arrow"
+								>
+									{item.name}
+								</Button>
+							) : (
+								<Text variant="bmd">{item.name}</Text>
+							)}
+						</li>
+					))
+				}
+			</ul>
+			<ul
+				role="list"
+				class="flex flex-wrap gap-md justify-center md:flex-col md:gap-tiny md:justify-start"
+			>
+				{
+					nav.socials.map((social) => (
+						<li>
+							<Button
+								attributes={{ target: "_blank" }}
+								href={social.url}
+								variant="link-gray-300"
+								icon="arrow"
+							>
+								{social.name}
+							</Button>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<div
+			class="col-span-full md:col-span-12 flex flex-col gap-sm items-center md:items-end"
+		>
+			<Text class="text-center md:text-right max-w-[40rem]"
+				>Dans une optique d’éco-conception, le site est allégé par défaut. Et si
+				on re découvrait le site avec un peu de piquant ?</Text
+			>
+			<Button variant="primary-gray-300" icon="arrow"
+				>Ajouter des paillettes</Button
+			>
+		</div>
+		<Text
+			variant="thuge"
+			class="col-span-full mt-lg mb-md md:mt-xlg md:mb-lg lg:mt-giant lg:mb-xlg"
+			>Romain Breton</Text
+		>
+		<div
+			class="col-span-full flex flex-col items-center gap-sm lg:flex-row lg:justify-between"
+		>
+			<p
+				class="flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
+			>
+				··· · −·−· ·−· <Button variant="primary-gray-300" icon="arrow"
+					>Rapporter les codes d'erreur</Button
+				>
+			</p>
+			<ul
+				role="list"
+				class="flex flex-wrap gap-x-sm gap-y-tiny justify-center lg:justify-end"
+			>
+				{
+					nav.footerThird.map((item) => {
+						return item.url ? (
+							<li>
+								<Button
+									attributes={formatLink(item)}
+									href={item.url}
+									variant="link-gray-300"
+									class={currentPath === item.url ? " -active" : ""}
+								>
+									{item.name}
+								</Button>
+							</li>
+						) : (
+							<Text variant="bmd" Tag="li">
+								{item.name}
+							</Text>
+						)
+					})
+				}
+			</ul>
+		</div>
+	</Grid>
 </footer>

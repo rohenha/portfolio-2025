@@ -1,4 +1,25 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "tailwindStylesheet": "./src/styles/global.css"
+	"plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-astro"],
+	"tailwindStylesheet": "./src/styles/tailwind.css",
+	"tabWidth": 2,
+	"singleQuote": false,
+	"trailingComma": "all",
+	"semi": false,
+	"printWidth": 80,
+	"htmlWhitespaceSensitivity": "ignore",
+	"bracketSameLine": false,
+	"proseWrap": "always",
+	"overrides": [
+		{
+			"files": "*.astro",
+			"options": {
+				"parser": "astro",
+				"printWidth": 80,
+				"bracketSameLine": false,
+				"htmlWhitespaceSensitivity": "ignore",
+				"proseWrap": "always",
+				"tabWidth": 2
+			}
+		}
+	]
 }

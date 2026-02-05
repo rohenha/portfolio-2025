@@ -1,29 +1,35 @@
 ---
+// Content
 import metadata from "@content/metadata"
+// Components
+import AccessibilityButton from "@components/atoms/accessibility-button.astro"
+import Button from "@components/atoms/button.astro"
 import Footer from "@components/organisms/footer.astro"
 import Header from "@components/organisms/header.astro"
+import Prefooter from "@components/organisms/prefooter.astro"
+// Styles
 import "../styles/tailwind.css"
 import "../styles/global.scss"
 
 export interface Props {
-  lang?: string;
-	locale?: string;
-	seoTitle?: string;
-	seoDescription?: string;
-	ogImage?: string;
-	robots?: string;
-	ogType?: string;
-	ogTitle?: string;
-	ogDescription?: string;
-	twitterCard?: string;
-	twitterSite?: string;
-	twitterCreator?: string;
-	colorMeta?: string;
-	metas?: Array<{ content: string, type: string; key: string }>;
+	lang?: string
+	locale?: string
+	seoTitle?: string
+	seoDescription?: string
+	ogImage?: string
+	robots?: string
+	ogType?: string
+	ogTitle?: string
+	ogDescription?: string
+	twitterCard?: string
+	twitterSite?: string
+	twitterCreator?: string
+	colorMeta?: string
+	metas?: Array<{ content: string; type: string; key: string }>
 }
 
-const { 
-	lang = metadata.lang, 
+const {
+	lang = metadata.lang,
 	locale = metadata.locale,
 	seoTitle = metadata.seoTitle,
 	seoDescription = metadata.seoDescription,
@@ -41,44 +47,67 @@ const {
 
 <html lang={lang} class="bg-gray-300 clr-gray-900 font-mono">
 	<head>
-		<meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
-		<meta name="language" content={locale}/>
-		<meta name="robots" content={robots}/>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=5"
+		/>
+		<meta name="language" content={locale} />
+		<meta name="robots" content={robots} />
 		<!-- data -->
-		<title>{seoTitle}</title>
-		<meta name="description" content={seoDescription}/>
-    <!-- Open graph -->
-    <meta property="og:locale" content={locale}/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content={ogType}/>
-    <meta property="og:site_name" content={metadata.siteName}/>
-    <meta property="og:title" content={ogTitle}/>
-    <meta property="og:description" content={ogDescription} />
+		<title>{seoTitle + metadata.suffixTitle}</title>
+		<meta name="description" content={seoDescription} />
+		<!-- Open graph -->
+		<meta property="og:locale" content={locale} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={ogType} />
+		<meta property="og:site_name" content={metadata.siteName} />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={ogDescription} />
 		<!-- Twitter -->
-    <meta name="twitter:card" content={twitterCard} />
-    <meta name="twitter:site" content={metadata.twitterSite} />
+		<meta name="twitter:card" content={twitterCard} />
+		<meta name="twitter:site" content={metadata.twitterSite} />
 		<meta name="twitter:creator" content={twitterCreator} />
-    <meta name="twitter:title" content={ogTitle}/>
-    <meta name="twitter:description" content={ogDescription}/>
+		<meta name="twitter:title" content={ogTitle} />
+		<meta name="twitter:description" content={ogDescription} />
 		<!-- Icon -->
-		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"/>
-    <link rel="icon" href="/favicon.ico"/>
-    <link rel="manifest" href="/site.webmanifest"/>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="/favicon/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="/favicon/favicon-16x16.png"
+		/>
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<!-- Others -->
-		 {metas.map(meta => (
-				<meta {meta.type}={meta.key} content={meta.content} />
-		))}
-		<meta name="msapplication-TileColor" content={colorMeta}/>
-    <meta name="theme-color" content={colorMeta}/>
+		{metas.map((meta) => <meta meta.type={meta.key} content={meta.content} />)}
+		<meta name="msapplication-TileColor" content={colorMeta} />
+		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body class="">
+		<AccessibilityButton href="#main" text="Voir le contenu principal" />
+		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header />
 		<slot />
+		<Button
+			class="a-btnTop fixed bottom-md right-md hover:bg-green-700 focus:outline-2 focus:outline-green-700"
+			href="#main"
+			icon="arrow"><span class="sr-only">Retour en haut</span></Button
+		>
+		<Prefooter />
 		<Footer />
 	</body>
 </html>
