@@ -30,7 +30,7 @@ const {
 	details || date || children ? (
 		<Tag class:list={["", className]}>
 			{details || date ? (
-				<span class="flex flex-col">
+				<span class="flex flex-col items-start">
 					{href ? (
 						<a
 							href={href}
@@ -79,22 +79,20 @@ const {
 			{children && (
 				<ul class="m-subTree relative mt-xsm pl-xlg pt-xsm grid grid-col-1 gap-tiny">
 					{children.map((child) => (
-						<li class="a-treeItem__content flex items-center gap-xsm text-tag tracking-sm">
-							{child}
+						<li>
+							<span class="a-treeItem__content flex items-center gap-xsm text-tag tracking-sm">
+								{child}
+							</span>
 						</li>
 					))}
 				</ul>
 			)}
 		</Tag>
 	) : (
-		<Tag
-			class:list={[
-				"a-treeItem a-treeItem__content flex flex-wrap items-center gap-xsm",
-				variants[variant],
-				className,
-			]}
-		>
-			{title}
+		<Tag class:list={["a-treeItem", variants[variant], className]}>
+			<span class="a-treeItem__content flex flex-wrap items-center gap-xsm">
+				{title}
+			</span>
 		</Tag>
 	)
 }
