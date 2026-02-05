@@ -21,14 +21,16 @@
 		"Iowan Old Style", ui-serif, georgia, cambria, "Times New Roman", times,
 		serif;
 	--font-mono:
-		menlo, ui-monospace, sfmono-regular, monaco, consolas,
-		"Liberation Mono", "Courier New", monospace;
+		menlo, ui-monospace, sfmono-regular, monaco, consolas, "Liberation Mono",
+		"Courier New", monospace;
 
 	/* Font Sizes */
 	--text-txhuge: 14.5vw;
 	--text-txhuge--line-height: calc(170 / 224);
 	--text-thuge: 15.5vw;
 	--text-thuge--line-height: calc(170 / 224);
+	--text-txlg: 15rem;
+	--text-txlg--line-height: 1;
 	--text-tlg: 4.5rem;
 	--text-tlg--line-height: 1;
 	--text-tmd: 3.4rem;
@@ -63,6 +65,7 @@
 
 	/* Spacing */
 	--spacing-giant: 17rem;
+	--spacing-xxxlg: 10rem;
 	--spacing-xxlg: 8rem;
 	--spacing-xlg: 6rem;
 	--spacing-lg: 4.5rem;
