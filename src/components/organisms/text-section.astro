@@ -20,12 +20,12 @@ const { variant = "gray-900", title1 = "", title2 = "" } = Astro.props
 		{title1 && (
 			<Text
 				variant="tlg"
-				class="mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-11"
+				class="mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-12"
 				set:html={title1}
 			>
 			</Text>
 			<div
-				class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-14 mb-md md:mb-xxxlg"
+				class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-15 mb-md md:mb-xxxlg"
 			>
 				<slot name="content1" />
 			</div>
@@ -34,12 +34,12 @@ const { variant = "gray-900", title1 = "", title2 = "" } = Astro.props
 		{title2 && (
 			<Text
 				variant="tlg"
-				class="mb-lg col-span-full md:col-start-6 md:col-end-19 lg:col-start-8 lg:col-end-16"
+				class="mb-lg col-span-full md:col-start-6 md:col-end-19 lg:col-start-8 lg:col-end-17"
 				set:html={title2}
 			>
 			</Text>
 			<div
-				class="grid grid-col-1 gap-md col-span-full md:col-start-7 md:col-end-21 lg:col-start-9 lg:col-end-19"
+				class="grid grid-col-1 gap-md col-span-full md:col-start-7 md:col-end-21 lg:col-start-9 lg:col-end-20"
 			>
 				<slot name="content2" />
 			</div>

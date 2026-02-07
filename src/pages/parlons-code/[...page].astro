@@ -1,0 +1,67 @@
+---
+import type { GetStaticPaths, Page } from "astro"
+import DefaultLayout from "@layouts/default.astro"
+import HeroAlt from "@components/organisms/hero-alt.astro"
+import Text from "@components/atoms/text.astro"
+import ArticleListItem from "@components/molecules/article-list-item.astro"
+import { getCollection } from "astro:content"
+import Grid from "@components/organisms/grid.astro"
+import Pagination from "@components/organisms/pagination.astro"
+
+export interface Props {
+	page: Page
+}
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const posts = await getCollection("blog")
+	return paginate(posts, { pageSize: 2 })
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+
+const baseUrl = page.url.first ? page.url.first : page.url.current
+---
+
+<DefaultLayout>
+	<main id="main">
+		{
+			page.url.first ? (
+				<HeroAlt title={`Page ${page.currentPage}`}></HeroAlt>
+			) : (
+				<HeroAlt title="Parlons bien, parlons code">
+					<Text variant="pmd" class="">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
+						nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
+						feugiat fringilla, massa diam mattis nulla, a pulvinar purus justo
+						sed sapien. Vivamus imperdiet lorem ac sem ultricies, quis aliquam
+						odio placerat. Nulla faucibus vel arcu in sodales.
+					</Text>
+				</HeroAlt>
+			)
+		}
+		<Grid class="mb-giant">
+			<section
+				class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-[0.8rem]"
+			>
+				{
+					page.data.map((post) => (
+						<ArticleListItem
+							title={post.data.title}
+							url={`${baseUrl}/${post.id}`}
+							date={post.data.date}
+							tags={post.data.tags}
+						/>
+					))
+				}
+				<Pagination
+					baseUrl={baseUrl}
+					currentUrl={page.url.current}
+					prevUrl={page.url.prev}
+					nextUrl={page.url.next}
+					total={page.lastPage}
+					class="mt-lg"
+				/>
+			</section>
+		</Grid>
+	</main></DefaultLayout
+>

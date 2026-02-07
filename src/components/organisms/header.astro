@@ -18,10 +18,12 @@ const currentPath = Astro.url.pathname
 	>
 	<nav
 		class="ml-auto flex flex-col md:flex-row items-end gap-xsm md:gap-sm text-right"
+		aria-labelledby="header-nav-label"
 	>
+		<span id="header-nav-label" class="sr-only">Naviagtion principale</span>
 		<a
 			href="/"
-			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 hover:text-green-700 relative top-[-0.1rem] focus:outline-2 focus:outline-gray-900 focus:outline-offset-1"
+			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 relative top-[-0.1rem] focus:outline-2 focus:outline-gray-900 focus:outline-offset-1"
 		>
 			R<span class="sr-only">omain</span> B<span class="sr-only">reton</span>
 		</a>
@@ -33,7 +35,7 @@ const currentPath = Astro.url.pathname
 				nav.header.map((item) => (
 					<li>
 						<Button
-							attributes={formatLink(item)}
+							attributes={formatLink(item, currentPath)}
 							href={item.url}
 							variant="nav-alt-gray-900"
 							class={currentPath === item.url ? " -active" : ""}

@@ -1,0 +1,29 @@
+---
+import Text from "@components/atoms/text.astro"
+
+const variants = {
+	"gray-900": "text-gray-300 bg-gray-900",
+	"gray-300": "text-gray-900 bg-gray-300",
+	"gray-500": "text-gray-900 bg-gray-500",
+}
+
+export interface Props {
+	class?: string
+	variant?: keyof typeof variants
+	tag?: keyof HTMLElementTagNameMap
+}
+
+const { tag = "span", variant = "gray-900", class: className } = Astro.props
+---
+
+<Text
+	Tag={tag}
+	variant="tag"
+	class:list={[
+		"py-[0.2rem] px-[0.4rem] rounded-sm inline-block",
+		variants[variant],
+		className,
+	]}
+>
+	<slot />
+</Text>
