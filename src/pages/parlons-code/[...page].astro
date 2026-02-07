@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths, Page } from "astro"
+// Components
 import DefaultLayout from "@layouts/default.astro"
 import HeroAlt from "@components/organisms/hero-alt.astro"
 import Text from "@components/atoms/text.astro"
@@ -13,8 +14,13 @@ export interface Props {
 }
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const posts = await getCollection("blog")
-	return paginate(posts, { pageSize: 2 })
+	const posts = await getCollection("blog", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true
+	})
+	const sortedPosts = posts.sort(
+		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
+	)
+	return paginate(sortedPosts, { pageSize: 2 })
 }) satisfies GetStaticPaths
 
 const { page } = Astro.props
@@ -22,7 +28,7 @@ const { page } = Astro.props
 const baseUrl = page.url.first ? page.url.first : page.url.current
 ---
 
-<DefaultLayout>
+<DefaultLayout explorer={false}>
 	<main id="main">
 		{
 			page.url.first ? (
@@ -59,7 +65,7 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 					prevUrl={page.url.prev}
 					nextUrl={page.url.next}
 					total={page.lastPage}
-					class="mt-lg"
+					class="mt-md"
 				/>
 			</section>
 		</Grid>

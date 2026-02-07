@@ -11,3 +11,11 @@ export const formatLink = (link: NavItem, currentPage?: string): any => {
 
 	return attributes
 }
+
+export const formatDate = (date: Date) => {
+	return date.toLocaleDateString("fr-FR", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	})
+}

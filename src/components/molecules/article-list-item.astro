@@ -1,6 +1,9 @@
 ---
+import { formatDate } from "@utils/helpers"
+// Components
 import Text from "@components/atoms/text.astro"
 import Tag from "@components/atoms/tag.astro"
+
 export interface Props {
 	title?: string
 	tags?: Array<string>
@@ -10,14 +13,6 @@ export interface Props {
 }
 
 const { title = "", tags = [], date = null, url = "" } = Astro.props
-
-const dateString = date
-	? date.toLocaleDateString("fr-FR", {
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-		})
-	: ""
 ---
 
 <article
@@ -50,7 +45,7 @@ const dateString = date
 				variant="tagalt"
 				class="ml-auto shrink-0 mt-[0.2rem] order-6"
 			>
-				{dateString}
+				{formatDate(date)}
 			</Text>
 		)
 	}
