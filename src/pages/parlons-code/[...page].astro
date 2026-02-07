@@ -26,7 +26,7 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 	<main id="main">
 		{
 			page.url.first ? (
-				<HeroAlt title={`Page ${page.currentPage}`}></HeroAlt>
+				<HeroAlt title={`Page ${page.currentPage}`} />
 			) : (
 				<HeroAlt title="Parlons bien, parlons code">
 					<Text variant="pmd" class="">
@@ -63,5 +63,5 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 				/>
 			</section>
 		</Grid>
-	</main></DefaultLayout
->
+	</main>
+</DefaultLayout>

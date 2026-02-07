@@ -26,6 +26,7 @@ export interface Props {
 	twitterCreator?: string
 	colorMeta?: string
 	metas?: Array<{ content: string; type: string; key: string }>
+	explorer?: boolean
 }
 
 const {
@@ -42,6 +43,7 @@ const {
 	twitterCreator = metadata.twitterCreator,
 	colorMeta = metadata.colorMeta,
 	metas = metadata.metas,
+	explorer = true,
 } = Astro.props
 ---
 
@@ -100,7 +102,7 @@ const {
 	<body class="">
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
-		<Header />
+		<Header explorer={explorer} />
 		<slot />
 		<Button
 			class="a-btnTop fixed bottom-md right-md hover:bg-green-700 focus:outline-2 focus:outline-green-700"

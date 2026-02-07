@@ -7,15 +7,28 @@ import { formatLink } from "@utils/helpers"
 import Button from "@components/atoms/button.astro"
 import Text from "@components/atoms/text.astro"
 
+export interface Props {
+	explorer?: boolean
+}
+
+const { explorer = true } = Astro.props
 const currentPath = Astro.url.pathname
 ---
 
 <header
 	class="absolute top-0 left-[50%] w-full translate-x-[-50%] py-md px-sm md:px-lg max-w-[140rem] mx-auto flex items-start"
 >
-	<Text variant="bmd" class="w-[50%] max-w-[20rem]"
-		>Bonjour,<br />...<br />Attends, j'ai comme un air de déjà vu.</Text
-	>
+	{
+		explorer && (
+			<Text variant="bmd" class="w-[50%] max-w-[20rem]">
+				Bonjour,
+				<br />
+				...
+				<br />
+				Attends, j'ai comme un air de déjà vu.
+			</Text>
+		)
+	}
 	<nav
 		class="ml-auto flex flex-col md:flex-row items-end gap-xsm md:gap-sm text-right"
 		aria-labelledby="header-nav-label"

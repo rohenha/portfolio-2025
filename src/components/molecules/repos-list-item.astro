@@ -1,0 +1,42 @@
+---
+import Text from "@components/atoms/text.astro"
+import Tag from "@components/atoms/tag.astro"
+export interface Props {
+	title?: string
+	tags?: Array<string>
+	url?: string
+	description?: string
+}
+
+const { title = "", tags = [], url = "", description } = Astro.props
+---
+
+<article class:list={["w-full py-tiny"]}>
+	<div class="flex flex-row flex-wrap md:flex-nowrap items-start gap-tiny">
+		<Text
+			Tag="a"
+			variant="amd"
+			attributes={{ href: url }}
+			class="shrink-0 w-full md:w-auto md:max-w-[23rem] mt-[-3px] -order-2 rounded-sm hover:bg-gray-300 hover:text-gray-900 hover:border-gray-900 focus:outline-2 focus:outline-gray-900 focus:outline-offset-4"
+		>
+			{title}
+		</Text>
+		<hr
+			class="w-full border-gray-400 mt-[0.2rem] mb-[0.2rem] md:mt-[0.8rem] md:mb-0"
+		/>
+		{
+			tags.map((tag) => (
+				<Tag variant="gray-500" class="shrink-0" tag="p">
+					{tag}
+				</Tag>
+			))
+		}
+	</div>
+	{
+		description && (
+			<Text variant="tag" class="mt-xsm text-gray-900">
+				{description}
+			</Text>
+		)
+	}
+</article>

@@ -1,0 +1,11 @@
+{
+	"list": [
+		{
+			"id": "strava-explorer",
+			"name": "Strava Explorer",
+			"description": "A tool to explore Strava data and create custom dashboards.",
+			"url": "https://strava-explorer.romain-breton.com",
+			"tags": ["Strava", "Data Visualization", "Dashboard"]
+		}
+	]
+}

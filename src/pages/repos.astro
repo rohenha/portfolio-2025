@@ -1,10 +1,16 @@
 ---
+import { getCollection } from "astro:content"
+// Components
 import DefaultLayout from "@layouts/default.astro"
 import HeroAlt from "@components/organisms/hero-alt.astro"
 import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+import ReposListItem from "@components/molecules/repos-list-item.astro"
+
+const repos = await getCollection("repos")
 ---
 
-<DefaultLayout>
+<DefaultLayout explorer={false}>
 	<main id="main">
 		<HeroAlt title="Mes contributions open source">
 			<Text variant="pmd" class="">
@@ -23,5 +29,21 @@ import Text from "@components/atoms/text.astro"
 				et, suscipit ultricies elit.
 			</Text>
 		</HeroAlt>
+		<Grid class="mb-giant">
+			<section
+				class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-[0.8rem]"
+			>
+				{
+					repos.map((item) => (
+						<ReposListItem
+							title={item.data.name}
+							url={item.data.url}
+							tags={item.data.tags}
+							description={item.data.description}
+						/>
+					))
+				}
+			</section>
+		</Grid>
 	</main>
 </DefaultLayout>
