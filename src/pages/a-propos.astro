@@ -3,6 +3,7 @@ import DefaultLayout from "@layouts/default.astro"
 import HeroSimple from "@components/organisms/hero-simple.astro"
 import Text from "@components/atoms/text.astro"
 import TextSection from "@components/organisms/text-section.astro"
+import TextTree from "@components/organisms/text-tree.astro"
 ---
 
 <DefaultLayout>
@@ -31,11 +32,28 @@ import TextSection from "@components/organisms/text-section.astro"
 			</Fragment>
 		</TextSection>
 
-		<TextSection
+		<TextTree
 			variant="gray-300"
-			title1="Un métier passionnant qui me passionne"
+			title="Un métier passionnant qui me passionne"
+			tree={[
+				{ title: "HTML 5" },
+				{ title: "CSS" },
+				{
+					title: "Javascript",
+					children: ["Vanilla JS", "Vue JS", "React JS"],
+				},
+				{ title: "Typescript" },
+				{
+					title: "Node JS",
+					children: ["Astro JS", "Eleventy JS", "Adonis JS"],
+				},
+				{
+					title: "PHP",
+					children: ["Kirby CMS", "Wordpress", "Laravel"],
+				},
+			]}
 		>
-			<Fragment slot="content1">
+			<Fragment slot="content">
 				<Text variant="pmd" class="">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
 					nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
@@ -52,6 +70,6 @@ import TextSection from "@components/organisms/text-section.astro"
 					urna et, suscipit ultricies elit.
 				</Text>
 			</Fragment>
-		</TextSection>
+		</TextTree>
 	</main>
 </DefaultLayout>

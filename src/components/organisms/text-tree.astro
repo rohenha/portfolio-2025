@@ -1,0 +1,85 @@
+---
+import Grid from "@components/organisms/grid.astro"
+import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
+import TreeItem, { variants as TreeItemVariants } from "@components/atoms/tree-item.astro"
+import { formatLink } from "@utils/helpers"
+
+const variants = {
+	"gray-900": "bg-gray-900 text-gray-300",
+	"gray-300": "bg-gray-300 text-gray-900",
+}
+export interface Props {
+	variant?: keyof typeof variants
+	title?: string
+	link?: {
+		url: string
+		label: string
+		external?: boolean
+		name?: string
+	}
+	treeVariant?: keyof typeof TreeItemVariants
+	tree?: Array<{
+		title: string
+		href?: string
+		details?: string
+		date?: string
+		children?: Array<string>
+	}>
+}
+
+const {
+	variant = "gray-900",
+	title = "",
+	link = null,
+	tree = null,
+	treeVariant = "default",
+} = Astro.props
+---
+
+<section class:list={[variants[variant], "py-giant"]}>
+	<Grid>
+		{title && (
+			<Text
+				variant="tlg"
+				class="mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-11"
+				set:html={title}
+			>
+			</Text>
+			<div
+				class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-14 mb-md md:mb-xxxlg self-start"
+			>
+				<slot name="content" />
+			</div>
+		)}
+		{tree && (
+			<ul
+					class:list={["m-tree relative pt-sm grid grid-col-1 gap-xsm col-span-full md:col-start-17 md:col-end-24 md:self-start lg:col-start-18 mb-md md:md-0", variant == "gray-900" ? "text-gray-300" : "text-gray-900"]}
+				>
+					{tree.map((item) => (
+						<TreeItem
+							Tag="li"
+							title={item.title}
+							href={item.href}
+							details={item.details}
+							date={item.date}
+							children={item.children}
+							variant={treeVariant}
+						/>
+					))}
+
+
+			</ul>
+		)}
+		{link && (
+			<Button
+				variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
+				class="col-span-full justify-self-start md:justify-self-end lg:col-end-22"
+				attributes={formatLink(link)}
+				href={link.url}
+			>
+				{link.label}
+			</Button>
+		)}
+	</Grid>
+</section>
