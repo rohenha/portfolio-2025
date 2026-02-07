@@ -5,6 +5,8 @@ import tailwindcss from "@tailwindcss/vite"
 // import criticalCss from "astro-critical-css"
 
 import mdx from "@astrojs/mdx"
+import mdxClasses from "./config/mdx-classes.ts"
+import rehypeClassNames from "rehype-class-names"
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,14 +16,6 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 		build: {
 			cssCodeSplit: false,
-
-			// rollupOptions: {
-			//   output: {
-			//     // entryFileNames: 'scripts/[name].js',
-			//     // chunkFileNames: 'chunks/[name].js',
-			//     assetFileNames: 'assets/[name][extname]'
-			//   }
-			// }
 		},
 	},
 
@@ -36,6 +30,15 @@ export default defineConfig({
 		//   height: 1080,
 		//   width: 1920,
 		// }),
-		mdx(),
+		mdx({
+			rehypePlugins: [
+				[
+					rehypeClassNames,
+					{
+						...mdxClasses,
+					},
+				],
+			],
+		}),
 	],
 })

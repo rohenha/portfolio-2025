@@ -59,6 +59,7 @@
 	/* Tracking */
 	--tracking-md: -0.06em;
 	--tracking-sm: -0.04em;
+	--tracking-reg: 0em;
 
 	/* Font weights */
 	--font-weight-normal: 400;
