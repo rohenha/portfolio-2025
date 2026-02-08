@@ -14,12 +14,13 @@ const classes = {
 	ol: "list-decimal list-inside px-md space-y-xs",
 	li: "text-btn tracking-sm",
 
-	blockquote: "p-md bg-gray-500 rounded-md",
+	blockquote: "px-md py-lg bg-gray-500 rounded-md",
 	"blockquote > p": "text-quote font-serif",
 
 	code: "",
 	pre: "p-md rounded-md overflow-x-auto",
 
+	picture: "block",
 	img: "rounded-md max-w-full h-auto",
 
 	table: "min-w-full text-left text-tag tracking-md rounded-md overflow-hidden",

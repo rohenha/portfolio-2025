@@ -27,16 +27,27 @@
 		+ h6,
 		+ table,
 		+ blockquote,
-		+ pre {
+		+ pre,
+		+ picture {
 			margin-top: var(--spacing-xlg);
 		}
 	}
 
 	table,
 	blockquote,
-	pre {
+	pre,
+	img,
+	picture {
 		+ :not(h2, h3, h4, h5, h6) {
 			margin-top: var(--spacing-xlg);
+		}
+	}
+
+	picture {
+		display: block;
+
+		img {
+			border-radius: 0.5rem;
 		}
 	}
 }

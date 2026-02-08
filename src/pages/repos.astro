@@ -6,6 +6,7 @@ import HeroAlt from "@components/organisms/hero-alt.astro"
 import Text from "@components/atoms/text.astro"
 import Grid from "@components/organisms/grid.astro"
 import ReposListItem from "@components/molecules/repos-list-item.astro"
+import Button from "@components/atoms/button.astro"
 
 const repos = await getCollection("repos")
 ---
@@ -35,6 +36,14 @@ const repos = await getCollection("repos")
 						/>
 					))
 				}
+				<Button
+					class="mt-md self-start"
+					href="https://www.github.com/rohenha"
+					icon="arrow"
+					attributes={{ target: "_blank" }}
+				>
+					Voir mon github
+				</Button>
 			</section>
 		</Grid>
 	</main>

@@ -158,7 +158,8 @@
 			}
 		}
 
-		&.-active {
+		&.-active,
+		&[aria-current="page"] {
 			color: var(--color-green-700);
 			span {
 				transform: translate(0.9rem, 0);
@@ -197,7 +198,8 @@
 			}
 		}
 
-		&.-active {
+		&.-active,
+		&[aria-current="page"] {
 			color: var(--color-green-700);
 			&::before {
 				opacity: 1;

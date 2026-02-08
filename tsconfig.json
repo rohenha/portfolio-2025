@@ -16,7 +16,8 @@
 			"@styles/*": ["./src/styles/*"],
 			"@content/*": ["./content/*"],
 			"@utils/*": ["./utils/*"],
-			"@config/*": ["./config/*"]
+			"@config/*": ["./config/*"],
+			"@images/*": ["./src/images/*"]
 		}
 	}
 }

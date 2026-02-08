@@ -5,7 +5,11 @@ export const formatLink = (link: NavItem, currentPage?: string): any => {
 		attributes["target"] = "_blank"
 	}
 
-	if (currentPage && link.url === currentPage) {
+	if (
+		currentPage &&
+		link.url &&
+		(link.url === currentPage || currentPage.includes(link.url))
+	) {
 		attributes["aria-current"] = "page"
 	}
 

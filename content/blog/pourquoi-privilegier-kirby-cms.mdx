@@ -5,6 +5,9 @@ tags: ["Eco-conception", "PHP", "CMS"]
 date: 2024-01-01
 ---
 
+import ResponsivePicture from "@components/atoms/responsive-picture.astro"
+import TestImage from "@images/test.jpg"
+
 Cette introduction aura <strong>automatiquement</strong> un style spécial grâce
 à la classe"intro".
 
@@ -34,6 +37,24 @@ $kirby = new Kirby([
     ]
 ]);
 ```
+
+```js
+// Bloc de code JavaScript avec style automatique
+console.log("Kirby CMS est génial !")
+```
+
+```css
+/* Bloc de code CSS avec style automatique */
+body {
+	font-family: Arial, sans-serif;
+}
+```
+
+<ResponsivePicture
+	src={TestImage}
+	alt="Un ciel étoilé."
+	variant="article"
+/>
 
 tableau avec style automatique :
 | Avantage     | Description                                 |

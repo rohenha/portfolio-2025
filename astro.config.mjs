@@ -21,6 +21,19 @@ export default defineConfig({
 
 	build: {
 		inlineStylesheets: "never",
+		assets: "assets",
+	},
+	image: {
+		responsiveStyles: true,
+	},
+
+	markdown: {
+		shikiConfig: {
+			// Choisir parmi les thèmes intégrés de Shiki (ou ajouter le vôtre)
+			// https://shiki.style/themes
+			theme: "github-dark-high-contrast",
+			wrap: true,
+		},
 	},
 
 	integrations: [

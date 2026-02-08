@@ -76,6 +76,11 @@ const nav: NavProps = {
 	],
 	socials: [
 		{
+			id: "email",
+			name: "Email",
+			url: "romain.breton.pro@gmail.com",
+		},
+		{
 			id: "github",
 			name: "GitHub",
 			url: "https://www.github.com/rohenha",
@@ -89,6 +94,11 @@ const nav: NavProps = {
 			id: "twitter",
 			name: "Twitter",
 			url: "https://www.twitter.com/rohenha",
+		},
+		{
+			id: "strava",
+			name: "Strava",
+			url: "https://www.strava.com/athletes/59985485",
 		},
 	],
 }
