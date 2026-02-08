@@ -1,0 +1,55 @@
+---
+// Components
+import Button from "@components/atoms/button.astro"
+import { formatLink } from "@utils/helpers"
+
+export interface Props {
+	id: string
+	class?: string
+	link?: NavItem
+}
+
+const { id, link, class: className } = Astro.props
+---
+
+<div
+	class:list={[
+		"m-popin fixed top-0 left-0 z-99 flex flex-col flex-wrap items-center justify-center w-full h-full",
+		className,
+	]}
+	id={id}
+	aria-hidden="true"
+>
+	<div
+		class="m-popin__overlay absolute top-0 left-0 -z-1 flex w-full h-full items-center justify-center p-sm lg:p-md cursor-pointer"
+		tabindex="-1"
+		data-action="close"
+	>
+		<div
+			class="m-popin__container flex flex-col flex-nowrap overflow-y-auto w-full max-w-[70rem] max-h-full p-md bg-gray-300 lg:p-xlg cursor-default rounded-md"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby={`${id}_title`}
+		>
+			<slot />
+			<footer class="flex items-center mt-md">
+				{
+					link && (
+						<Button
+							variant="secondary-gray-900"
+							href={link.url}
+							attributes={formatLink(link)}
+						>
+							{link.name}
+						</Button>
+					)
+				}
+				<Button
+					variant="secondary-gray-900"
+					class="ml-auto"
+					attributes={{ "data-action": "close" }}>Fermer</Button
+				>
+			</footer>
+		</div>
+	</div>
+</div>
