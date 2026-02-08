@@ -15,7 +15,7 @@
 	--color-gray-500: #dbdbdb;
 	--color-gray-400: #e3e3e3;
 	--color-gray-300: #f5f5f4;
-	--color-green-700: #6e7f6a;
+	--color-green-700: #aa5939;
 
 	/* Fonts */
 	--font-serif:
@@ -32,6 +32,8 @@
 	--text-thuge--line-height: calc(170 / 224);
 	--text-txlg: 15rem;
 	--text-txlg--line-height: 1;
+	--text-txlgm: 9rem;
+	--text-txlgm--line-height: 1;
 	--text-tlg: 4.5rem;
 	--text-tlg--line-height: 1;
 	--text-tmd: 3.4rem;

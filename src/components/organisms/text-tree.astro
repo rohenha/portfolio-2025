@@ -6,18 +6,13 @@ import TreeItem, { variants as TreeItemVariants } from "@components/atoms/tree-i
 import { formatLink } from "@utils/helpers"
 
 const variants = {
-	"gray-900": "bg-gray-900 text-gray-300",
+	"gray-900": "bg-gray-900 text-gray-300 a-grid",
 	"gray-300": "bg-gray-300 text-gray-900",
 }
 export interface Props {
 	variant?: keyof typeof variants
 	title?: string
-	link?: {
-		url: string
-		label: string
-		external?: boolean
-		name?: string
-	}
+	link?: NavItem
 	treeVariant?: keyof typeof TreeItemVariants
 	tree?: Array<{
 		title: string
@@ -54,7 +49,7 @@ const {
 		)}
 		{tree && (
 			<ul
-					class:list={["m-tree relative pt-sm grid grid-col-1 gap-xsm col-span-full md:col-start-17 md:col-end-24 md:self-start lg:col-start-18 mb-md md:md-0", variant == "gray-900" ? "text-gray-300" : "text-gray-900"]}
+					class:list={["m-tree relative pt-sm grid grid-col-1 gap-xsm col-span-full md:col-start-17 md:col-end-25 md:self-start lg:col-start-17 lg:col-end-24 mb-md md:md-0", variant == "gray-900" ? "text-gray-300" : "text-gray-900"]}
 				>
 					{tree.map((item) => (
 						<TreeItem
@@ -78,7 +73,7 @@ const {
 				attributes={formatLink(link)}
 				href={link.url}
 			>
-				{link.label}
+				{link.name}
 			</Button>
 		)}
 	</Grid>

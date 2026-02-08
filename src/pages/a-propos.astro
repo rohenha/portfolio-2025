@@ -2,18 +2,46 @@
 import DefaultLayout from "@layouts/default.astro"
 import HeroSimple from "@components/organisms/hero-simple.astro"
 import Text from "@components/atoms/text.astro"
-import TextSection from "@components/organisms/text-section.astro"
+// import TextSection from "@components/organisms/text-section.astro"
 import TextTree from "@components/organisms/text-tree.astro"
 ---
 
 <DefaultLayout>
 	<main id="main">
-		<HeroSimple title="A propos de moi" />
-		<TextSection
+		<HeroSimple title="A propos de moi" photo={true} />
+		<TextTree
 			variant="gray-900"
-			title1="Pur produit Sarthois avec des notes du sud"
+			title="Pur produit Sarthois avec des notes du sud"
+			link={{
+				name: "Voir mon CV",
+				url: "https://romainbreton.fr/CV_Romain_Breton.pdf",
+				external: true,
+			}}
+			treeVariant="ahead"
+			tree={[
+				{
+					title: "Troa",
+					date: "2020 - Aujourd'hui",
+					details: "Développeur Front-end / Lead",
+				},
+				{
+					title: "Les poupées russes",
+					date: "2019 - 2020",
+					details: "Développeur Front-end",
+				},
+				{
+					title: "Keley Live",
+					date: "2016 - 2018",
+					details: "Alternance - Développeur Front-end",
+				},
+				{
+					title: "Groupe LDC",
+					date: "2014 - 2016",
+					details: "Alternance - Développeur Front-end",
+				},
+			]}
 		>
-			<Fragment slot="content1">
+			<Fragment slot="content">
 				<Text variant="pmd" class="">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
 					nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
@@ -30,7 +58,7 @@ import TextTree from "@components/organisms/text-tree.astro"
 					urna et, suscipit ultricies elit.
 				</Text>
 			</Fragment>
-		</TextSection>
+		</TextTree>
 
 		<TextTree
 			variant="gray-300"

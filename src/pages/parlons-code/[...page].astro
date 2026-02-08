@@ -20,7 +20,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 	const sortedPosts = posts.sort(
 		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
 	)
-	return paginate(sortedPosts, { pageSize: 2 })
+	return paginate(sortedPosts, { pageSize: 15 })
 }) satisfies GetStaticPaths
 
 const { page } = Astro.props
@@ -59,14 +59,18 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 						/>
 					))
 				}
-				<Pagination
-					baseUrl={baseUrl}
-					currentUrl={page.url.current}
-					prevUrl={page.url.prev}
-					nextUrl={page.url.next}
-					total={page.lastPage}
-					class="mt-md"
-				/>
+				{
+					page.lastPage > 1 && (
+						<Pagination
+							baseUrl={baseUrl}
+							currentUrl={page.url.current}
+							prevUrl={page.url.prev}
+							nextUrl={page.url.next}
+							total={page.lastPage}
+							class="mt-md"
+						/>
+					)
+				}
 			</section>
 		</Grid>
 	</main>

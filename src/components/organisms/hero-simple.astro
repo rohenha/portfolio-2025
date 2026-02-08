@@ -1,16 +1,37 @@
 ---
+import { Image } from "astro:assets"
+// Components
 import Text from "@components/atoms/text.astro"
 import Grid from "@components/organisms/grid.astro"
 
+import Avatar from "@images/avatar.png"
+
 export interface Props {
 	title?: string
+	photo?: boolean
 }
 
-const { title = "" } = Astro.props
+const { title = "", photo = false } = Astro.props
 ---
 
 <Grid Tag="header" class="pt-[43rem] pb-[2rem] items-end">
 	<Text variant="txlg" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2">
-		{title}
+		{
+			photo ? (
+				<span class="relative">
+					{title}
+					<Image
+						src={Avatar}
+						alt="Photo de profil de Romain Breton"
+						class="w-[7rem] absolute top-0 right-xsm transform translate-y-[-50%] lg:translate-y-[-20%] translate-x-[-10%] rotate-4"
+						sizes="70px"
+						widths={[140]}
+						quality="100"
+					/>
+				</span>
+			) : (
+				<>{title}</>
+			)
+		}
 	</Text>
 </Grid>

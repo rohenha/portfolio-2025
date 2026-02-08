@@ -1,7 +1,9 @@
 ---
+// Components
+
 export const variants = {
 	default: "text-pmd tracking-sm",
-	ahead: "text-pmd tracking-sm font-bold",
+	ahead: "text-pmd tracking-sm font-700",
 }
 
 export interface Props {
@@ -53,8 +55,10 @@ const {
 							{title}
 						</span>
 					)}
-					{details && <span class="text-btn tracking-sm">{details}</span>}
-					{date && <span class="text-tag tracking-sm">{date}</span>}
+					{details && (
+						<span class="text-btn tracking-sm mt-[0.2rem]">{details}</span>
+					)}
+					{date && <span class="text-tag tracking-sm mt-[0.2rem]">{date}</span>}
 				</span>
 			) : href ? (
 				<a

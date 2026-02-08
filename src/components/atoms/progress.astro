@@ -1,0 +1,28 @@
+---
+export interface Props {
+	// Si true, affiche une barre de progression indiquant la position de l'utilisateur dans la page
+	class?: string
+}
+
+const { class: className = "" } = Astro.props
+---
+
+<div
+	class:list={[
+		"w-[1.8rem] h-[1.8rem] bg-gray-900 rounded-full p-[0.3rem]",
+		className,
+	]}
+>
+	<svg class="block w-full h-full transform -rotate-90">
+		<circle
+			cx="50%"
+			cy="50%"
+			r="calc(50% - 0.05rem)"
+			stroke-width="0.2rem"
+			stroke="#fff"
+			fill="transparent"
+			style="stroke-dashoffset: 40; stroke-dasharray: 56;"
+		>
+		</circle>
+	</svg>
+</div>

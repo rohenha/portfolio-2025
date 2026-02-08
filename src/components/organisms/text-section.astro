@@ -1,6 +1,9 @@
 ---
+import { formatLink } from "@utils/helpers"
+// Components
 import Grid from "@components/organisms/grid.astro"
 import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
 
 const variants = {
 	"gray-900": "bg-gray-900 text-gray-300",
@@ -10,9 +13,10 @@ export interface Props {
 	variant?: keyof typeof variants
 	title1?: string
 	title2?: string
+	link?: NavItem
 }
 
-const { variant = "gray-900", title1 = "", title2 = "" } = Astro.props
+const { variant = "gray-900", title1 = "", title2 = "", link } = Astro.props
 ---
 
 <section class:list={[variants[variant], "py-giant"]}>
@@ -43,6 +47,17 @@ const { variant = "gray-900", title1 = "", title2 = "" } = Astro.props
 			>
 				<slot name="content2" />
 			</div>
+		)}
+
+		{link && (
+			<Button
+				variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
+				class="col-span-full justify-self-start md:justify-self-end lg:col-end-22"
+				attributes={formatLink(link)}
+				href={link.url}
+			>
+				{link.name}
+			</Button>
 		)}
 	</Grid>
 </section>

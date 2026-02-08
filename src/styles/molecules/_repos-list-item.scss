@@ -1,0 +1,26 @@
+@use "../utils/sprite";
+
+.m-reposListItem {
+	a {
+		&::after {
+			content: "";
+			display: inline-block;
+			background-repeat: no-repeat;
+			height: 1rem;
+			margin-left: var(--spacing-tiny);
+			width: 1rem;
+			@extend .icon-arrow;
+		}
+
+		&.hover\:text-green-700 {
+			&:hover {
+				@media (hover: hover) {
+					&::after {
+						filter: invert(39%) sepia(64%) saturate(749%) hue-rotate(325deg)
+							brightness(95%) contrast(90%);
+					}
+				}
+			}
+		}
+	}
+}

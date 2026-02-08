@@ -6,6 +6,7 @@ import { formatLink } from "@utils/helpers"
 // Components
 import Button from "@components/atoms/button.astro"
 import Text from "@components/atoms/text.astro"
+import Progress from "@components/atoms/progress.astro"
 
 export interface Props {
 	explorer?: boolean
@@ -20,7 +21,7 @@ const currentPath = Astro.url.pathname
 >
 	{
 		explorer && (
-			<Text variant="bmd" class="w-[50%] max-w-[20rem]">
+			<Text variant="bmd" class="hidden md:block md:w-[50%] md:max-w-[20rem]">
 				Bonjour,
 				<br />
 				...
@@ -30,19 +31,19 @@ const currentPath = Astro.url.pathname
 		)
 	}
 	<nav
-		class="ml-auto flex flex-col md:flex-row items-end gap-xsm md:gap-sm text-right"
+		class="md:ml-auto w-full flex flex-row items-start md:items-center md:justify-end gap-xsm md:gap-sm text-right"
 		aria-labelledby="header-nav-label"
 	>
 		<span id="header-nav-label" class="sr-only">Naviagtion principale</span>
 		<a
 			href="/"
-			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 relative top-[-0.1rem] focus:outline-2 focus:outline-gray-900 focus:outline-offset-1"
+			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 md:relative md:top-[-0.1rem] focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1 -order-2"
 		>
 			R<span class="sr-only">omain</span> B<span class="sr-only">reton</span>
 		</a>
 		<ul
 			role="list"
-			class="flex flex-col md:flex-row gap-xsm md:gap-sm items-end md:items-center"
+			class="flex flex-col md:flex-row gap-xsm md:gap-sm items-end md:items-center ml-auto md:ml-0"
 		>
 			{
 				nav.header.map((item) => (
@@ -59,5 +60,6 @@ const currentPath = Astro.url.pathname
 				))
 			}
 		</ul>
+		<Progress class="md:relative md:top-[-0.1rem] -order-1 md:order-3" />
 	</nav>
 </header>
