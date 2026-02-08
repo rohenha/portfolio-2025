@@ -1,0 +1,103 @@
+---
+import DefaultLayout from "@layouts/default.astro"
+import HeroSimple from "@components/organisms/hero-simple.astro"
+import Text from "@components/atoms/text.astro"
+// import TextSection from "@components/organisms/text-section.astro"
+import TextTree from "@components/organisms/text-tree.astro"
+---
+
+<DefaultLayout>
+	<main id="main">
+		<HeroSimple title="A propos de moi" photo={true} />
+		<TextTree
+			variant="gray-900"
+			title="Pur produit Sarthois avec des notes du sud"
+			link={{
+				name: "Voir mon CV",
+				url: "https://romainbreton.fr/CV_Romain_Breton.pdf",
+				external: true,
+			}}
+			treeVariant="ahead"
+			tree={[
+				{
+					title: "Troa",
+					date: "2020 - Aujourd'hui",
+					details: "Développeur Front-end / Lead",
+				},
+				{
+					title: "Les poupées russes",
+					date: "2019 - 2020",
+					details: "Développeur Front-end",
+				},
+				{
+					title: "Keley Live",
+					date: "2016 - 2018",
+					details: "Alternance - Développeur Front-end",
+				},
+				{
+					title: "Groupe LDC",
+					date: "2014 - 2016",
+					details: "Alternance - Développeur Front-end",
+				},
+			]}
+		>
+			<Fragment slot="content">
+				<Text variant="pmd" class="">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
+					nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
+					feugiat fringilla, massa diam mattis nulla, a pulvinar purus justo sed
+					sapien. Vivamus imperdiet lorem ac sem ultricies, quis aliquam odio
+					placerat. Nulla faucibus vel arcu in sodales.
+				</Text>
+				<Text variant="pmd">
+					Curabitur sagittis laoreet ligula. Aliquam ac vestibulum augue. Lorem
+					ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rhoncus
+					enim id odio tempus, vel interdum odio pellentesque. Nam eget placerat
+					libero, vitae posuere dui. Suspendisse lectus dolor, pretium eu
+					tristique eget, tempus quis nisl. Aenean massa nibh, bibendum quis
+					urna et, suscipit ultricies elit.
+				</Text>
+			</Fragment>
+		</TextTree>
+
+		<TextTree
+			variant="gray-300"
+			title="Un métier passionnant qui me passionne"
+			tree={[
+				{ title: "HTML 5" },
+				{ title: "CSS" },
+				{
+					title: "Javascript",
+					children: ["Vanilla JS", "Vue JS", "React JS"],
+				},
+				{ title: "Typescript" },
+				{
+					title: "Node JS",
+					children: ["Astro JS", "Eleventy JS", "Adonis JS"],
+				},
+				{
+					title: "PHP",
+					children: ["Kirby CMS", "Wordpress", "Laravel"],
+				},
+			]}
+		>
+			<Fragment slot="content">
+				<Text variant="pmd" class="">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a
+					nulla in lectus ultricies suscipit. Curabitur tincidunt, enim tempor
+					feugiat fringilla, massa diam mattis nulla, a pulvinar purus justo sed
+					sapien. Vivamus imperdiet lorem ac sem ultricies, quis aliquam odio
+					placerat. Nulla faucibus vel arcu in sodales.
+				</Text>
+				<Text variant="pmd">
+					Curabitur sagittis laoreet ligula. Aliquam ac vestibulum augue. Lorem
+					ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rhoncus
+					enim id odio tempus, vel interdum odio pellentesque. Nam eget placerat
+					libero, vitae posuere dui. Suspendisse lectus dolor, pretium eu
+					tristique eget, tempus quis nisl. Aenean massa nibh, bibendum quis
+					urna et, suscipit ultricies elit.
+				</Text>
+			</Fragment>
+		</TextTree>
+	</main>
+</DefaultLayout>

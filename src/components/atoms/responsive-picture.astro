@@ -1,0 +1,33 @@
+---
+import { Picture } from "astro:assets"
+import { imageConfigs } from "@config/image-configs.ts"
+
+export interface Props {
+	src: ImageMetadata
+	alt: string
+	variant?: keyof typeof imageConfigs
+	class?: string
+	loading?: "lazy" | "eager"
+	[key: string]: any
+}
+
+const {
+	src,
+	alt,
+	variant = "article",
+	class: className = "",
+	loading = "lazy",
+	...props
+} = Astro.props
+
+const config = imageConfigs[variant]
+---
+
+<Picture
+	src={src}
+	alt={alt}
+	class={className}
+	loading={loading}
+	{...config}
+	{...props}
+/>

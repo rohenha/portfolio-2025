@@ -1,0 +1,63 @@
+---
+import { formatLink } from "@utils/helpers"
+// Components
+import Grid from "@components/organisms/grid.astro"
+import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
+
+const variants = {
+	"gray-900": "bg-gray-900 text-gray-300",
+	"gray-300": "bg-gray-300 text-gray-900",
+}
+export interface Props {
+	variant?: keyof typeof variants
+	title1?: string
+	title2?: string
+	link?: NavItem
+}
+
+const { variant = "gray-900", title1 = "", title2 = "", link } = Astro.props
+---
+
+<section class:list={[variants[variant], "py-giant"]}>
+	<Grid>
+		{title1 && (
+			<Text
+				variant="tlg"
+				class="mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-12"
+				set:html={title1}
+			>
+			</Text>
+			<div
+				class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-15 mb-md md:mb-xxxlg"
+			>
+				<slot name="content1" />
+			</div>
+		)}
+
+		{title2 && (
+			<Text
+				variant="tlg"
+				class="mb-lg col-span-full md:col-start-6 md:col-end-19 lg:col-start-8 lg:col-end-17"
+				set:html={title2}
+			>
+			</Text>
+			<div
+				class="grid grid-col-1 gap-md col-span-full md:col-start-7 md:col-end-21 lg:col-start-9 lg:col-end-20"
+			>
+				<slot name="content2" />
+			</div>
+		)}
+
+		{link && (
+			<Button
+				variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
+				class="col-span-full justify-self-start md:justify-self-end lg:col-end-22"
+				attributes={formatLink(link)}
+				href={link.url}
+			>
+				{link.name}
+			</Button>
+		)}
+	</Grid>
+</section>

@@ -1,0 +1,105 @@
+---
+// Tools
+import { formatLink } from "@utils/helpers"
+// Components
+import Button from "@components/atoms/button.astro"
+
+export interface Props {
+	total: number
+	baseUrl?: string
+	currentUrl: string | undefined
+	prevUrl: string | undefined
+	nextUrl: string | undefined
+	class?: string
+}
+
+const {
+	total,
+	currentUrl,
+	prevUrl,
+	baseUrl,
+	nextUrl,
+	class: className,
+} = Astro.props
+
+---
+
+<nav class:list={["", className]} aria-labelledby="pagination-label">
+	<span id="pagination-label" class="sr-only">Navigation de pagination</span>
+	<span id="prefix-nav" class="sr-only">Page</span>
+	<ul class="flex items-center gap-tiny" role="list">
+		{
+			prevUrl && (
+				<li>
+					<Button
+						variant="secondary-gray-900"
+						href={prevUrl}
+						attributes={{
+							...formatLink(
+								{
+									name: `Précédent`,
+									url: prevUrl,
+								},
+								currentUrl,
+							),
+							id: "link-prev",
+							"aria-labelledby": "prefix-nav link-prev",
+						}}
+					>
+						Précédent
+					</Button>
+				</li>
+			)
+		}
+		{
+			nextUrl && (
+				<li class="order-99">
+					<Button
+						variant="secondary-gray-900"
+						href={nextUrl}
+						attributes={{
+							...formatLink(
+								{
+									name: `Suivant`,
+									url: nextUrl,
+								},
+								currentUrl,
+							),
+							id: "link-next",
+							"aria-labelledby": "prefix-nav link-next",
+						}}
+					>
+						Suivant
+					</Button>
+				</li>
+			)
+		}
+		{
+			Array.from({ length: total }, (_, i) => {
+				const page = i + 1
+				const url = page === 1 ? baseUrl : `${baseUrl}/${page}`
+				return (
+					<li>
+						<Button
+							variant="secondary-gray-900"
+							href={url}
+							attributes={{
+								...formatLink(
+									{
+										name: `${page}`,
+										url,
+									},
+									currentUrl,
+								),
+								id: `link-page-${page}`,
+								"aria-labelledby": `prefix-nav link-page-${page}`,
+							}}
+						>
+							{page}
+						</Button>
+					</li>
+				)
+			})
+		}
+	</ul>
+</nav>

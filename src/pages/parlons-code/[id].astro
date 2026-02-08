@@ -1,0 +1,86 @@
+---
+import { getCollection, render } from "astro:content"
+import { formatDate } from "@utils/helpers"
+// Components
+import DefaultLayout from "@layouts/default.astro"
+import HeroArticle from "@components/organisms/hero-article.astro"
+import Grid from "@components/organisms/grid.astro"
+import Button from "@components/atoms/button.astro"
+import Text from "@components/atoms/text.astro"
+import Tag from "@components/atoms/tag.astro"
+
+// 1. Génére un nouveau chemin pour chaque entrée de collection
+export async function getStaticPaths() {
+	const posts = await getCollection("blog", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true
+	})
+	const data = posts.map((post) => ({
+		params: { id: post.id },
+		props: { post },
+	}))
+	return data
+}
+// 2. Pour votre modèle, vous pouvez obtenir l'entrée directement à partir de la propriété
+const { post } = Astro.props
+const { title, date, tags, relative } = post.data
+const { Content } = await render(post)
+
+const posts = await getCollection("blog", ({ data }) => {
+	return import.meta.env.PROD ? data.draft !== true : true
+})
+const relativePost = posts.find((p) => p.id === relative)
+---
+
+<DefaultLayout explorer={false}>
+	<Grid class="py-giant">
+		<main
+			id="main"
+			class="m-markdown col-span-full md:col-end-16 lg:col-start-3 lg:col-end-15 mb-xlg lg:mb-0"
+		>
+			<HeroArticle title={title} date={date} tags={tags} />
+			<Content />
+			<nav>
+				<Button
+					variant="primary-gray-900"
+					href="/parlons-code"
+					class="inline-block mt-md"
+				>
+					Retour aux articles
+				</Button>
+			</nav>
+		</main>
+		<aside
+			class="col-span-full md:col-end-18 lg:col-start-17 lg:col-end-24 xlg:col-end-23 md:sticky md:top-xlg self-start"
+		>
+			{
+				relativePost && (
+					<>
+						<Text Tag="h2" variant="tsm" class="mb-md">
+							Article qui complète celui-ci
+						</Text>
+						<section class="bg-gray-500 p-md rounded-md">
+							<Text Tag="h3" variant="tsm" class="mb-xsm">
+								<a
+									href={relativePost.id}
+									class="rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700"
+								>
+									{relativePost.data.title}
+								</a>
+							</Text>
+							<Text variant="tagalt" class="mb-xsm">
+								{formatDate(relativePost.data.date)}
+							</Text>
+							<ul class="flex flex-row gap-x-tiny items-center">
+								{relativePost.data.tags.map((tag) => (
+									<Tag variant="gray-300" class="shrink-0" tag="li">
+										{tag}
+									</Tag>
+								))}
+							</ul>
+						</section>
+					</>
+				)
+			}
+		</aside>
+	</Grid>
+</DefaultLayout>

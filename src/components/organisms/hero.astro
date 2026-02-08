@@ -37,7 +37,7 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 	{
 		link ? (
 			<Button
-				class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2"
+				class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
 				icon="arrow"
 				href={link.url}
 				attributes={link.attributes}

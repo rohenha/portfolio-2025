@@ -40,6 +40,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
     "astro-critical-css": "^0.0.7",
+    "rehype-class-names": "^2.0.0",
     "sass": "^1.97.3",
     "tailwindcss": "^4.1.18"
   },

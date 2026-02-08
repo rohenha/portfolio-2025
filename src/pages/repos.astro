@@ -1,7 +1,50 @@
 ---
-import DefaultLayout from '@layouts/default.astro'
+import { getCollection } from "astro:content"
+// Components
+import DefaultLayout from "@layouts/default.astro"
+import HeroAlt from "@components/organisms/hero-alt.astro"
+import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+import ReposListItem from "@components/molecules/repos-list-item.astro"
+import Button from "@components/atoms/button.astro"
+
+const repos = await getCollection("repos")
 ---
 
-<DefaultLayout>
-	<h1 class="text-tmd">Méthodologie</h1>
+<DefaultLayout explorer={false}>
+	<main id="main">
+		<HeroAlt title="Mes contributions open source">
+			<Text variant="pmd" class="">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a nulla
+				in lectus ultricies suscipit. Curabitur tincidunt, enim tempor feugiat
+				fringilla, massa diam mattis nulla, a pulvinar purus justo sed sapien.
+				Vivamus imperdiet lorem ac sem ultricies, quis aliquam odio placerat.
+				Nulla faucibus vel arcu in sodales.
+			</Text>
+		</HeroAlt>
+		<Grid class="mb-giant">
+			<section
+				class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-sm"
+			>
+				{
+					repos.map((item) => (
+						<ReposListItem
+							title={item.data.name}
+							url={item.data.url}
+							tags={item.data.tags}
+							description={item.data.description}
+						/>
+					))
+				}
+				<Button
+					class="mt-md self-start"
+					href="https://www.github.com/rohenha"
+					icon="arrow"
+					attributes={{ target: "_blank" }}
+				>
+					Voir mon github
+				</Button>
+			</section>
+		</Grid>
+	</main>
 </DefaultLayout>

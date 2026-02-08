@@ -1,0 +1,52 @@
+---
+import { formatDate } from "@utils/helpers"
+// Components
+import Text from "@components/atoms/text.astro"
+import Tag from "@components/atoms/tag.astro"
+
+export interface Props {
+	title?: string
+	tags?: Array<string>
+	date?: Date
+	url?: string
+	description?: string
+}
+
+const { title = "", tags = [], date = null, url = "" } = Astro.props
+---
+
+<article
+	class:list={[
+		"flex flex-row flex-wrap md:flex-nowrap items-start gap-tiny w-full py-tiny",
+	]}
+>
+	<Text
+		Tag="a"
+		variant="amd"
+		attributes={{ href: url }}
+		class="shrink-0 w-full md:w-auto md:max-w-[23rem] mt-[-3px] -order-2 rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700"
+	>
+		{title}
+	</Text>
+	{
+		tags.map((tag) => (
+			<Tag variant="gray-500" class="shrink-0" tag="p">
+				{tag}
+			</Tag>
+		))
+	}
+	<hr
+		class="w-full border-gray-400 mt-[0.2rem] mb-[0.2rem] md:mt-[0.8rem] md:mb-0 -order-1 md:order-5"
+	/>
+	{
+		date && (
+			<Text
+				Tag="p"
+				variant="tagalt"
+				class="ml-auto shrink-0 mt-[0.2rem] order-6"
+			>
+				{formatDate(date)}
+			</Text>
+		)
+	}
+</article>

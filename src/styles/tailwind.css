@@ -13,22 +13,27 @@
 	/* Colors */
 	--color-gray-900: #11100f;
 	--color-gray-500: #dbdbdb;
-	--color-gray-300: #e3e3e3;
-	--color-green-700: #6e7f6a;
+	--color-gray-400: #e3e3e3;
+	--color-gray-300: #f5f5f4;
+	--color-green-700: #aa5939;
 
 	/* Fonts */
 	--font-serif:
 		"Iowan Old Style", ui-serif, georgia, cambria, "Times New Roman", times,
 		serif;
 	--font-mono:
-		menlo, ui-monospace, sfmono-regular, monaco, consolas,
-		"Liberation Mono", "Courier New", monospace;
+		menlo, ui-monospace, sfmono-regular, monaco, consolas, "Liberation Mono",
+		"Courier New", monospace;
 
 	/* Font Sizes */
 	--text-txhuge: 14.5vw;
 	--text-txhuge--line-height: calc(170 / 224);
 	--text-thuge: 15.5vw;
 	--text-thuge--line-height: calc(170 / 224);
+	--text-txlg: 15rem;
+	--text-txlg--line-height: 1;
+	--text-txlgm: 9rem;
+	--text-txlgm--line-height: 1;
 	--text-tlg: 4.5rem;
 	--text-tlg--line-height: 1;
 	--text-tmd: 3.4rem;
@@ -56,6 +61,7 @@
 	/* Tracking */
 	--tracking-md: -0.06em;
 	--tracking-sm: -0.04em;
+	--tracking-reg: 0em;
 
 	/* Font weights */
 	--font-weight-normal: 400;
@@ -63,6 +69,7 @@
 
 	/* Spacing */
 	--spacing-giant: 17rem;
+	--spacing-xxxlg: 10rem;
 	--spacing-xxlg: 8rem;
 	--spacing-xlg: 6rem;
 	--spacing-lg: 4.5rem;
