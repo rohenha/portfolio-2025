@@ -99,7 +99,7 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body class="" data-module-scroll>
+	<body class="" data-module-scroll data-module-website>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />
@@ -114,7 +114,7 @@ const {
 
 <script>
 	import Modular from "@js/classes/modular"
-	import * as modules from "@js/modules/index"
+	import modules from "@js/modules/index"
 
 	window.addEventListener("load", () => {
 		const manager = new Modular({ modules })

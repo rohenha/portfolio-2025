@@ -6,3 +6,11 @@
 @use "molecules/repos-list-item";
 @use "molecules/markdown";
 @use "molecules/popin";
+
+html.is-changing .transition-fade {
+	opacity: 1;
+	transition: opacity 0.25s;
+}
+html.is-animating .transition-fade {
+	opacity: 0;
+}

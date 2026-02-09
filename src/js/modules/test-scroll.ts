@@ -2,14 +2,13 @@ import Mmodule from "@js/classes/module"
 // import { module as Mmodule } from "modujs"
 
 export default class TestScroll extends Mmodule {
-	public static readonly mAttr: string = "test-scroll"
 	init() {
 		console.log("Test Scroooooooooool")
 		// setTimeout(() => {
 		// 	const data = this.call(
 		// 		"test",
 		// 		{ message: `Hello from Scroll module! ${this.id}` },
-		// 		"test-scroll",
+		// 		"TestScroll",
 		// 	)
 		// 	data.then((response) => {
 		// 		console.log("Response from test function:", response)

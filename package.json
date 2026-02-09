@@ -40,8 +40,11 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
     "astro-critical-css": "^0.0.7",
+    "install": "^0.13.0",
+    "npm": "^11.9.0",
     "rehype-class-names": "^2.0.0",
     "sass": "^1.97.3",
+    "swup": "^4.8.2",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
