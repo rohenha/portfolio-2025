@@ -37,15 +37,17 @@ export default class Mmodule {
 	 * Make sure to clean up any resources in the destroy method.
 	 * @returns void
 	 */
-	init() {}
+	init() {
+		console.log(this)
+	}
 	mInit() {}
 	destroy() {
 		console.log(`Module ${this.dataName} with ID ${this.id} destroyed`)
 	}
 	mDestroy() {}
-	mUpdate() {}
 	update() {}
 	enter() {}
+	render() {}
 }
 
 export type ModuleConstructor = {

@@ -18,6 +18,7 @@ export default class ModulesManager {
 	constructor({ modules }: { modules: Array<ModuleConfig> }) {
 		this.modules = modules
 		this.callModuleFunction = this.callModuleFunction.bind(this)
+		console.log(this)
 	}
 
 	/**
@@ -170,10 +171,6 @@ export default class ModulesManager {
 
 			Object.entries(this.newModules).forEach(([, moduleInstance]) => {
 				moduleInstance.init()
-			})
-
-			Object.entries(this.currentModules).forEach(([, moduleInstance]) => {
-				moduleInstance.mUpdate()
 			})
 
 			Object.entries(this.currentModules).forEach(([, moduleInstance]) => {

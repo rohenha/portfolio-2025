@@ -20,20 +20,21 @@ export default class Website extends Mmodule {
 	}
 
 	afterContentReplace({ containers }: { containers: Array<HTMLElement> }) {
-		const elements = containers.join(", ")
-		const elementsModule = document.querySelectorAll(elements)
-		elementsModule.forEach((element) => {
-			this.call("update", element, "self")
-		})
-		console.log("After content replace", elementsModule)
+		this.updateContent(containers, "update")
 	}
 
 	beforeContentReplace({ containers }: { containers: Array<HTMLElement> }) {
+		this.updateContent(containers, "destroy")
+	}
+
+	updateContent(
+		containers: Array<HTMLElement>,
+		method: "update" | "destroy",
+	): void {
 		const elements = containers.join(", ")
 		const elementsModule = document.querySelectorAll(elements)
 		elementsModule.forEach((element) => {
-			this.call("destroy", element, "self")
+			this.call(method, element, "self")
 		})
-		console.log("Before content replace", elementsModule)
 	}
 }
