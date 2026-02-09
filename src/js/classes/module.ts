@@ -1,7 +1,7 @@
 export interface ModuleConstructorParams {
 	el: HTMLElement
 	id: string
-	dataName: string
+	// dataName: string
 	call: (
 		func: string,
 		args: any,
@@ -11,9 +11,10 @@ export interface ModuleConstructorParams {
 }
 
 export default class Mmodule {
+	public static readonly mAttr: string = "test"
 	protected el: HTMLElement
 	protected id: string
-	protected mAttr: string
+	// protected mAttr: string
 	protected call: (
 		func: string,
 		args: any,
@@ -24,10 +25,10 @@ export default class Mmodule {
 	// Ajouter cette signature d'index
 	[key: string]: any
 
-	constructor({ el, id, dataName, call }: ModuleConstructorParams) {
+	constructor({ el, id, call }: ModuleConstructorParams) {
 		this.el = el
 		this.id = id
-		this.mAttr = "data-" + dataName
+		// this.mAttr = "data-" + dataName
 		this.call = call
 	}
 
@@ -46,4 +47,7 @@ export default class Mmodule {
 	enter() {}
 }
 
-export type ModuleConstructor = new (params: ModuleConstructorParams) => Mmodule
+export type ModuleConstructor = {
+	new (params: ModuleConstructorParams): Mmodule
+	mAttr: string
+}

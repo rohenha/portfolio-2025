@@ -20,7 +20,8 @@ export default class ModulesManager {
 		// Generate a mapping of module names to their lowercase versions for easier matching
 		this.modulesNames = Object.keys(modules).reduce(
 			(acc, moduleName) => {
-				acc[moduleName] = this.camelToKebabCase(moduleName)
+				acc[moduleName] = modules[moduleName].mAttr
+				// acc[moduleName] = this.camelToKebabCase(moduleName)
 				return acc
 			},
 			{} as { [moduleName: string]: string },
@@ -75,11 +76,11 @@ export default class ModulesManager {
 
 				// Initialize the module and store the instance in newModules
 				const moduleConstructor = this.modules[moduleName]
-				const dataName = this.modulesNames[moduleName]
+				// const dataName = this.modulesNames[moduleName]
 				const moduleInstance = new moduleConstructor({
 					el: element,
 					id: moduleId,
-					dataName: dataName,
+					// dataName: dataName,
 					call: this.callModuleFunction,
 				})
 				moduleInstance.mInit()
