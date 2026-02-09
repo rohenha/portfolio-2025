@@ -6,6 +6,9 @@ interface ModulesCurrent {
 }
 
 export default class ModulesManager {
+	// Allow dynamic property access by string key
+	[key: string]: any
+
 	// private modulesNames: Array<string>
 	private moduleId: number = 0
 	private modules: Array<ModuleConfig> = []
@@ -210,6 +213,12 @@ export default class ModulesManager {
 		moduleType: string,
 		moduleId?: string,
 	): Promise<any> {
+		if (moduleType === "self") {
+			if (typeof this[func] === "function") {
+				return this[func](args)
+			}
+			return Promise.resolve(null)
+		}
 		if (moduleId) {
 			const moduleInstance = this.currentModules[moduleId]
 			if (moduleInstance && typeof moduleInstance[func] === "function") {
@@ -218,6 +227,7 @@ export default class ModulesManager {
 				console.warn(
 					`No module instance found for module type ${moduleType} with id ${moduleId} or function ${func} does not exist`,
 				)
+				return Promise.resolve(null)
 			}
 		} else {
 			const modulesItems = Object.values(this.currentModules).filter(

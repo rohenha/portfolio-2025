@@ -39,7 +39,9 @@ export default class Mmodule {
 	 */
 	init() {}
 	mInit() {}
-	destroy() {}
+	destroy() {
+		console.log(`Module ${this.dataName} with ID ${this.id} destroyed`)
+	}
 	mDestroy() {}
 	mUpdate() {}
 	update() {}

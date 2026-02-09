@@ -32,7 +32,10 @@ const relativePost = posts.find((p) => p.id === relative)
 ---
 
 <DefaultLayout explorer={false}>
-	<Grid class="py-giant">
+	<Grid
+		class="py-giant transition-fade"
+		attributes={{ "data-swup": "container" }}
+	>
 		<main
 			id="main"
 			class="m-markdown col-span-full md:col-end-16 lg:col-start-3 lg:col-end-15 mb-xlg lg:mb-0"
