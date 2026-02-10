@@ -2,7 +2,7 @@ import Swup from "swup"
 import Mmodule from "@js/classes/module"
 
 export default class Website extends Mmodule {
-	init() {
+	mount() {
 		console.log("Website initialized")
 		this.swup = new Swup({
 			containers: ['[data-swup="container"]'],
@@ -34,7 +34,7 @@ export default class Website extends Mmodule {
 		const elements = containers.join(", ")
 		const elementsModule = document.querySelectorAll(elements)
 		elementsModule.forEach((element) => {
-			this.call(method, element, "self")
+			this.call(method, element, "app")
 		})
 	}
 }

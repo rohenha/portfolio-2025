@@ -41,8 +41,10 @@ import TextTree from "@components/organisms/text-tree.astro"
 				label: "Discutons ensemble",
 			}}
 		/>
-		<div data-module-test-scroll></div>
-		<div data-module-test-scroll></div>
+		<!-- <div data-module-test-scroll>
+			<p class="" data-test-scroll="message">message de test</p>
+		</div> -->
+
 		<TextTree
 			variant="gray-900"
 			title="Pour la beauté du code et l'immersion"
@@ -80,5 +82,8 @@ import TextTree from "@components/organisms/text-tree.astro"
 				</Text>
 			</Fragment>
 		</TextTree>
+		<div data-module-test>
+			<p class="" data-test="message">State number: 0 - State name: Romain</p>
+		</div>
 	</main>
 </DefaultLayout>

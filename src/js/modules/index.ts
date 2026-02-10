@@ -7,6 +7,9 @@ export interface ModuleConfig {
 	name: string
 	module?: ModuleConstructor
 	loader?: () => Promise<{ default: ModuleConstructor }>
+	observe?: boolean
+	repeat?: boolean
+	resize?: boolean
 }
 
 const config: Array<ModuleConfig> = [
@@ -19,8 +22,11 @@ const config: Array<ModuleConfig> = [
 		module: Website,
 	},
 	{
-		name: "test-scroll",
-		loader: () => import("./test-scroll"),
+		name: "test",
+		loader: () => import("./test"),
+		resize: true,
+		observe: true,
+		repeat: true,
 	},
 ]
 
