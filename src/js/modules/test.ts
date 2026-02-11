@@ -30,7 +30,8 @@ export default class Test extends Mmodule {
 		// }, 1000)
 	}
 
-	onViewUpdate(state: boolean) {
+	onUpdateView(state: boolean) {
+		console.log("TestScroll view updated:", state)
 		if (state) {
 			this.interval = setInterval(() => {
 				this.states.number += 1

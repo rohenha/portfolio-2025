@@ -15,7 +15,7 @@ export interface ModuleConstructorParams {
 export default class Mmodule {
 	public el: Element
 	public id: string
-	protected dataName?: string
+	public dataName: string
 	protected visible: boolean
 	protected rafRender: number | null
 	protected states: Record<string, any>
@@ -73,12 +73,12 @@ export default class Mmodule {
 	 * @param {boolean} state - The state to toggle the view. True to show, false to hide.
 	 * @returns void
 	 */
-	viewUpdate(state: boolean) {
+	updateView(state: boolean) {
 		this.visible = state
 		this.render()
-		this.onViewUpdate(state)
+		this.onUpdateView(state)
 	}
-	onViewUpdate(state: boolean) {}
+	onUpdateView(state: boolean) {}
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. Make sure to debounce any expensive operations to avoid performance issues.
 	 */

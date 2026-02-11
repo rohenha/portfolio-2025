@@ -1,5 +1,5 @@
 import Mmodule, { type ModuleConstructor } from "@js/classes/module"
-
+import ModularPlugin from "@js/classes/modular-plugin"
 export interface ModulesCurrent {
 	[moduleId: string]: Mmodule
 }
@@ -8,67 +8,55 @@ export interface ModuleConfig {
 	name: string
 	module?: ModuleConstructor
 	loader?: () => Promise<{ default: ModuleConstructor }>
-	observe?: boolean
-	repeat?: boolean
-	resize?: boolean
 }
 
-export interface ModulePluginMethod {
-	instance: Mmodule
-	config: ModuleConfig
-}
+// export interface ModulePluginMethod {
+// 	instance: Mmodule
+// 	config: ModuleConfig
+// }
 
-export interface ModulePlugin {
-	name: string
-	onModuleMount?: (arg0: ModulePluginMethod) => void
-	onModuleUpdate?: (arg0: ModulePluginMethod) => void
-	onUpdate?: () => void
-	onModuleUnMount?: (arg0: ModulePluginMethod) => void
+export interface ModulePluginInit {
+	getModules: () => ModulesCurrent
+	getConfigs: () => Array<ModuleConfig>
 }
 
 export default class ModulesManager {
 	// Allow dynamic property access by string key
 	[key: string]: any
 
-	// private modulesNames: Array<string>
 	private moduleId: number = 0
 	private modules: Array<ModuleConfig> = []
 	private currentModules: ModulesCurrent = {}
 	private newModules: ModulesCurrent = {}
-	private observer: IntersectionObserver
-	private plugins: Array<ModulePlugin> = []
+	private plugins: Array<ModularPlugin> = []
 
 	constructor({
 		modules,
-		observer,
 		plugins,
 	}: {
 		modules: Array<ModuleConfig>
 		observer?: IntersectionObserverInit
-		plugins?: Array<
-			({ getModules }: { getModules: () => ModulesCurrent }) => ModulePlugin
-		>
+		plugins?: Array<ModularPlugin>
 	}) {
 		this.modules = modules
 		this.plugins =
 			plugins?.reduce((acc, plugin) => {
-				acc.push(plugin({ getModules: this.getModules.bind(this) }))
+				plugin.init({
+					getModules: this.getModules.bind(this),
+					getConfigs: this.getConfigs.bind(this),
+				})
+				acc.push(plugin)
 				return acc
-			}, [] as Array<ModulePlugin>) || []
+			}, [] as Array<ModularPlugin>) || []
 		this.callModuleFunction = this.callModuleFunction.bind(this)
-		const observerOptions = observer || {
-			root: null,
-			rootMargin: "0px",
-			threshold: 0.1,
-		}
-		this.observer = new IntersectionObserver(
-			this.handleIntersect.bind(this),
-			observerOptions,
-		)
 	}
 
 	getModules() {
 		return this.currentModules
+	}
+
+	getConfigs() {
+		return this.modules
 	}
 
 	/**
@@ -148,10 +136,6 @@ export default class ModulesManager {
 				moduleId = `m${this.moduleId}`
 				this.moduleId += 1
 				element.setAttribute(`data-module-${moduleItem.name}`, moduleId)
-			}
-
-			if (moduleItem.observe) {
-				this.observer.observe(element)
 			}
 
 			const moduleInstance = new moduleConstructor({
@@ -349,28 +333,5 @@ export default class ModulesManager {
 			promises.push(moduleInstance[func](args))
 		})
 		return Promise.all(promises)
-	}
-
-	/**
-	 * @description Handle the intersection of observed to observe modules enter and leave the viewport.
-	 * @param entries Array of IntersectionObserverEntry objects representing the observed modules that have intersected with the viewport.
-	 * @returns void
-	 */
-	handleIntersect(entries: IntersectionObserverEntry[]) {
-		entries.forEach((entry) => {
-			this.modules.forEach((moduleItem) => {
-				if (!entry.target.hasAttribute(`data-module-${moduleItem.name}`)) {
-					return
-				}
-				const moduleId = entry.target.getAttribute(
-					`data-module-${moduleItem.name}`,
-				) as string
-				const moduleInstance = this.currentModules[moduleId]
-				moduleInstance.viewUpdate(entry.isIntersecting)
-				if (entry.isIntersecting && !moduleItem.repeat) {
-					this.observer.unobserve(entry.target)
-				}
-			})
-		})
 	}
 }

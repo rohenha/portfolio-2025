@@ -1,78 +1,72 @@
-import {
-	type ModulePlugin,
-	type ModulesCurrent,
-	type ModulePluginMethod,
-} from "@js/classes/modular"
+import ModularPlugin, {
+	type ModularPluginMethod,
+} from "@js/classes/modular-plugin"
 import { debounce } from "@js/utils/tools"
 
-export default function createResizePlugin({
-	getModules,
-}: {
-	getModules: () => ModulesCurrent
-}): ModulePlugin {
-	let resizing = false
-	let resizeModules: Array<string> = []
-	let idsResizeToRemove: Array<string> = []
+declare module "@js/classes/modular" {
+	interface ModuleConfig {
+		resize?: boolean
+	}
+}
 
-	const debouncedRemove = debounce(() => {
-		if (idsResizeToRemove.length > 0) {
-			resizeModules = resizeModules.filter(
-				(moduleId) => !idsResizeToRemove.includes(moduleId),
-			)
-			idsResizeToRemove = []
-		}
-	}, 1000)
+export default class ResizePlugin extends ModularPlugin {
+	protected resizing: boolean
+	protected resizeModules: Array<string>
+	protected idsResizeToRemove: Array<string>
+	protected debouneRemoveIds: () => void
+	protected debounceResize: () => void
+	constructor() {
+		super()
+		this.resizing = false
+		this.resizeModules = []
+		this.idsResizeToRemove = []
 
-	const resize = () => {
-		const currentModules = getModules()
-		resizeModules.forEach((moduleId) => {
+		this.debouneRemoveIds = debounce(this.removeIds.bind(this), 1000)
+		this.debounceResize = debounce(this.resize.bind(this), 450)
+	}
+
+	resize() {
+		const currentModules = this.getModules()
+		this.resizeModules.forEach((moduleId) => {
 			const moduleInstance = currentModules[moduleId]
 			moduleInstance.onResize()
 		})
 	}
-	/**
-	 * @description Call the resize method on all modules that have registered for resize events. This method is debounced to prevent excessive calls during window resizing.
-	 * @returns void
-	 */
-	const debounceResize: () => void = debounce(resize, 450)
 
-	const onModuleMount: (arg0: ModulePluginMethod) => void = ({
-		instance,
-		config,
-	}) => {
+	removeIds() {
+		if (this.idsResizeToRemove.length > 0) {
+			this.resizeModules = this.resizeModules.filter(
+				(moduleId) => !this.idsResizeToRemove.includes(moduleId),
+			)
+			this.idsResizeToRemove = []
+		}
+	}
+
+	onModuleMount({ instance, config }: ModularPluginMethod): void {
 		if (config.resize) {
-			resizeModules.push(instance.id)
+			this.resizeModules.push(instance.id)
 		}
 	}
 
-	const onUpdate = () => {
-		if (resizeModules.length > 0 && !resizing) {
-			window.addEventListener("resize", debounceResize)
-			resizing = true
-		} else {
-			resizing = false
-			window.removeEventListener("resize", debounceResize)
-		}
-
-		if (resizing) {
-			resize()
-		}
-	}
-
-	const onModuleUnMount: (arg0: ModulePluginMethod) => void = ({
-		instance,
-	}) => {
+	onModuleUnMount({ instance }: ModularPluginMethod): void {
 		const { id } = instance
-		if (resizeModules.includes(id)) {
-			idsResizeToRemove.push(id)
+		if (this.resizeModules.includes(id)) {
+			this.idsResizeToRemove.push(id)
 		}
-		debouncedRemove()
+		this.debouneRemoveIds()
 	}
 
-	return {
-		name: "resize",
-		onModuleMount,
-		onUpdate,
-		onModuleUnMount,
+	onUpdate(): void {
+		if (this.resizeModules.length > 0 && !this.resizing) {
+			window.addEventListener("resize", this.debounceResize)
+			this.resizing = true
+		} else {
+			this.resizing = false
+			window.removeEventListener("resize", this.debounceResize)
+		}
+
+		if (this.resizing) {
+			this.resize()
+		}
 	}
 }
