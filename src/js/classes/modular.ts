@@ -1,9 +1,29 @@
-import Mmodule from "@js/classes/module"
-import { debounce } from "@js/utils/tools"
-import { type ModuleConfig } from "@js/modules/index"
+import Mmodule, { type ModuleConstructor } from "@js/classes/module"
 
-interface ModulesCurrent {
+export interface ModulesCurrent {
 	[moduleId: string]: Mmodule
+}
+
+export interface ModuleConfig {
+	name: string
+	module?: ModuleConstructor
+	loader?: () => Promise<{ default: ModuleConstructor }>
+	observe?: boolean
+	repeat?: boolean
+	resize?: boolean
+}
+
+export interface ModulePluginMethod {
+	instance: Mmodule
+	config: ModuleConfig
+}
+
+export interface ModulePlugin {
+	name: string
+	onModuleMount?: (arg0: ModulePluginMethod) => void
+	onModuleUpdate?: (arg0: ModulePluginMethod) => void
+	onUpdate?: () => void
+	onModuleUnMount?: (arg0: ModulePluginMethod) => void
 }
 
 export default class ModulesManager {
@@ -16,19 +36,25 @@ export default class ModulesManager {
 	private currentModules: ModulesCurrent = {}
 	private newModules: ModulesCurrent = {}
 	private observer: IntersectionObserver
-	private resizeModules: Array<string> = []
-	private resizing: boolean = false
-	private resizeHandler: () => void
+	private plugins: Array<ModulePlugin> = []
 
 	constructor({
 		modules,
 		observer,
+		plugins,
 	}: {
 		modules: Array<ModuleConfig>
 		observer?: IntersectionObserverInit
+		plugins?: Array<
+			({ getModules }: { getModules: () => ModulesCurrent }) => ModulePlugin
+		>
 	}) {
 		this.modules = modules
-		this.resizeModules = []
+		this.plugins =
+			plugins?.reduce((acc, plugin) => {
+				acc.push(plugin({ getModules: this.getModules.bind(this) }))
+				return acc
+			}, [] as Array<ModulePlugin>) || []
 		this.callModuleFunction = this.callModuleFunction.bind(this)
 		const observerOptions = observer || {
 			root: null,
@@ -39,8 +65,10 @@ export default class ModulesManager {
 			this.handleIntersect.bind(this),
 			observerOptions,
 		)
-		this.resizing = false
-		this.resizeHandler = debounce(this.resize.bind(this), 200)
+	}
+
+	getModules() {
+		return this.currentModules
 	}
 
 	/**
@@ -115,10 +143,6 @@ export default class ModulesManager {
 				return
 			}
 
-			if (moduleItem.observe) {
-				this.observer.observe(element)
-			}
-
 			if (!moduleId) {
 				// Generate a unique module ID and assign it to the element
 				moduleId = `m${this.moduleId}`
@@ -126,8 +150,8 @@ export default class ModulesManager {
 				element.setAttribute(`data-module-${moduleItem.name}`, moduleId)
 			}
 
-			if (moduleItem.resize) {
-				this.resizeModules.push(moduleId)
+			if (moduleItem.observe) {
+				this.observer.observe(element)
 			}
 
 			const moduleInstance = new moduleConstructor({
@@ -136,8 +160,19 @@ export default class ModulesManager {
 				dataName: moduleItem.name,
 				call: this.callModuleFunction,
 			})
-			moduleInstance.mMount()
+			moduleInstance.mount()
 			this.newModules[moduleId] = moduleInstance
+
+			if (this.plugins.length > 0) {
+				this.plugins.forEach((plugin) => {
+					if (plugin.onModuleMount) {
+						plugin.onModuleMount({
+							instance: moduleInstance,
+							config: moduleItem,
+						})
+					}
+				})
+			}
 			resolve()
 		})
 	}
@@ -150,8 +185,7 @@ export default class ModulesManager {
 	private removeModules(scope: HTMLElement | Document) {
 		const optimalSelector = this.buildOptimalSelector()
 		const elementsModule = scope.querySelectorAll(optimalSelector)
-		console.log("removeModules", elementsModule)
-		const idsResizeToRemove: Array<string> = []
+		// const idsResizeToRemove: Array<string> = []
 		elementsModule.forEach((element) => {
 			// for (let i = 0; i < elementsModule.length; i += 1) {
 			// const element = elementsModule[i] as HTMLElement
@@ -163,19 +197,21 @@ export default class ModulesManager {
 				if (!moduleId) {
 					return
 				}
-				if (this.resizeModules.includes(moduleId)) {
-					idsResizeToRemove.push(moduleId)
-				}
+				this.plugins.forEach((plugin) => {
+					if (plugin.onModuleUnMount) {
+						const moduleInstance = this.currentModules[moduleId]
+						plugin.onModuleUnMount({
+							instance: moduleInstance,
+							config: moduleItem,
+						})
+					}
+				})
 				const moduleInstance = this.currentModules[moduleId]
-				moduleInstance.mDestroy()
-				moduleInstance.destroy()
+				moduleInstance.unmount()
+				moduleInstance.onUnmount()
 				delete this.currentModules[moduleId]
 			})
 		})
-		// }
-		this.resizeModules = this.resizeModules.filter(
-			(id) => !idsResizeToRemove.includes(id),
-		)
 	}
 
 	/**
@@ -189,27 +225,20 @@ export default class ModulesManager {
 			await this.addModules(container)
 
 			Object.entries(this.newModules).forEach(([, moduleInstance]) => {
-				moduleInstance.mount()
+				moduleInstance.onMount()
 			})
 
 			Object.entries(this.currentModules).forEach(([, moduleInstance]) => {
-				moduleInstance.update()
+				moduleInstance.onUpdate()
 			})
 
 			Object.assign(this.currentModules, this.newModules)
 			this.newModules = {}
-			// If there are modules that need to be resized, add the resize event listener. Otherwise, remove it to optimize performance.
-			if (this.resizeModules.length > 0 && !this.resizing) {
-				window.addEventListener("resize", this.resizeHandler)
-				this.resizing = true
-			} else {
-				this.resizing = false
-				window.removeEventListener("resize", this.resizeHandler)
-			}
-
-			if (this.resizing) {
-				this.resize()
-			}
+			this.plugins.forEach((plugin) => {
+				if (plugin.onUpdate) {
+					plugin.onUpdate()
+				}
+			})
 
 			resolve()
 		})
@@ -244,7 +273,7 @@ export default class ModulesManager {
 	): Promise<any | null | Array<any>> {
 		// Call function on the manager if moduleType is "app"
 		if (moduleType === "app") {
-			this.callApp(func, args)
+			return this.callApp(func, args)
 		}
 		// Call function on the module instance(s)
 		if (moduleId) {
@@ -337,22 +366,11 @@ export default class ModulesManager {
 					`data-module-${moduleItem.name}`,
 				) as string
 				const moduleInstance = this.currentModules[moduleId]
-				moduleInstance.toggleView(entry.isIntersecting)
+				moduleInstance.viewUpdate(entry.isIntersecting)
 				if (entry.isIntersecting && !moduleItem.repeat) {
 					this.observer.unobserve(entry.target)
 				}
 			})
-		})
-	}
-
-	/**
-	 * @description Call the resize method on all modules that have registered for resize events. This method is debounced to prevent excessive calls during window resizing.
-	 * @returns void
-	 */
-	resize(): void {
-		this.resizeModules.forEach((moduleId) => {
-			const moduleInstance = this.currentModules[moduleId]
-			moduleInstance.resize()
 		})
 	}
 }

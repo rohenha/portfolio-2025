@@ -12,7 +12,7 @@ export default class Test extends Mmodule {
 		}
 	}
 
-	mount() {
+	onMount() {
 		console.log("Test Scroooooooooool")
 
 		setTimeout(() => {
@@ -30,8 +30,7 @@ export default class Test extends Mmodule {
 		// }, 1000)
 	}
 
-	toggleView(state: boolean) {
-		super.toggleView(state)
+	onViewUpdate(state: boolean) {
 		if (state) {
 			this.interval = setInterval(() => {
 				this.states.number += 1
@@ -57,7 +56,7 @@ export default class Test extends Mmodule {
 		})
 	}
 
-	resize(): void {
+	onResize(): void {
 		console.log("TestScroll resized")
 	}
 }

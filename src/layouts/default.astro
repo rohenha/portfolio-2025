@@ -115,9 +115,10 @@ const {
 <script>
 	import Modular from "@js/classes/modular"
 	import modules from "@js/modules/index"
+	import ResizePlugin from "@js/classes/resize-plugin"
 
 	window.addEventListener("load", () => {
-		const manager = new Modular({ modules })
+		const manager = new Modular({ modules, plugins: [ResizePlugin] })
 		manager.update()
 		// const main = document.querySelector("#main") as HTMLElement
 		// setTimeout(() => {

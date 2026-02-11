@@ -13,8 +13,8 @@ export interface ModuleConstructorParams {
 }
 
 export default class Mmodule {
-	protected el: Element
-	protected id: string
+	public el: Element
+	public id: string
 	protected dataName?: string
 	protected visible: boolean
 	protected rafRender: number | null
@@ -46,11 +46,11 @@ export default class Mmodule {
 	 * Make sure to clean up any resources in the destroy method.
 	 * @returns void
 	 */
-	mount() {}
+	onMount() {}
 	/**
 	 * @description This method is called when the module is initialized. It's called internally by the library and should not be called directly. The mMount method is called after the module is fully initialized and the reactive state is set up.
 	 */
-	mMount() {
+	mount() {
 		if (Object.keys(this.states).length > 0) {
 			this.states = this.makeReactiveState(this.states)
 		}
@@ -58,14 +58,14 @@ export default class Mmodule {
 	/**
 	 * @description This method is called when the module is destroyed. You can use this method to clean up event listeners, cancel timers, etc. Make sure to call super.destroy() if you override this method in a subclass.
 	 */
-	destroy() {
+	onUnmount() {
 		console.log(`Module ${this.dataName} with ID ${this.id} destroyed`)
 	}
 	/**
 	 * @description This method is called when the module is destroyed. It's called internally by the library and should not be called directly. The mDestroy method is called before the module is fully destroyed .
 	 */
-	mDestroy() {}
-	update() {}
+	unmount() {}
+	onUpdate() {}
 
 	/**
 	 * @description This method is called to toggle the view of the module. You can implement this method to show/hide elements, change styles, etc. The state parameter can be used to determine whether to show or hide the view.
@@ -73,10 +73,12 @@ export default class Mmodule {
 	 * @param {boolean} state - The state to toggle the view. True to show, false to hide.
 	 * @returns void
 	 */
-	toggleView(state: boolean) {
+	viewUpdate(state: boolean) {
 		this.visible = state
 		this.render()
+		this.onViewUpdate(state)
 	}
+	onViewUpdate(state: boolean) {}
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. Make sure to debounce any expensive operations to avoid performance issues.
 	 */
@@ -98,7 +100,7 @@ export default class Mmodule {
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. You don't need to debounce this method, the library will handle it for you. Just implement the logic you want to execute on resize.
 	 */
-	resize() {}
+	onResize() {}
 
 	/**
 	 * @description Select elements within the module's root element using a data attribute.
