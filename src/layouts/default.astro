@@ -117,11 +117,16 @@ const {
 	import modules from "@js/modules/index"
 	import ResizePlugin from "@js/classes/resize-plugin"
 	import ObserverPlugin from "@js/classes/observer-plugin"
+	import AnimationsPlugin from "@js/classes/animations-plugin"
 
 	window.addEventListener("load", () => {
 		const manager = new Modular({
 			modules,
-			plugins: [new ResizePlugin(), new ObserverPlugin()],
+			plugins: [
+				new ResizePlugin(),
+				new ObserverPlugin(),
+				new AnimationsPlugin(),
+			],
 			// plugins: [ResizePlugin(), ObserverPlugin()],
 		})
 		manager.update()

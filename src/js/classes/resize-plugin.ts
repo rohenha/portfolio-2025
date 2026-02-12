@@ -17,6 +17,7 @@ export default class ResizePlugin extends ModularPlugin {
 	protected debounceResize: () => void
 	constructor() {
 		super()
+		this.name = "resize"
 		this.resizing = false
 		this.resizeModules = []
 		this.idsResizeToRemove = []

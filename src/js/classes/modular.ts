@@ -259,6 +259,9 @@ export default class ModulesManager {
 		if (moduleType === "app") {
 			return this.callApp(func, args)
 		}
+		if (moduleType === "plugin") {
+			return this.callPlugin(func, args, moduleId)
+		}
 		// Call function on the module instance(s)
 		if (moduleId) {
 			return this.callSingle(func, args, moduleType, moduleId)
@@ -278,6 +281,23 @@ export default class ModulesManager {
 			return Promise.resolve(null)
 		}
 		return this[func](args)
+	}
+
+	callPlugin(func: string, args: any, pluginId?: string): Promise<any | null> {
+		if (!pluginId) {
+			return Promise.resolve(null)
+		}
+
+		this.plugins.forEach((plugin) => {
+			if (plugin.name === pluginId) {
+				if (typeof plugin[func] !== "function") {
+					console.warn(`Function ${func} does not exist on plugin ${pluginId}`)
+					return Promise.resolve(null)
+				}
+				return plugin[func](args)
+			}
+		})
+		return Promise.resolve(null)
 	}
 
 	/**

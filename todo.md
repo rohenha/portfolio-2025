@@ -10,6 +10,6 @@
       qui update le composant.
 - [] fonction animate pour centraliser les animations dans le manager
 - [] Avoir plusieurs types de modules (par exemple: un pour animer, un reactif)
-- [] Avoir un système de plugin que je pourrai ajouter (intersection observer,
-  resize, animation), ce qui permettrait de pouvoir alléger de base le script et
-  d'ajouter de futures fonctionnalités
+- [x] Avoir un système de plugin que je pourrai ajouter (intersection observer,
+      resize, animation), ce qui permettrait de pouvoir alléger de base le
+      script et d'ajouter de futures fonctionnalités

@@ -14,6 +14,7 @@ export default class ObserverPlugin extends ModularPlugin {
 
 	constructor({ observerOptions }: { observerOptions?: {} } = {}) {
 		super()
+		this.name = "observer"
 		this.observer = new IntersectionObserver(
 			this.handleIntersect.bind(this),
 			Object.assign(observerOptions || {}, {

@@ -14,7 +14,12 @@ export interface ModularPluginMethod {
 export default class ModularPlugin {
 	protected getModules: () => ModulesCurrent
 	protected getConfigs: () => Array<ModuleConfig>
+	public name: string;
+
+	[key: string]: any
+
 	constructor() {
+		this.name = "ModularPlugin"
 		this.getConfigs = () => []
 		this.getModules = () => ({})
 	}

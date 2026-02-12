@@ -42,7 +42,19 @@ export default class Test extends Mmodule {
 	}
 
 	onWatch() {
-		this.render()
+		this.call(
+			"add",
+			{
+				name: this.dataName,
+				animation: {
+					animate: () => {
+						this.render()
+					},
+				},
+			},
+			"plugin",
+			"animations",
+		)
 	}
 
 	onRender() {
