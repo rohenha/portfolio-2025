@@ -1,3 +1,4 @@
+import EventBus from "@js/classes/event-bus"
 import Mmodule, { type ModuleConstructor } from "@js/classes/module"
 import ModularPlugin from "@js/classes/modular-plugin"
 export interface ModulesCurrent {
@@ -10,15 +11,12 @@ export interface ModuleConfig {
 	loader?: () => Promise<{ default: ModuleConstructor }>
 }
 
-// export interface ModulePluginMethod {
-// 	instance: Mmodule
-// 	config: ModuleConfig
+// export interface ModulePluginInit {
+// 	getModules: () => Map<string, Mmodule>
+// 	getConfigs: () => Array<ModuleConfig>
+// 	bus: EventBus
+// 	params?: any
 // }
-
-export interface ModulePluginInit {
-	getModules: () => ModulesCurrent
-	getConfigs: () => Array<ModuleConfig>
-}
 
 export default class ModulesManager {
 	// Allow dynamic property access by string key
@@ -26,29 +24,43 @@ export default class ModulesManager {
 
 	private moduleId: number = 0
 	private modules: Array<ModuleConfig> = []
-	private currentModules: ModulesCurrent = {}
-	private newModules: ModulesCurrent = {}
-	private plugins: Array<ModularPlugin> = []
+	private currentModules: Map<string, Mmodule> = new Map()
+	private newModules: Map<string, Mmodule> = new Map()
+	private plugins: Map<string, ModularPlugin> = new Map()
+	private bus: EventBus
 
 	constructor({
 		modules,
 		plugins,
+		parent,
 	}: {
 		modules: Array<ModuleConfig>
 		observer?: IntersectionObserverInit
-		plugins?: Array<ModularPlugin>
+		plugins?: Array<[typeof ModularPlugin, (any | null)?]>
+		parent?: HTMLElement | Document | null
 	}) {
 		this.modules = modules
+		this.bus = new EventBus()
 		this.plugins =
-			plugins?.reduce((acc, plugin) => {
-				plugin.init({
-					getModules: this.getModules.bind(this),
-					getConfigs: this.getConfigs.bind(this),
-				})
-				acc.push(plugin)
-				return acc
-			}, [] as Array<ModularPlugin>) || []
-		this.callModuleFunction = this.callModuleFunction.bind(this)
+			plugins?.reduce(
+				(acc, plugin) => {
+					const instance = new plugin[0]({
+						getModules: this.getModules.bind(this),
+						getConfigs: this.getConfigs.bind(this),
+						bus: this.bus,
+						params: plugin[1] ?? null,
+					})
+					acc.set(instance.name, instance)
+					return acc
+				},
+				new Map() as Map<string, ModularPlugin>,
+			) || new Map()
+		this.initEvents()
+		this.mount(parent || document, true)
+	}
+
+	initEvents() {
+		// this.bus.on("app:update", () => {
 	}
 
 	getModules() {
@@ -77,28 +89,45 @@ export default class ModulesManager {
 	 * @param scope  HTMLElement or Document to limit the addition of modules. Only modules within this scope will be added.
 	 * @returns void
 	 */
-	private async addModules(
+	private async mountModules(
 		scope: HTMLElement | Document,
 	): Promise<void[] | void> {
 		const promises: Array<Promise<void>> = []
 		const optimalSelector = this.buildOptimalSelector()
 		const elementsModule = scope.querySelectorAll(optimalSelector)
 
-		// for (let i = 0; i < elementsModule.length; i += 1) {
 		elementsModule.forEach((element) => {
-			// const element = elementsModule[i] as HTMLElement
 			const moduleItems = this.modules.filter((moduleItem) => {
 				return element.hasAttribute(`data-module-${moduleItem.name}`)
 			})
-			// for (let j = 0; j < moduleItems.length; j += 1) {
+
 			moduleItems.forEach((moduleItem) => {
-				// const moduleItem = moduleItems[j]
-				promises.push(this.addModule(element, moduleItem))
+				promises.push(this.mountModule(element, moduleItem))
 			})
-			// }
 		})
-		// }
 		return Promise.all(promises)
+	}
+
+	/**
+	 * @description Load a module constructor. If the module is already loaded, it returns the constructor immediately. If the module has a loader function, it calls the loader to load the module asynchronously and then returns the constructor.
+	 * @param moduleItem ModuleConfig object containing the information about the module to load.
+	 * @returns A promise that resolves to the module constructor.
+	 */
+	async loadModule(moduleItem: ModuleConfig): Promise<ModuleConstructor> {
+		let moduleConstructor = moduleItem.module
+		if (moduleConstructor) {
+			return Promise.resolve(moduleConstructor)
+		}
+		if (!moduleItem.loader) {
+			throw new Error(
+				`No module constructor or loader found for module ${moduleItem.name}`,
+			)
+		}
+		const moduleClass = await moduleItem.loader()
+		moduleItem.module = moduleClass.default
+		moduleItem.loader = undefined
+		moduleConstructor = moduleItem.module
+		return Promise.resolve(moduleConstructor)
 	}
 
 	/**
@@ -107,29 +136,16 @@ export default class ModulesManager {
 	 * @param moduleItem ModuleConfig object containing the information about the module to initialize.
 	 * @returns void
 	 */
-	async addModule(element: Element, moduleItem: ModuleConfig): Promise<void> {
+	async mountModule(element: Element, moduleItem: ModuleConfig): Promise<void> {
 		return new Promise(async (resolve) => {
 			let moduleId = element.getAttribute(`data-module-${moduleItem.name}`)
-			if (moduleId && this.currentModules[moduleId]) {
+			if (this.currentModules.get(moduleId ?? "")) {
 				// Module already exists, skip initialization
 				resolve()
 				return
 			}
 
-			let moduleConstructor = moduleItem.module
-			if (!moduleConstructor && moduleItem.loader) {
-				const moduleClass = await moduleItem.loader()
-				moduleItem.module = moduleClass.default
-				moduleItem.loader = undefined
-				moduleConstructor = moduleItem.module
-			}
-			if (!moduleConstructor) {
-				console.warn(
-					`No module constructor found for module ${moduleItem.name}`,
-				)
-				resolve()
-				return
-			}
+			let moduleConstructor = await this.loadModule(moduleItem)
 
 			if (!moduleId) {
 				// Generate a unique module ID and assign it to the element
@@ -142,21 +158,22 @@ export default class ModulesManager {
 				el: element,
 				id: moduleId,
 				dataName: moduleItem.name,
-				call: this.callModuleFunction,
+				bus: this.bus,
+				// call: this.callModuleFunction,
 			})
 			moduleInstance.mount()
-			this.newModules[moduleId] = moduleInstance
+			this.newModules.set(moduleId, moduleInstance)
 
-			if (this.plugins.length > 0) {
-				this.plugins.forEach((plugin) => {
-					if (plugin.onModuleMount) {
-						plugin.onModuleMount({
-							instance: moduleInstance,
-							config: moduleItem,
-						})
-					}
-				})
-			}
+			// if (this.plugins.size > 0) {
+			// 	this.plugins.forEach((plugin) => {
+			// 		if (plugin.onModuleMount) {
+			// 			plugin.onModuleMount({
+			// 				instance: moduleInstance,
+			// 				config: moduleItem,
+			// 			})
+			// 		}
+			// 	})
+			// }
 			resolve()
 		})
 	}
@@ -166,34 +183,31 @@ export default class ModulesManager {
 	 * @param scope  HTMLElement or Document to limit the removal of modules. Only modules within this scope will be removed.
 	 * @returns void
 	 */
-	private removeModules(scope: HTMLElement | Document) {
+	private unmountModules(scope: HTMLElement | Document) {
 		const optimalSelector = this.buildOptimalSelector()
 		const elementsModule = scope.querySelectorAll(optimalSelector)
-		// const idsResizeToRemove: Array<string> = []
 		elementsModule.forEach((element) => {
-			// for (let i = 0; i < elementsModule.length; i += 1) {
-			// const element = elementsModule[i] as HTMLElement
 			const moduleItems = this.modules.filter((moduleItem) => {
 				return element.hasAttribute(`data-module-${moduleItem.name}`)
 			})
 			moduleItems.forEach((moduleItem) => {
-				const moduleId = element.getAttribute(`data-module-${moduleItem.name}`)
-				if (!moduleId) {
+				const moduleId = element.getAttribute(
+					`data-module-${moduleItem.name}`,
+				) as string
+				const moduleInstance = this.currentModules.get(moduleId ?? "")
+				if (!moduleInstance) {
 					return
 				}
-				this.plugins.forEach((plugin) => {
-					if (plugin.onModuleUnMount) {
-						const moduleInstance = this.currentModules[moduleId]
-						plugin.onModuleUnMount({
-							instance: moduleInstance,
-							config: moduleItem,
-						})
-					}
-				})
-				const moduleInstance = this.currentModules[moduleId]
+				// this.plugins.forEach((plugin) => {
+				// 	if (plugin.onModuleUnMount) {
+				// 		plugin.onModuleUnMount({
+				// 			instance: moduleInstance,
+				// 			config: moduleItem,
+				// 		})
+				// 	}
+				// })
 				moduleInstance.unmount()
-				moduleInstance.onUnmount()
-				delete this.currentModules[moduleId]
+				this.currentModules.delete(moduleId)
 			})
 		})
 	}
@@ -203,26 +217,23 @@ export default class ModulesManager {
 	 * @param scope Optional HTMLElement to limit the update of modules. If not provided, all modules in the document will be updated.
 	 * @returns void
 	 */
-	async update(scope?: HTMLElement): Promise<void> {
+	async mount(
+		scope?: HTMLElement | Document,
+		init: boolean = false,
+	): Promise<void> {
 		return new Promise(async (resolve) => {
 			const container = scope || document
-			await this.addModules(container)
+			await this.mountModules(container)
 
-			Object.entries(this.newModules).forEach(([, moduleInstance]) => {
-				moduleInstance.onMount()
-			})
+			if (!init) {
+				this.bus.emit("app:onUpdate")
+			}
 
-			Object.entries(this.currentModules).forEach(([, moduleInstance]) => {
-				moduleInstance.onUpdate()
-			})
-
-			Object.assign(this.currentModules, this.newModules)
-			this.newModules = {}
-			this.plugins.forEach((plugin) => {
-				if (plugin.onUpdate) {
-					plugin.onUpdate()
-				}
-			})
+			this.currentModules = new Map([
+				...this.currentModules,
+				...this.newModules,
+			])
+			this.newModules = new Map()
 
 			resolve()
 		})
@@ -233,125 +244,7 @@ export default class ModulesManager {
 	 * @param scope Optional HTMLElement to limit the destruction of modules. If not provided, all modules in the document will be destroyed.
 	 * @returns void
 	 */
-	destroy(scope?: HTMLElement) {
-		if (scope) {
-			this.removeModules(scope)
-		} else {
-			this.removeModules(document)
-		}
-	}
-
-	/**
-	 * @description Call a function on a specific module instance or on all instances of a module type.
-	 * @param func string containing the name of the function to call on the module instance(s).
-	 * @param args any containing the arguments to pass to the function when calling it on the module instance(s).
-	 * @param moduleType string containing the name of the module type on which to call the function.
-	 * @param moduleId Optional string containing the unique ID of the module instance on which to call the function. If not provided, the function will be called on all instances of the specified module type.
-	 * @returns Promise that resolves with the result of the function call(s) on the module instance(s).
-	 */
-	async callModuleFunction(
-		func: string,
-		args: any,
-		moduleType: string,
-		moduleId?: string,
-	): Promise<any | null | Array<any>> {
-		// Call function on the manager if moduleType is "app"
-		if (moduleType === "app") {
-			return this.callApp(func, args)
-		}
-		if (moduleType === "plugin") {
-			return this.callPlugin(func, args, moduleId)
-		}
-		// Call function on the module instance(s)
-		if (moduleId) {
-			return this.callSingle(func, args, moduleType, moduleId)
-		}
-		return this.callMultiple(func, args, moduleType)
-	}
-
-	/**
-	 * @description Call a function on the modular instance or plugins.
-	 * @param func string containing the name of the function to call on the modular instance or plugins.
-	 * @param args any containing the arguments to pass to the function when calling it on the modular instance or plugins.
-	 * @returns Promise that resolves with the result of the function call on the modular instance or plugins.
-	 */
-	callApp(func: string, args: any): Promise<any | null> {
-		if (typeof this[func] !== "function") {
-			console.warn(`Function ${func} does not exist on modular`)
-			return Promise.resolve(null)
-		}
-		return this[func](args)
-	}
-
-	callPlugin(func: string, args: any, pluginId?: string): Promise<any | null> {
-		if (!pluginId) {
-			return Promise.resolve(null)
-		}
-
-		this.plugins.forEach((plugin) => {
-			if (plugin.name === pluginId) {
-				if (typeof plugin[func] !== "function") {
-					console.warn(`Function ${func} does not exist on plugin ${pluginId}`)
-					return Promise.resolve(null)
-				}
-				return plugin[func](args)
-			}
-		})
-		return Promise.resolve(null)
-	}
-
-	/**
-	 * @description Call a function on a specific module instance.
-	 * @param {string} func the name of the function to call on the module instance.
-	 * @param {any} args  arguments to pass
-	 * @param {string} moduleType name of the module type on which to call the function.
-	 * @param {string} moduleId name of the module id
-	 * @returns {Promise} Promise that resolves with the result of the function call on the module instance, or null if no instance or function is found.
-	 */
-	callSingle(
-		func: string,
-		args: any,
-		moduleType: string,
-		moduleId: string,
-	): Promise<any | null> {
-		const moduleInstance = this.currentModules[moduleId]
-		if (!moduleInstance || typeof moduleInstance[func] !== "function") {
-			console.warn(
-				`No module instance found for module type ${moduleType} with id ${moduleId} or function ${func} does not exist`,
-			)
-			return Promise.resolve(null)
-		}
-		return moduleInstance[func](args)
-	}
-
-	/**
-	 * @description Call a function on all module instances.
-	 * @param {string} func the name of the function to call on the module instance.
-	 * @param {any} args  arguments to pass
-	 * @param {string} moduleType name of the module type on which to call the function.
-	 * @returns {Promise} Promise that resolves with the result of the function call on the module instance, or null if no instance or function is found.
-	 */
-	callMultiple(
-		func: string,
-		args: any,
-		moduleType: string,
-	): Promise<Array<any> | null> {
-		const modulesInstances = Object.values(this.currentModules).filter(
-			(moduleInstance) => moduleInstance.constructor.name === moduleType,
-		)
-		if (
-			modulesInstances.length === 0 ||
-			typeof modulesInstances[0][func] !== "function"
-		) {
-			console.warn(
-				`No module instances found for module type ${moduleType} or function ${func} does not exist on these instances`,
-			)
-			return new Promise((resolve) => resolve(null))
-		}
-		const promises: Array<Promise<any>> = []
-		modulesInstances.forEach((moduleInstance) => {
-			promises.push(moduleInstance[func](args))
-		})
-		return Promise.all(promises)
+	unmount(scope?: HTMLElement) {
+		this.unmountModules(scope ?? document)
 	}
 }

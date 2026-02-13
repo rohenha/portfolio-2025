@@ -1,10 +1,14 @@
-import {
-	type ModulesCurrent,
-	type ModuleConfig,
-	type ModulePluginInit,
-} from "@js/classes/modular"
+import { type ModuleConfig } from "@js/classes/modular"
+import EventBus from "@js/classes/event-bus"
 
 import type Mmodule from "@js/classes/module"
+
+export interface ModulePluginInit {
+	getModules: () => Map<string, Mmodule>
+	getConfigs: () => Array<ModuleConfig>
+	bus: EventBus
+	params?: any
+}
 
 export interface ModularPluginMethod {
 	instance: Mmodule
@@ -12,22 +16,25 @@ export interface ModularPluginMethod {
 }
 
 export default class ModularPlugin {
-	protected getModules: () => ModulesCurrent
+	protected getModules: () => Map<string, Mmodule>
 	protected getConfigs: () => Array<ModuleConfig>
+	protected bus: EventBus
 	public name: string;
 
 	[key: string]: any
 
-	constructor() {
+	constructor({ getModules, getConfigs, bus, params = {} }: ModulePluginInit) {
 		this.name = "ModularPlugin"
-		this.getConfigs = () => []
-		this.getModules = () => ({})
-	}
-
-	init({ getModules, getConfigs }: ModulePluginInit): void {
 		this.getModules = getModules
 		this.getConfigs = getConfigs
+		this.bus = bus
+		// this.getConfigs = () => []
+		// this.getModules = () => new Map()
+		// this.bus = null
 	}
+
+	// mount({ getModules, getConfigs, bus }: ModulePluginInit): void {
+	// }
 
 	onModuleMount({}: ModularPluginMethod): void {}
 	onModuleUnMount({}: ModularPluginMethod): void {}

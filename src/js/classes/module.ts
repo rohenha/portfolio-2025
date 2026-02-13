@@ -1,15 +1,11 @@
 import { debounce } from "@js/utils/tools"
+import type EventBus from "@js/classes/event-bus"
 
 export interface ModuleConstructorParams {
 	el: Element
 	id: string
 	dataName: string
-	call: (
-		func: string,
-		args: any,
-		moduleType: string,
-		moduleId?: string | undefined,
-	) => Promise<any>
+	bus: EventBus
 }
 
 export default class Mmodule {
@@ -19,24 +15,23 @@ export default class Mmodule {
 	protected visible: boolean
 	protected rafRender: number | null
 	protected states: Record<string, any>
-	protected call: (
-		func: string,
-		args: any,
-		moduleType: string,
-		moduleId?: string | undefined,
-	) => Promise<any>;
+	protected bus: EventBus
+	protected busEvents: Map<string, () => void>
+	protected customEvents: Record<string, string>;
 
-	// Ajouter cette signature d'index
 	[key: string]: any
 
-	constructor({ el, id, call, dataName }: ModuleConstructorParams) {
+	constructor({ el, id, dataName, bus }: ModuleConstructorParams) {
 		this.el = el
 		this.dataName = dataName
 		this.id = id
 		this.visible = false
 		this.rafRender = null
-		this.call = call
-		this.toRender = false
+		this.bus = bus
+		this.busEvents = new Map()
+		this.customEvents = {
+			"app:onUpdate": "onUpdate",
+		}
 		this.states = {}
 	}
 
@@ -54,18 +49,76 @@ export default class Mmodule {
 		if (Object.keys(this.states).length > 0) {
 			this.states = this.makeReactiveState(this.states)
 		}
+		this.initEvents()
+		this.onMount()
+	}
+
+	on(event: string, handler: (payload?: any) => void) {
+		const off = this.bus.on(event, handler)
+		this.busEvents.set(event, off)
+	}
+
+	emit(event: string, payload?: any) {
+		this.bus.emit(event, payload)
+	}
+
+	emitAsync(event: string, payload?: any): Promise<any[]> {
+		return this.bus.emitAsync(event, payload)
+	}
+
+	off(event: string) {
+		const eventHandler = this.busEvents.get(event)
+		if (!eventHandler) {
+			return
+		}
+		eventHandler()
+		this.busEvents.delete(event)
+		this.bus.off(event, eventHandler)
+	}
+
+	initEvents() {
+		const events = this.customEvents
+		Object.keys(events).forEach((id) => {
+			const handlerName = events[id]
+			const handler = this[handlerName]
+			if (typeof handler !== "function") {
+				return
+			}
+			this.on(`${id}:${this.dataName}:${this.id}`, handler.bind(this))
+		})
+		this.on(`call:${this.dataName}:${this.id}`, this.call.bind(this))
+	}
+
+	call({ method, payload }: { method: string; payload?: any }): any {
+		if (typeof this[method] !== "function") {
+			console.warn(`Method ${method} does not exist on module ${this.dataName}`)
+			return
+		}
+		return this[method](payload)
 	}
 	/**
 	 * @description This method is called when the module is destroyed. You can use this method to clean up event listeners, cancel timers, etc. Make sure to call super.destroy() if you override this method in a subclass.
 	 */
-	onUnmount() {
+	onUnMount() {
 		console.log(`Module ${this.dataName} with ID ${this.id} destroyed`)
 	}
 	/**
 	 * @description This method is called when the module is destroyed. It's called internally by the library and should not be called directly. The mDestroy method is called before the module is fully destroyed .
 	 */
-	unmount() {}
-	onUpdate() {}
+	unmount() {
+		this.removeEvents()
+		this.onUnMount()
+	}
+
+	removeEvents() {
+		this.busEvents.forEach((off) => off())
+		this.busEvents = new Map()
+	}
+
+	/**
+	 * @description This method is called whenever the app is updated (add or remove modules, etc.).
+	 */
+	onPageUpdate() {}
 
 	/**
 	 * @description This method is called to toggle the view of the module. You can implement this method to show/hide elements, change styles, etc. The state parameter can be used to determine whether to show or hide the view.
@@ -75,9 +128,10 @@ export default class Mmodule {
 	 */
 	updateView(state: boolean) {
 		this.visible = state
-		this.render()
+		// this.render()
 		this.onUpdateView(state)
 	}
+
 	onUpdateView(state: boolean) {}
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. Make sure to debounce any expensive operations to avoid performance issues.
@@ -87,20 +141,20 @@ export default class Mmodule {
 	/**
 	 * @description This method is called to render the module. You can call this method to re-render the module
 	 */
-	render() {
-		if (!this.toRender || !this.visible) {
-			return
-		}
-		window.cancelAnimationFrame(this.rafRender!)
-		this.rafRender = window.requestAnimationFrame(() => {
-			this.onRender()
-		})
+	render(): void {
+		// if (!this.toRender || !this.visible) {
+		// 	return
+		// }
+		// window.cancelAnimationFrame(this.rafRender!)
+		// this.rafRender = window.requestAnimationFrame(() => {
+		// 	this.onRender()
+		// })
 	}
 
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. You don't need to debounce this method, the library will handle it for you. Just implement the logic you want to execute on resize.
 	 */
-	onResize() {}
+	onResize(): void {}
 
 	/**
 	 * @description Select elements within the module's root element using a data attribute.

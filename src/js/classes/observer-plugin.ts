@@ -1,5 +1,6 @@
 import ModularPlugin, {
-	type ModularPluginMethod,
+	// type ModularPluginMethod,
+	type ModulePluginInit,
 } from "@js/classes/modular-plugin"
 
 declare module "@js/classes/modular" {
@@ -11,53 +12,63 @@ declare module "@js/classes/modular" {
 
 export default class ObserverPlugin extends ModularPlugin {
 	protected observer: IntersectionObserver
-
-	constructor({ observerOptions }: { observerOptions?: {} } = {}) {
-		super()
+	protected elements: Map<string, Element>
+	// constructor({ observerOptions }: { observerOptions?: {} } = {}) {
+	// 	super()
+	constructor(m: ModulePluginInit) {
+		super(m)
 		this.name = "observer"
+		this.elements = new Map()
+		this.once = new Set()
 		this.observer = new IntersectionObserver(
 			this.handleIntersect.bind(this),
-			Object.assign(observerOptions || {}, {
+			Object.assign(m.params || {}, {
 				root: null,
 				rootMargin: "0px",
 				threshold: 0.1,
 			}),
 		)
+		this.bus.on("observer:on", this.observe.bind(this))
+		this.bus.on("observer:once", this.observeOnce.bind(this))
+		this.bus.on("observer:off", this.unobserve.bind(this))
+	}
+
+	observe({ el, key }: { el: HTMLElement; key: string }) {
+		this.observer.observe(el)
+		this.elements.set(key, el)
+	}
+
+	observeOnce({ el, key }: { el: HTMLElement; key: string }) {
+		this.observer.observe(el)
+		this.elements.set(key, el)
+		this.once.add(key)
+	}
+
+	unobserve(key: string) {
+		this.observer.unobserve(this.elements.get(key)!)
+		this.elements.delete(key)
+		this.once.delete(key)
 	}
 
 	handleIntersect(
 		entries: IntersectionObserverEntry[],
 		observer: IntersectionObserver,
 	) {
-		const currentModules = this.getModules()
-		const configs = this.getConfigs()
 		entries.forEach((entry) => {
-			Object.keys(currentModules).forEach((moduleId) => {
-				const moduleItem = currentModules[moduleId]
-				if (!entry.target.hasAttribute(`data-module-${moduleItem.dataName}`)) {
-					return
-				}
-				const moduleInstance = currentModules[moduleId]
-				moduleInstance.updateView(entry.isIntersecting)
-				const config = configs.find((c) => c.name === moduleInstance.dataName)
-				if (config) {
-					if (entry.isIntersecting && !config.repeat) {
-						observer.unobserve(entry.target)
+			this.elements.forEach((el, key) => {
+				if (el === entry.target) {
+					this.bus.emit(`call:${key}`, {
+						method: "onUpdateView",
+						payload: entry.isIntersecting,
+					})
+					if (entry.isIntersecting && this.once.has(key)) {
+						console.log(`Unobserving ${key} after first intersection`)
+						observer.unobserve(el)
+						this.elements.delete(key)
+						this.once.delete(key)
 					}
 				}
 			})
 		})
-	}
-
-	onModuleMount({ instance, config }: ModularPluginMethod): void {
-		const { el } = instance
-		if (config.observe) {
-			this.observer.observe(el)
-		}
-	}
-
-	onModuleUnMount({ instance }: ModularPluginMethod): void {
-		const { el } = instance
-		this.observer.unobserve(el)
 	}
 }

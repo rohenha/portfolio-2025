@@ -10,9 +10,10 @@ import ModularPlugin, {
 // }
 
 export interface Animation {
-	calculate?: () => void
+	calculate?: () => any
 	animate?: (args?: any) => void
 	keep?: boolean
+	dataCalculated?: any
 }
 
 export default class ObserverPlugin extends ModularPlugin {
@@ -58,8 +59,8 @@ export default class ObserverPlugin extends ModularPlugin {
 	}
 
 	render() {
+		// this.animate()
 		this.animate()
-		this.aAnimate()
 		if (this.animating || this.force) {
 			this.force = false
 			this.requestId = window.requestAnimationFrame(this.render)
@@ -67,19 +68,15 @@ export default class ObserverPlugin extends ModularPlugin {
 	}
 
 	animate(): void {
+		const toDelete: string[] = []
 		this.animations.forEach((item) => {
 			if (item.calculate) {
-				item.calculate()
+				item.dataCalculated = item.calculate()
 			}
 		})
-	}
-
-	aAnimate(): void {
-		const toDelete: string[] = []
-
 		this.animations.forEach((item, id) => {
 			if (item.animate) {
-				item.animate()
+				item.animate(item.dataCalculated || null)
 			}
 			if (!item.keep) {
 				toDelete.push(id)
@@ -91,4 +88,8 @@ export default class ObserverPlugin extends ModularPlugin {
 		})
 		this.animating = this.animations.size > 0
 	}
+
+	// aAnimate(): void {
+
+	// }
 }

@@ -117,19 +117,25 @@ const {
 	import modules from "@js/modules/index"
 	import ResizePlugin from "@js/classes/resize-plugin"
 	import ObserverPlugin from "@js/classes/observer-plugin"
-	import AnimationsPlugin from "@js/classes/animations-plugin"
+	// import AnimationsPlugin from "@js/classes/animations-plugin"
 
 	window.addEventListener("load", () => {
-		const manager = new Modular({
+		new Modular({
 			modules,
 			plugins: [
-				new ResizePlugin(),
-				new ObserverPlugin(),
-				new AnimationsPlugin(),
+				[ResizePlugin],
+				[ObserverPlugin],
+				// new ObserverPlugin(),
+				// new AnimationsPlugin(),
 			],
 			// plugins: [ResizePlugin(), ObserverPlugin()],
 		})
-		manager.update()
+		// manager.mount()
+
+		// setTimeout(() => {
+		// 	manager.unmount()
+		// }, 4000)
+
 		// const main = document.querySelector("#main") as HTMLElement
 		// setTimeout(() => {
 		// 	manager.destroy(main)
