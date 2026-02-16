@@ -4,8 +4,6 @@ import EventBus from "@js/classes/event-bus"
 import type Mmodule from "@js/classes/module"
 
 export interface ModulePluginInit {
-	getModules: () => Map<string, Mmodule>
-	getConfigs: () => Array<ModuleConfig>
 	bus: EventBus
 	params?: any
 }
@@ -16,27 +14,12 @@ export interface ModularPluginMethod {
 }
 
 export default class ModularPlugin {
-	protected getModules: () => Map<string, Mmodule>
-	protected getConfigs: () => Array<ModuleConfig>
-	protected bus: EventBus
-	public name: string;
+	public name: string = "ModularPlugin"
+	protected bus: EventBus;
 
 	[key: string]: any
 
-	constructor({ getModules, getConfigs, bus, params = {} }: ModulePluginInit) {
-		this.name = "ModularPlugin"
-		this.getModules = getModules
-		this.getConfigs = getConfigs
+	constructor({ bus, params = {} }: ModulePluginInit) {
 		this.bus = bus
-		// this.getConfigs = () => []
-		// this.getModules = () => new Map()
-		// this.bus = null
 	}
-
-	// mount({ getModules, getConfigs, bus }: ModulePluginInit): void {
-	// }
-
-	onModuleMount({}: ModularPluginMethod): void {}
-	onModuleUnMount({}: ModularPluginMethod): void {}
-	onUpdate(): void {}
 }

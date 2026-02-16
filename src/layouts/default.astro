@@ -117,7 +117,7 @@ const {
 	import modules from "@js/modules/index"
 	import ResizePlugin from "@js/classes/resize-plugin"
 	import ObserverPlugin from "@js/classes/observer-plugin"
-	// import AnimationsPlugin from "@js/classes/animations-plugin"
+	import AnimationsPlugin from "@js/classes/animations-plugin"
 
 	window.addEventListener("load", () => {
 		new Modular({
@@ -125,6 +125,7 @@ const {
 			plugins: [
 				[ResizePlugin],
 				[ObserverPlugin],
+				[AnimationsPlugin],
 				// new ObserverPlugin(),
 				// new AnimationsPlugin(),
 			],
@@ -134,21 +135,6 @@ const {
 
 		// setTimeout(() => {
 		// 	manager.unmount()
-		// }, 4000)
-
-		// const main = document.querySelector("#main") as HTMLElement
-		// setTimeout(() => {
-		// 	manager.destroy(main)
-		// 	main.innerHTML = "<h1>Test</h1><div data-module-test-scroll></div>"
-		// 	window.requestAnimationFrame(() => {
-		// 		manager.update(main)
-		// 	})
-		// }, 4000)
-		// setTimeout(() => {
-		// 	manager.update()
-		// 	setTimeout(() => {
-		// 		manager.destroy()
-		// 	}, 4000)
 		// }, 4000)
 	})
 </script>

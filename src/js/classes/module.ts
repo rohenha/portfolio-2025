@@ -12,12 +12,13 @@ export default class Mmodule {
 	public el: Element
 	public id: string
 	public dataName: string
+	public moduleKey: string
 	protected visible: boolean
-	protected rafRender: number | null
 	protected states: Record<string, any>
 	protected bus: EventBus
 	protected busEvents: Map<string, () => void>
-	protected customEvents: Record<string, string>;
+	protected _busMap: Record<string, string>
+	protected busMap: Record<string, string>;
 
 	[key: string]: any
 
@@ -25,13 +26,14 @@ export default class Mmodule {
 		this.el = el
 		this.dataName = dataName
 		this.id = id
+		this.moduleKey = `${dataName}:${id}`
 		this.visible = false
-		this.rafRender = null
 		this.bus = bus
 		this.busEvents = new Map()
-		this.customEvents = {
+		this._busMap = {
 			"app:onUpdate": "onUpdate",
 		}
+		this.busMap = {}
 		this.states = {}
 	}
 
@@ -59,7 +61,7 @@ export default class Mmodule {
 	}
 
 	emit(event: string, payload?: any) {
-		this.bus.emit(event, payload)
+		return this.bus.emit(event, payload)
 	}
 
 	emitAsync(event: string, payload?: any): Promise<any[]> {
@@ -77,16 +79,16 @@ export default class Mmodule {
 	}
 
 	initEvents() {
-		const events = this.customEvents
+		const events = Object.assign({}, this._busMap, this.busMap)
+		events["call"] = "call"
 		Object.keys(events).forEach((id) => {
 			const handlerName = events[id]
 			const handler = this[handlerName]
 			if (typeof handler !== "function") {
 				return
 			}
-			this.on(`${id}:${this.dataName}:${this.id}`, handler.bind(this))
+			this.on(`${id}:${this.moduleKey}`, handler.bind(this))
 		})
-		this.on(`call:${this.dataName}:${this.id}`, this.call.bind(this))
 	}
 
 	call({ method, payload }: { method: string; payload?: any }): any {
@@ -100,7 +102,7 @@ export default class Mmodule {
 	 * @description This method is called when the module is destroyed. You can use this method to clean up event listeners, cancel timers, etc. Make sure to call super.destroy() if you override this method in a subclass.
 	 */
 	onUnMount() {
-		console.log(`Module ${this.dataName} with ID ${this.id} destroyed`)
+		console.log(`Module ${this.moduleKey} destroyed`)
 	}
 	/**
 	 * @description This method is called when the module is destroyed. It's called internally by the library and should not be called directly. The mDestroy method is called before the module is fully destroyed .
@@ -128,7 +130,6 @@ export default class Mmodule {
 	 */
 	updateView(state: boolean) {
 		this.visible = state
-		// this.render()
 		this.onUpdateView(state)
 	}
 
@@ -136,19 +137,16 @@ export default class Mmodule {
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. Make sure to debounce any expensive operations to avoid performance issues.
 	 */
-	onRender(): void {}
+	onRender(params?: any): void {}
 
 	/**
 	 * @description This method is called to render the module. You can call this method to re-render the module
 	 */
-	render(): void {
-		// if (!this.toRender || !this.visible) {
-		// 	return
-		// }
-		// window.cancelAnimationFrame(this.rafRender!)
-		// this.rafRender = window.requestAnimationFrame(() => {
-		// 	this.onRender()
-		// })
+	render(params?: any): void {
+		if (!this.visible) {
+			return
+		}
+		this.onRender(params)
 	}
 
 	/**

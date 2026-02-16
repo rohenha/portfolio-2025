@@ -11,19 +11,12 @@ export interface ModuleConfig {
 	loader?: () => Promise<{ default: ModuleConstructor }>
 }
 
-// export interface ModulePluginInit {
-// 	getModules: () => Map<string, Mmodule>
-// 	getConfigs: () => Array<ModuleConfig>
-// 	bus: EventBus
-// 	params?: any
-// }
-
 export default class ModulesManager {
 	// Allow dynamic property access by string key
 	[key: string]: any
 
 	private moduleId: number = 0
-	private modules: Array<ModuleConfig> = []
+	private modules: Map<string, ModuleConfig> = new Map()
 	private currentModules: Map<string, Mmodule> = new Map()
 	private newModules: Map<string, Mmodule> = new Map()
 	private plugins: Map<string, ModularPlugin> = new Map()
@@ -38,15 +31,14 @@ export default class ModulesManager {
 		observer?: IntersectionObserverInit
 		plugins?: Array<[typeof ModularPlugin, (any | null)?]>
 		parent?: HTMLElement | Document | null
+		optimalSelector?: string
 	}) {
-		this.modules = modules
+		this.modules = new Map(modules.map((module) => [module.name, module]))
 		this.bus = new EventBus()
 		this.plugins =
 			plugins?.reduce(
 				(acc, plugin) => {
 					const instance = new plugin[0]({
-						getModules: this.getModules.bind(this),
-						getConfigs: this.getConfigs.bind(this),
 						bus: this.bus,
 						params: plugin[1] ?? null,
 					})
@@ -55,20 +47,14 @@ export default class ModulesManager {
 				},
 				new Map() as Map<string, ModularPlugin>,
 			) || new Map()
+		this.optimalSelector = this.buildOptimalSelector()
 		this.initEvents()
-		this.mount(parent || document, true)
+		this.update({ scope: parent || document, init: true })
 	}
 
 	initEvents() {
-		// this.bus.on("app:update", () => {
-	}
-
-	getModules() {
-		return this.currentModules
-	}
-
-	getConfigs() {
-		return this.modules
+		this.bus.on("app:update", this.update.bind(this))
+		this.bus.on("app:destroy", this.destroy.bind(this))
 	}
 
 	/**
@@ -76,11 +62,9 @@ export default class ModulesManager {
 	 * @return A string containing the CSS selector to find all elements with a data attribute corresponding to any of the registered modules.
 	 */
 	private buildOptimalSelector(): string {
-		const selectors: Array<string> = this.modules.reduce((acc, moduleItem) => {
-			acc.push(`[data-module-${moduleItem.name}]`)
-			return acc
-		}, [] as Array<string>)
-
+		const selectors = Array.from(this.modules.keys(), (name) => {
+			return `[data-module-${name}]`
+		})
 		return selectors.join(", ")
 	}
 
@@ -93,16 +77,13 @@ export default class ModulesManager {
 		scope: HTMLElement | Document,
 	): Promise<void[] | void> {
 		const promises: Array<Promise<void>> = []
-		const optimalSelector = this.buildOptimalSelector()
-		const elementsModule = scope.querySelectorAll(optimalSelector)
+		const elementsModule = scope.querySelectorAll(this.optimalSelector)
 
 		elementsModule.forEach((element) => {
-			const moduleItems = this.modules.filter((moduleItem) => {
-				return element.hasAttribute(`data-module-${moduleItem.name}`)
-			})
-
-			moduleItems.forEach((moduleItem) => {
-				promises.push(this.mountModule(element, moduleItem))
+			this.modules.forEach((moduleItem, name) => {
+				if (element.hasAttribute(`data-module-${name}`)) {
+					promises.push(this.mountModule(element, moduleItem))
+				}
 			})
 		})
 		return Promise.all(promises)
@@ -127,7 +108,7 @@ export default class ModulesManager {
 		moduleItem.module = moduleClass.default
 		moduleItem.loader = undefined
 		moduleConstructor = moduleItem.module
-		return Promise.resolve(moduleConstructor)
+		return moduleConstructor
 	}
 
 	/**
@@ -137,14 +118,14 @@ export default class ModulesManager {
 	 * @returns void
 	 */
 	async mountModule(element: Element, moduleItem: ModuleConfig): Promise<void> {
-		return new Promise(async (resolve) => {
-			let moduleId = element.getAttribute(`data-module-${moduleItem.name}`)
-			if (this.currentModules.get(moduleId ?? "")) {
-				// Module already exists, skip initialization
-				resolve()
-				return
-			}
+		let moduleId = element.getAttribute(`data-module-${moduleItem.name}`)
+		if (this.currentModules.get(moduleId ?? "")) {
+			// Module already exists, skip initialization
+			// resolve()
+			return
+		}
 
+		try {
 			let moduleConstructor = await this.loadModule(moduleItem)
 
 			if (!moduleId) {
@@ -159,7 +140,6 @@ export default class ModulesManager {
 				id: moduleId,
 				dataName: moduleItem.name,
 				bus: this.bus,
-				// call: this.callModuleFunction,
 			})
 			moduleInstance.mount()
 			this.newModules.set(moduleId, moduleInstance)
@@ -174,8 +154,9 @@ export default class ModulesManager {
 			// 		}
 			// 	})
 			// }
-			resolve()
-		})
+		} catch (error) {
+			console.error(`Error loading module ${moduleItem.name}:`, error)
+		}
 	}
 
 	/**
@@ -184,32 +165,45 @@ export default class ModulesManager {
 	 * @returns void
 	 */
 	private unmountModules(scope: HTMLElement | Document) {
-		const optimalSelector = this.buildOptimalSelector()
-		const elementsModule = scope.querySelectorAll(optimalSelector)
+		const elementsModule = scope.querySelectorAll(this.optimalSelector)
 		elementsModule.forEach((element) => {
-			const moduleItems = this.modules.filter((moduleItem) => {
-				return element.hasAttribute(`data-module-${moduleItem.name}`)
-			})
-			moduleItems.forEach((moduleItem) => {
-				const moduleId = element.getAttribute(
-					`data-module-${moduleItem.name}`,
-				) as string
+			this.modules.forEach((moduleItem, name) => {
+				if (!element.hasAttribute(`data-module-${name}`)) {
+					return
+				}
+				const moduleId = element.getAttribute(`data-module-${name}`) as string
 				const moduleInstance = this.currentModules.get(moduleId ?? "")
 				if (!moduleInstance) {
 					return
 				}
-				// this.plugins.forEach((plugin) => {
-				// 	if (plugin.onModuleUnMount) {
-				// 		plugin.onModuleUnMount({
-				// 			instance: moduleInstance,
-				// 			config: moduleItem,
-				// 		})
-				// 	}
-				// })
 				moduleInstance.unmount()
 				this.currentModules.delete(moduleId)
 			})
 		})
+		// elementsModule.forEach((element) => {
+		// 	const moduleItems = this.modules.filter((moduleItem) => {
+		// 		return element.hasAttribute(`data-module-${moduleItem.name}`)
+		// 	})
+		// 	moduleItems.forEach((moduleItem) => {
+		// 		const moduleId = element.getAttribute(
+		// 			`data-module-${moduleItem.name}`,
+		// 		) as string
+		// 		const moduleInstance = this.currentModules.get(moduleId ?? "")
+		// 		if (!moduleInstance) {
+		// 			return
+		// 		}
+		// 		// this.plugins.forEach((plugin) => {
+		// 		// 	if (plugin.onModuleUnMount) {
+		// 		// 		plugin.onModuleUnMount({
+		// 		// 			instance: moduleInstance,
+		// 		// 			config: moduleItem,
+		// 		// 		})
+		// 		// 	}
+		// 		// })
+		// 		moduleInstance.unmount()
+		// 		this.currentModules.delete(moduleId)
+		// 	})
+		// })
 	}
 
 	/**
@@ -217,10 +211,13 @@ export default class ModulesManager {
 	 * @param scope Optional HTMLElement to limit the update of modules. If not provided, all modules in the document will be updated.
 	 * @returns void
 	 */
-	async mount(
-		scope?: HTMLElement | Document,
-		init: boolean = false,
-	): Promise<void> {
+	async update({
+		scope,
+		init = false,
+	}: {
+		scope?: HTMLElement | Document
+		init: boolean
+	}): Promise<void> {
 		return new Promise(async (resolve) => {
 			const container = scope || document
 			await this.mountModules(container)
@@ -244,7 +241,7 @@ export default class ModulesManager {
 	 * @param scope Optional HTMLElement to limit the destruction of modules. If not provided, all modules in the document will be destroyed.
 	 * @returns void
 	 */
-	unmount(scope?: HTMLElement) {
+	destroy({ scope }: { scope?: HTMLElement }) {
 		this.unmountModules(scope ?? document)
 	}
 }

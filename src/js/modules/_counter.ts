@@ -1,6 +1,6 @@
 import Mmodule from "@js/classes/module"
 
-export default class Test extends Mmodule {
+export default class Counter extends Mmodule {
 	// private interval: ReturnType<typeof setInterval> | null
 	constructor(params: any) {
 		super(params)
@@ -8,14 +8,13 @@ export default class Test extends Mmodule {
 		// this.toRender = true
 		this.states = {
 			number: 0,
-			name: "Romain",
 		}
 		this.customEvents = {
 			"resizer:resize": "onResize",
 			"observer:update": "onUpdateView",
 		}
 
-		this.emit("observer:on", {
+		this.bus.emit("plugins:observer:on", {
 			el: this.el,
 			key: `${this.dataName}:${this.id}`,
 		})
@@ -44,34 +43,29 @@ export default class Test extends Mmodule {
 	}
 
 	onUpdateView(state: boolean) {
-		console.log("TestScroll view updated:", state)
-		// if (state) {
-		// 	this.interval = setInterval(() => {
-		// 		this.states.number += 1
-		// 	}, 1000)
-		// } else {
-		// 	clearInterval(this.interval!)
-		// }
+		if (state) {
+			this.interval = setInterval(() => {
+				this.states.number += 1
+			}, 1000)
+		} else {
+			clearInterval(this.interval!)
+		}
 	}
 
 	onWatch() {
-		// this.call(
-		// 	"add",
-		// 	{
-		// 		name: this.dataName,
-		// 		animation: {
-		// 			calculate: (): string => {
-		// 				return "hello world"
-		// 			},
-		// 			animate: (text: string) => {
-		// 				console.log(text)
-		// 				this.render()
-		// 			},
-		// 		},
-		// 	},
-		// 	"plugin",
-		// 	"animations",
-		// )
+		this.emit("animations:add", {
+			name: `${this.dataName}_${this.id}`,
+			animation: {
+				calculate: (): string => {
+					return "hello world"
+				},
+				animate: (text: string) => {
+					console.log(text)
+					this.render()
+				},
+			},
+			keep: false,
+		})
 	}
 
 	onRender() {
@@ -80,11 +74,13 @@ export default class Test extends Mmodule {
 	}
 
 	test() {
-		console.log("Test function called in Test module with ID:", this.id)
-		// console.log("Received data in Scroll module:", data, this.id)
 		return new Promise((resolve) => {
 			resolve(`Hello from Scroll module! Received your message: ${this.id}`)
 		})
+	}
+
+	test2() {
+		return "Hello from Test module! This is test2 function."
 	}
 
 	onUnMount(): void {

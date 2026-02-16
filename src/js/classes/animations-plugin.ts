@@ -1,19 +1,12 @@
 import ModularPlugin, {
-	type ModularPluginMethod,
+	type ModulePluginInit,
 } from "@js/classes/modular-plugin"
-
-// declare module "@js/classes/modular" {
-// 	interface ModuleConfig {
-// 		observe?: boolean
-// 		repeat?: boolean
-// 	}
-// }
 
 export interface Animation {
 	calculate?: () => any
 	animate?: (args?: any) => void
 	keep?: boolean
-	dataCalculated?: any
+	calculated?: any
 }
 
 export default class ObserverPlugin extends ModularPlugin {
@@ -22,8 +15,8 @@ export default class ObserverPlugin extends ModularPlugin {
 	protected force: boolean
 	protected delayStart: ReturnType<typeof setTimeout> | undefined | number
 	protected requestId: number | undefined
-	constructor() {
-		super()
+	constructor(m: ModulePluginInit) {
+		super(m)
 		this.name = "animations"
 		this.animations = new Map()
 		this.animating = false
@@ -31,6 +24,9 @@ export default class ObserverPlugin extends ModularPlugin {
 		this.delayStart = undefined
 		this.render = this.render.bind(this)
 		this.requestId = undefined
+
+		this.bus.on("plugins:animations:add", this.add.bind(this))
+		this.bus.on("plugins:animations:remove", this.remove.bind(this))
 	}
 
 	// onModuleMount({ instance, config }: ModularPluginMethod): void {}
@@ -59,7 +55,6 @@ export default class ObserverPlugin extends ModularPlugin {
 	}
 
 	render() {
-		// this.animate()
 		this.animate()
 		if (this.animating || this.force) {
 			this.force = false
@@ -71,12 +66,12 @@ export default class ObserverPlugin extends ModularPlugin {
 		const toDelete: string[] = []
 		this.animations.forEach((item) => {
 			if (item.calculate) {
-				item.dataCalculated = item.calculate()
+				item.calculated = item.calculate()
 			}
 		})
 		this.animations.forEach((item, id) => {
 			if (item.animate) {
-				item.animate(item.dataCalculated || null)
+				item.animate(item.calculated || null)
 			}
 			if (!item.keep) {
 				toDelete.push(id)
@@ -88,8 +83,4 @@ export default class ObserverPlugin extends ModularPlugin {
 		})
 		this.animating = this.animations.size > 0
 	}
-
-	// aAnimate(): void {
-
-	// }
 }
