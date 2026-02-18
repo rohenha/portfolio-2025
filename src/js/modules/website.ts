@@ -19,6 +19,9 @@ export default class Website extends Mmodule {
 		)
 	}
 
+	/**
+	 * @description Emit events to update modules within the specified containers and update navigation links after content replacement
+	 */
 	afterContentReplace({
 		containers,
 		to,
@@ -30,10 +33,19 @@ export default class Website extends Mmodule {
 		this.updateNav(to)
 	}
 
+	/**
+	 * @description Emit events to destroy modules within the specified containers before content replacement
+	 */
 	beforeContentReplace({ containers }: { containers: Array<HTMLElement> }) {
 		this.updateContent(containers, "app:destroy")
 	}
 
+	/**
+	 * @description Emit events to update or destroy modules within the specified containers
+	 * @param containers - An array of container elements to target
+	 * @param method - The event method to emit ("app:update" or "app:destroy")
+	 * @returns void
+	 */
 	updateContent(
 		containers: Array<HTMLElement>,
 		method: "app:update" | "app:destroy",
@@ -45,6 +57,11 @@ export default class Website extends Mmodule {
 		})
 	}
 
+	/**
+	 * @description Update the navigation links based on the current URL
+	 * @param to - The target URL and related information
+	 * @returns void
+	 */
 	updateNav(to: { hash: string; html: string; url: string }): void {
 		const navLinks = this.$("navLink")
 		this.emit("plugins:animations:add", {
@@ -53,7 +70,6 @@ export default class Website extends Mmodule {
 				animate: () => {
 					navLinks.forEach((link) => {
 						const url = link.getAttribute("href")
-						console.log(`Comparing ${url} with ${to.url}`)
 						if (
 							url === to.url ||
 							(to.url.startsWith(url as string) && to.url !== "/")

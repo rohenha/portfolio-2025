@@ -1,6 +1,10 @@
+import { isProdSpace } from "@utils/config"
+
 const metadata: MetadataProps = {
 	siteName: "Romain Breton",
-	siteUrl: "https://ww.romain-breton.com",
+	siteUrl: isProdSpace
+		? "https://www.romain-breton.com"
+		: "https://preprod.romain-breton.com",
 	lang: "fr",
 	locale: "fr_FR",
 	suffixTitle: " - Romain Breton",
@@ -8,7 +12,7 @@ const metadata: MetadataProps = {
 	seoDescription:
 		"Portfolio of Romain Breton, a web developer specializing in modern web technologies",
 	ogImage: "/assets/og-image.png",
-	robots: "index, follow",
+	robots: isProdSpace ? "index, follow" : "noindex, nofollow",
 	ogType: "website",
 	ogTitle: "Romain Breton - Portfolio",
 	ogDescription:
