@@ -56,11 +56,7 @@ export default class Counter extends Mmodule {
 		this.emit("animations:add", {
 			name: `${this.dataName}_${this.id}`,
 			animation: {
-				calculate: (): string => {
-					return "hello world"
-				},
-				animate: (text: string) => {
-					console.log(text)
+				animate: () => {
 					this.render()
 				},
 			},

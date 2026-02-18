@@ -3,10 +3,8 @@ import ModularPlugin, {
 } from "@js/classes/modular-plugin"
 
 export interface Animation {
-	calculate?: () => any
-	animate?: (args?: any) => void
+	animate: () => void
 	keep?: boolean
-	calculated?: any
 }
 
 export default class ObserverPlugin extends ModularPlugin {
@@ -24,16 +22,14 @@ export default class ObserverPlugin extends ModularPlugin {
 		this.delayStart = undefined
 		this.render = this.render.bind(this)
 		this.requestId = undefined
-
-		this.bus.on("plugins:animations:add", this.add.bind(this))
-		this.bus.on("plugins:animations:remove", this.remove.bind(this))
+		this.busMap = {
+			"plugins:animations:add": "add",
+			"plugins:animations:remove": "remove",
+		}
 	}
 
-	// onModuleMount({ instance, config }: ModularPluginMethod): void {}
-
-	// onModuleUnMount({ instance }: ModularPluginMethod): void {}
-
 	add({ name, animation }: { name: string; animation: Animation }) {
+		console.log(`Adding animation: ${name}`)
 		if (this.animations.get(name)) {
 			this.remove(name)
 		}
@@ -64,15 +60,8 @@ export default class ObserverPlugin extends ModularPlugin {
 
 	animate(): void {
 		const toDelete: string[] = []
-		this.animations.forEach((item) => {
-			if (item.calculate) {
-				item.calculated = item.calculate()
-			}
-		})
 		this.animations.forEach((item, id) => {
-			if (item.animate) {
-				item.animate(item.calculated || null)
-			}
+			item.animate()
 			if (!item.keep) {
 				toDelete.push(id)
 			}

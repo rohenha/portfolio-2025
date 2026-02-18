@@ -1,6 +1,7 @@
 import EventBus from "@js/classes/event-bus"
 import Mmodule, { type ModuleConstructor } from "@js/classes/module"
 import ModularPlugin from "@js/classes/modular-plugin"
+import { map } from "astro:schema"
 export interface ModulesCurrent {
 	[moduleId: string]: Mmodule
 }
@@ -35,7 +36,16 @@ export default class ModulesManager {
 	}) {
 		this.modules = new Map(modules.map((module) => [module.name, module]))
 		this.bus = new EventBus()
-		this.plugins =
+		this.plugins = this.initPlugins(plugins || [])
+		this.optimalSelector = this.buildOptimalSelector()
+		this.initEvents()
+		this.update({ scope: parent || document, init: true })
+	}
+
+	initPlugins(
+		plugins: Array<[typeof ModularPlugin, (any | null)?]>,
+	): Map<string, ModularPlugin> {
+		const mapPlugins =
 			plugins?.reduce(
 				(acc, plugin) => {
 					const instance = new plugin[0]({
@@ -47,9 +57,12 @@ export default class ModulesManager {
 				},
 				new Map() as Map<string, ModularPlugin>,
 			) || new Map()
-		this.optimalSelector = this.buildOptimalSelector()
-		this.initEvents()
-		this.update({ scope: parent || document, init: true })
+
+		mapPlugins.forEach((plugin) => {
+			plugin.mount()
+		})
+
+		return mapPlugins
 	}
 
 	initEvents() {
@@ -142,18 +155,11 @@ export default class ModulesManager {
 				bus: this.bus,
 			})
 			moduleInstance.mount()
+			this.bus.emit("app:module:onMount", {
+				instance: moduleInstance,
+				config: moduleItem,
+			})
 			this.newModules.set(moduleId, moduleInstance)
-
-			// if (this.plugins.size > 0) {
-			// 	this.plugins.forEach((plugin) => {
-			// 		if (plugin.onModuleMount) {
-			// 			plugin.onModuleMount({
-			// 				instance: moduleInstance,
-			// 				config: moduleItem,
-			// 			})
-			// 		}
-			// 	})
-			// }
 		} catch (error) {
 			console.error(`Error loading module ${moduleItem.name}:`, error)
 		}
@@ -171,39 +177,19 @@ export default class ModulesManager {
 				if (!element.hasAttribute(`data-module-${name}`)) {
 					return
 				}
+				console.log("Unmounting module", name)
 				const moduleId = element.getAttribute(`data-module-${name}`) as string
 				const moduleInstance = this.currentModules.get(moduleId ?? "")
 				if (!moduleInstance) {
 					return
 				}
 				moduleInstance.unmount()
+				this.bus.emit("app:module:onUnMount", {
+					instance: moduleInstance,
+				})
 				this.currentModules.delete(moduleId)
 			})
 		})
-		// elementsModule.forEach((element) => {
-		// 	const moduleItems = this.modules.filter((moduleItem) => {
-		// 		return element.hasAttribute(`data-module-${moduleItem.name}`)
-		// 	})
-		// 	moduleItems.forEach((moduleItem) => {
-		// 		const moduleId = element.getAttribute(
-		// 			`data-module-${moduleItem.name}`,
-		// 		) as string
-		// 		const moduleInstance = this.currentModules.get(moduleId ?? "")
-		// 		if (!moduleInstance) {
-		// 			return
-		// 		}
-		// 		// this.plugins.forEach((plugin) => {
-		// 		// 	if (plugin.onModuleUnMount) {
-		// 		// 		plugin.onModuleUnMount({
-		// 		// 			instance: moduleInstance,
-		// 		// 			config: moduleItem,
-		// 		// 		})
-		// 		// 	}
-		// 		// })
-		// 		moduleInstance.unmount()
-		// 		this.currentModules.delete(moduleId)
-		// 	})
-		// })
 	}
 
 	/**

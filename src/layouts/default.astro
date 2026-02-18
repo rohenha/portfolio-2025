@@ -122,19 +122,7 @@ const {
 	window.addEventListener("load", () => {
 		new Modular({
 			modules,
-			plugins: [
-				[ResizePlugin],
-				[ObserverPlugin],
-				[AnimationsPlugin],
-				// new ObserverPlugin(),
-				// new AnimationsPlugin(),
-			],
-			// plugins: [ResizePlugin(), ObserverPlugin()],
+			plugins: [[ObserverPlugin], [AnimationsPlugin], [ResizePlugin]],
 		})
-		// manager.mount()
-
-		// setTimeout(() => {
-		// 	manager.unmount()
-		// }, 4000)
 	})
 </script>

@@ -111,13 +111,10 @@ export default class Counter extends Mmodule {
 	}
 
 	onWatch() {
+		const [text] = this.$("message")
 		this.emit("animations:add", {
 			name: `${this.dataName}_${this.id}`,
 			animation: {
-				calculate: (): HTMLElement => {
-					const [text] = this.$("message")
-					return text
-				},
 				animate: (text: HTMLElement) => {
 					this.render(text)
 				},

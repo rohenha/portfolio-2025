@@ -2,6 +2,11 @@ import { debounce } from "@js/utils/tools"
 import ModularPlugin, {
 	type ModulePluginInit,
 } from "@js/classes/modular-plugin"
+import type Mmodule from "@js/classes/module"
+
+export interface ResizableModule extends Mmodule {
+	onResize: () => void
+}
 
 export default class ResizePlugin extends ModularPlugin {
 	public name: string = "resize"
@@ -15,8 +20,5 @@ export default class ResizePlugin extends ModularPlugin {
 
 	resize() {
 		this.bus.emit("plugins:resizer:resize")
-		window.requestAnimationFrame(() => {
-			this.bus.emit("plugins:resizer:render")
-		})
 	}
 }

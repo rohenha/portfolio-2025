@@ -32,18 +32,12 @@ export default class Mmodule {
 		this.busEvents = new Map()
 		this._busMap = {
 			"app:onUpdate": "onUpdate",
+			call: "call",
 		}
 		this.busMap = {}
 		this.states = {}
 	}
 
-	/**
-	 * @description This method is called when the module is initialized
-	 * You can use this method to set up event listeners, fetch data, etc.
-	 * Make sure to clean up any resources in the destroy method.
-	 * @returns void
-	 */
-	onMount() {}
 	/**
 	 * @description This method is called when the module is initialized. It's called internally by the library and should not be called directly. The mMount method is called after the module is fully initialized and the reactive state is set up.
 	 */
@@ -54,6 +48,27 @@ export default class Mmodule {
 		this.initEvents()
 		this.onMount()
 	}
+
+	/**
+	 * @description This method is called when the module is initialized
+	 * You can use this method to set up event listeners, fetch data, etc.
+	 * Make sure to clean up any resources in the destroy method.
+	 * @returns void
+	 */
+	onMount() {}
+
+	/**
+	 * @description This method is called when the module is destroyed. It's called internally by the library and should not be called directly. The mDestroy method is called before the module is fully destroyed .
+	 */
+	unmount() {
+		this.removeEvents()
+		this.onUnMount()
+	}
+
+	/**
+	 * @description This method is called when the module is destroyed. You can use this method to clean up event listeners, cancel timers, etc. Make sure to call super.destroy() if you override this method in a subclass.
+	 */
+	onUnMount() {}
 
 	on(event: string, handler: (payload?: any) => void) {
 		const off = this.bus.on(event, handler)
@@ -80,7 +95,6 @@ export default class Mmodule {
 
 	initEvents() {
 		const events = Object.assign({}, this._busMap, this.busMap)
-		events["call"] = "call"
 		Object.keys(events).forEach((id) => {
 			const handlerName = events[id]
 			const handler = this[handlerName]
@@ -97,19 +111,6 @@ export default class Mmodule {
 			return
 		}
 		return this[method](payload)
-	}
-	/**
-	 * @description This method is called when the module is destroyed. You can use this method to clean up event listeners, cancel timers, etc. Make sure to call super.destroy() if you override this method in a subclass.
-	 */
-	onUnMount() {
-		console.log(`Module ${this.moduleKey} destroyed`)
-	}
-	/**
-	 * @description This method is called when the module is destroyed. It's called internally by the library and should not be called directly. The mDestroy method is called before the module is fully destroyed .
-	 */
-	unmount() {
-		this.removeEvents()
-		this.onUnMount()
 	}
 
 	removeEvents() {

@@ -8,6 +8,10 @@ export default class Resizer extends Mmodule {
 		}
 	}
 
+	onMount(): void {
+		console.log("Resizer mounted")
+	}
+
 	onResize(): void {
 		console.log("Resizer resized")
 	}

@@ -8,7 +8,7 @@
 - [x] Ajouter un système de render avoir une liste de data this qu'on met à
       jour. si ces données changent alors faire une raf lancer fonction render
       qui update le composant.
-- [] fonction animate pour centraliser les animations dans le manager
+- [X] fonction animate pour centraliser les animations dans le manager
 - [] Avoir plusieurs types de modules (par exemple: un pour animer, un reactif)
 - [x] Avoir un système de plugin que je pourrai ajouter (intersection observer,
       resize, animation), ce qui permettrait de pouvoir alléger de base le

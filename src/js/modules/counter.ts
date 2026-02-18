@@ -8,9 +8,6 @@ export default class Counter extends Mmodule {
 		this.states = {
 			number: 0,
 		}
-		this.busMap = {
-			// "plugins:observer:update": "onUpdateView",
-		}
 
 		this.emit("plugins:observer:on", {
 			el: this.el,
@@ -27,7 +24,6 @@ export default class Counter extends Mmodule {
 	}
 
 	onUpdateView(state: boolean) {
-		console.log(`Counter visibility: ${state}`)
 		if (state) {
 			this.interval = setInterval(() => {
 				this.states.number += 1
@@ -38,22 +34,20 @@ export default class Counter extends Mmodule {
 	}
 
 	onWatch() {
+		const [text] = this.$("message")
 		this.emit("plugins:animations:add", {
 			name: `${this.moduleKey}`,
 			animation: {
-				calculate: (): HTMLElement => {
-					const [text] = this.$("message")
-					return text
-				},
-				animate: (text: HTMLElement) => {
+				animate: () => {
 					this.render(text)
 				},
+				keep: false,
 			},
-			keep: false,
 		})
 	}
 
 	onRender(text: HTMLElement) {
+		console.log(`Counter rendered: ${this.states.number}`)
 		text.textContent = `Counter: ${this.states.number}`
 	}
 

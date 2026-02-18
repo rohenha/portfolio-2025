@@ -1,6 +1,12 @@
 import ModularPlugin, {
 	type ModulePluginInit,
 } from "@js/classes/modular-plugin"
+import type Mmodule from "@js/classes/module"
+
+export interface ResizableModule extends Mmodule {
+	updateView: (state: boolean) => void
+	onUpdateView: (state: boolean) => void
+}
 
 export default class ObserverPlugin extends ModularPlugin {
 	public name: string = "observer"
@@ -18,8 +24,10 @@ export default class ObserverPlugin extends ModularPlugin {
 				threshold: 0.1,
 			}),
 		)
-		this.bus.on("plugins:observer:on", this.observe.bind(this))
-		this.bus.on("plugins:observer:off", this.unobserve.bind(this))
+		this.busMap = {
+			"plugins:observer:on": "observe",
+			"plugins:observer:off": "unobserve",
+		}
 	}
 
 	observe({ el, key, once }: { el: HTMLElement; key: string; once?: boolean }) {
