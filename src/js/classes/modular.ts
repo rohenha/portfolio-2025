@@ -1,10 +1,8 @@
 import EventBus from "@js/classes/event-bus"
 import Mmodule, { type ModuleConstructor } from "@js/classes/module"
-import ModularPlugin from "@js/classes/modular-plugin"
-import { map } from "astro:schema"
-export interface ModulesCurrent {
-	[moduleId: string]: Mmodule
-}
+import ModularPlugin, {
+	type ModularPluginMethod,
+} from "@js/classes/modular-plugin"
 
 export interface ModuleConfig {
 	name: string
@@ -154,11 +152,6 @@ export default class ModulesManager {
 				dataName: moduleItem.name,
 				bus: this.bus,
 			})
-			moduleInstance.mount()
-			this.bus.emit("app:module:onMount", {
-				instance: moduleInstance,
-				config: moduleItem,
-			})
 			this.newModules.set(moduleId, moduleInstance)
 		} catch (error) {
 			console.error(`Error loading module ${moduleItem.name}:`, error)
@@ -186,7 +179,7 @@ export default class ModulesManager {
 				moduleInstance.unmount()
 				this.bus.emit("app:module:onUnMount", {
 					instance: moduleInstance,
-				})
+				} as ModularPluginMethod)
 				this.currentModules.delete(moduleId)
 			})
 		})
@@ -207,6 +200,13 @@ export default class ModulesManager {
 		return new Promise(async (resolve) => {
 			const container = scope || document
 			await this.mountModules(container)
+
+			this.newModules.forEach((moduleInstance) => {
+				moduleInstance.mount()
+				this.bus.emit("app:module:onMount", {
+					instance: moduleInstance,
+				} as ModularPluginMethod)
+			})
 
 			if (!init) {
 				this.bus.emit("app:onUpdate")

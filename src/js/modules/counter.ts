@@ -55,4 +55,16 @@ export default class Counter extends Mmodule {
 		console.log("Counter unmounted")
 		this.emit("observer:off", this.el)
 	}
+
+	test() {
+		return new Promise((resolve) => {
+			resolve(
+				`Hello from Scroll module async! Received your message: ${this.id}`,
+			)
+		})
+	}
+
+	test2() {
+		return "Hello from Test module! This is test2 function."
+	}
 }

@@ -1,4 +1,3 @@
-import { type ModuleConfig } from "@js/classes/modular"
 import EventBus from "@js/classes/event-bus"
 
 import type Mmodule from "@js/classes/module"
@@ -10,7 +9,6 @@ export interface ModulePluginInit {
 
 export interface ModularPluginMethod {
 	instance: Mmodule
-	config: ModuleConfig
 }
 
 export default class ModularPlugin {
@@ -37,9 +35,7 @@ export default class ModularPlugin {
 		this.onMount()
 	}
 
-	onMount(): void {
-		console.log("ModularPlugin mounted", this.name)
-	}
+	onMount(): void {}
 
 	emit(event: string, payload?: any) {
 		return this.bus.emit(event, payload)

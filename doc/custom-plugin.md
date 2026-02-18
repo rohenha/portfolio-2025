@@ -33,3 +33,10 @@ new Modular({
 	],
 })
 ```
+
+    	<div data-module-counter>
+    		<p class="" data-counter="message">Counter: 0</p>
+    	</div>
+    	<div data-module-resizer>
+    		<p class="">Resizer module</p>
+    	</div>

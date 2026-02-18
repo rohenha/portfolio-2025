@@ -38,6 +38,7 @@ const currentPath = Astro.url.pathname
 		<a
 			href="/"
 			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 md:relative md:top-[-0.1rem] focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1 -order-2"
+			data-website="navLink"
 		>
 			R<span class="sr-only">omain</span> B<span class="sr-only">reton</span>
 		</a>
@@ -49,10 +50,12 @@ const currentPath = Astro.url.pathname
 				nav.header.map((item) => (
 					<li>
 						<Button
-							attributes={formatLink(item, currentPath)}
+							attributes={{
+								...formatLink(item, currentPath),
+								"data-website": "navLink",
+							}}
 							href={item.url}
 							variant="nav-alt-gray-900"
-							class={currentPath === item.url ? " -active" : ""}
 						>
 							{item.name}
 						</Button>

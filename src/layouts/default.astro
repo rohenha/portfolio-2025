@@ -99,14 +99,14 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body class="" data-module-scroll data-module-website>
+	<body class="" data-module-website>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />
 		<slot />
-		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow"
-			><span class="sr-only">Retour en haut</span></Button
-		>
+		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow">
+			<span class="sr-only">Retour en haut</span>
+		</Button>
 		<Prefooter />
 		<Footer />
 	</body>

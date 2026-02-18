@@ -26,6 +26,7 @@ const currentPath = Astro.url.pathname
 					<a
 						href="/"
 						class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1"
+						data-website="navLink"
 					>
 						R<span class="sr-only">omain</span> B<span class="sr-only">
 							reton
@@ -37,10 +38,12 @@ const currentPath = Astro.url.pathname
 						<li>
 							{item.url ? (
 								<Button
-									attributes={formatLink(item, currentPath)}
+									attributes={{
+										...formatLink(item, currentPath),
+										"data-website": "navLink",
+									}}
 									href={item.url}
 									variant="nav-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
 								>
 									{item.name}
 								</Button>
@@ -60,10 +63,12 @@ const currentPath = Astro.url.pathname
 						<li>
 							{item.url ? (
 								<Button
-									attributes={formatLink(item, currentPath)}
+									attributes={{
+										...formatLink(item, currentPath),
+										"data-website": "navLink",
+									}}
 									href={item.url}
 									variant="link-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
 									icon="arrow"
 								>
 									{item.name}
@@ -130,10 +135,12 @@ const currentPath = Astro.url.pathname
 						return item.url ? (
 							<li>
 								<Button
-									attributes={formatLink(item, currentPath)}
+									attributes={{
+										...formatLink(item, currentPath),
+										"data-website": "navLink",
+									}}
 									href={item.url}
 									variant="link-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
 								>
 									{item.name}
 								</Button>
