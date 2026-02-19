@@ -2,7 +2,7 @@ on:
   workflow_call:
     inputs:
       image:
-        required: true
+        required: false
         type: string
         default: ubuntu-latest
       environment:
@@ -12,7 +12,7 @@ on:
       node_version:
         required: false
         type: string
-        default: 20.12
+        default: 24.13
       build_script:
         required: false
         type: string
