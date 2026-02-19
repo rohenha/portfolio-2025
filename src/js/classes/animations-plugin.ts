@@ -29,7 +29,6 @@ export default class ObserverPlugin extends ModularPlugin {
 	}
 
 	add({ name, animation }: { name: string; animation: Animation }) {
-		console.log(`Adding animation: ${name}`)
 		if (this.animations.get(name)) {
 			this.remove(name)
 		}

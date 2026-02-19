@@ -29,8 +29,9 @@
 	},
 	"homepage": "https://github.com/rohenha/portfolio-2025#readme",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "astro dev --host",
 		"build": "astro build --space preprod",
+		"build:prod": "astro build --space prod",
 		"preview": "astro preview",
 		"astro": "astro",
 		"sprite": "node ./tools/sprite.js",

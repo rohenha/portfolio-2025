@@ -1,0 +1,47 @@
+on:
+  workflow_call:
+		inputs:
+      image:
+        required: true
+        type: string
+        default: ubuntu-latest
+      environment:
+        required: true
+        type: string
+        default: preprod
+			node_version:
+        required: false
+        type: string
+        default: 20.12
+			build_script:
+        required: false
+        type: string
+        default: npm run build
+jobs:
+  build:
+    name: Build Astro
+		runs-on: ${{ inputs.image }}
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build website
+				run: |
+          ${{ inputs.build_script }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          include-hidden-files: true

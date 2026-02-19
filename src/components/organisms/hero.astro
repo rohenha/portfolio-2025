@@ -7,6 +7,7 @@ export interface Props {
 	title?: string
 	description?: string
 	suptitle?: string
+	letters?: Array<string>
 	link?: {
 		url: string
 		label: string
@@ -14,20 +15,26 @@ export interface Props {
 	}
 }
 
-const { title = "", description = "", suptitle = "", link = null } = Astro.props
+const {
+	title = "",
+	description = "",
+	suptitle = "",
+	link = null,
+	letters = [],
+} = Astro.props
 ---
 
-<Grid Tag="header" class="pt-[43rem] pb-[2rem] items-end">
+<Grid Tag="header" class="o-hero pt-[43rem] pb-[2rem] items-end">
 	{
 		suptitle || description ? (
-			<div class="col-span-full md:col-span-16">
+			<div class="o-hero__content col-span-full md:col-span-16">
 				{suptitle ? (
 					<Text variant="tsm" class="mb-tiny">
 						{suptitle}
 					</Text>
 				) : null}
 				{description ? (
-					<Text variant="pmd" class="mb-sm md:mb-0">
+					<Text variant="pmd" class="o-hero__content mb-sm md:mb-0">
 						{description}
 					</Text>
 				) : null}
@@ -37,7 +44,7 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 	{
 		link ? (
 			<Button
-				class="col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
+				class="o-hero__content col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
 				icon="arrow"
 				href={link.url}
 				attributes={link.attributes}
@@ -46,7 +53,92 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 			</Button>
 		) : null
 	}
-	<Text variant="thuge" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
-		>{title}</Text
-	>
+	<Text
+		variant="thuge"
+		Tag="h1"
+		attributes={{
+			"data-module-hero": "heroTitle",
+		}}
+		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
+		><span aria-hidden="true" data-hero="letters">
+			{letters.map((letter) => <span data-hero="letter">{letter}</span>)}
+		</span>
+		{
+			title.split(" ").map((word, i) =>
+				// prettier-ignore
+				<><span data-hero="word">{word}</span>{i < title.split(" ").length - 1 ? <span class="o-hero__space">&nbsp;</span> : null}</>,
+			)
+		}
+	</Text>
 </Grid>
+
+<style lang="scss" is:global>
+	.o-hero {
+		&__space {
+			display: none;
+		}
+		[data-hero="letters"] {
+			display: none;
+		}
+		[data-hero="word"] {
+			display: inline-block;
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			transition: none;
+			&.-animating {
+				.o-hero__content {
+					opacity: 0.01;
+				}
+
+				[data-hero="letters"] {
+					display: block;
+				}
+
+				[data-hero="letter"] {
+					display: inline-block;
+				}
+
+				[data-hero="word"] {
+					opacity: 0.01;
+					color: var(--color-gray-300);
+				}
+			}
+			[data-module-hero="heroTitle"] {
+				position: relative;
+			}
+
+			[data-hero="letters"] {
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+
+			[data-hero="letter"] {
+				transition: transform 1.6s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+				transform-origin: left center;
+				display: none;
+			}
+
+			&.-entered {
+				.o-hero__content {
+					opacity: 1;
+					transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+				}
+
+				[data-hero="word"] {
+					opacity: 1;
+					color: var(--color-gray-900);
+					transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+				}
+			}
+		}
+
+		// @media screen and (min-width: var(--breakpoint-md)) {
+		@media (min-width: theme("screens.md")) {
+			&__space {
+				display: inline-block;
+			}
+		}
+	}
+</style>

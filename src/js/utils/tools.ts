@@ -31,3 +31,14 @@ export const debounce = <T extends unknown[]>(
 		}, delay)
 	}
 }
+
+export const isReduced = () => {
+	return (
+		window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+		window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
+	)
+}
+
+export const isMobile = () => {
+	return window.innerWidth < 768
+}

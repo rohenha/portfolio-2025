@@ -1,7 +1,60 @@
 html.is-changing .transition-fade {
 	opacity: 1;
-	transition: opacity 0.25s;
+	transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 }
 html.is-animating .transition-fade {
-	opacity: 0;
+	opacity: 0.01;
+	transition: opacity 0.3s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.t-initTemplate {
+	.transition-fade {
+		opacity: 0.01;
+		transform: translate(0, 1rem);
+	}
+
+	.o-header {
+		> p {
+			opacity: 0.01;
+			transform: translate(-0.5rem, 0);
+		}
+		> nav {
+			opacity: 0.01;
+			transform: translate(0.5rem, 0);
+		}
+	}
+
+	&.is-changing {
+		.o-header > p,
+		.o-header > nav {
+			opacity: 1;
+			transform: translate(0, 0);
+			transition:
+				opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99) 1s,
+				transform 1s cubic-bezier(0.09, 0.42, 0.18, 0.99) 1s;
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+			}
+		}
+		.transition-fade {
+			opacity: 1;
+			transform: translate(0, 0);
+			transition:
+				opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99),
+				transform 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+			}
+		}
+	}
 }

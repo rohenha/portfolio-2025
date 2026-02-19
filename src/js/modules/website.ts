@@ -17,6 +17,31 @@ export default class Website extends Mmodule {
 				before: true,
 			},
 		)
+		this.swup.hooks.on("page:view", this.onPageView.bind(this))
+		this.enter()
+	}
+
+	enter() {
+		const html = document.documentElement
+		this.emit("plugins:animations:add", {
+			name: `${this.moduleKey}.enter`,
+			animation: {
+				animate: () => {
+					html.classList.add("is-changing")
+					setTimeout(() => {
+						this.onPageView()
+					}, 500)
+					setTimeout(() => {
+						html.classList.remove("t-initTemplate")
+						html.classList.remove("is-changing")
+					}, 2000)
+				},
+			},
+		})
+	}
+
+	onPageView() {
+		this.emit("website:loaded")
 	}
 
 	/**
@@ -26,17 +51,18 @@ export default class Website extends Mmodule {
 		containers,
 		to,
 	}: {
-		containers: Array<HTMLElement>
+		containers: Array<string>
 		to: { hash: string; html: string; url: string }
 	}) {
 		this.updateContent(containers, "app:update")
+		window.scrollTo(0, 0)
 		this.updateNav(to)
 	}
 
 	/**
 	 * @description Emit events to destroy modules within the specified containers before content replacement
 	 */
-	beforeContentReplace({ containers }: { containers: Array<HTMLElement> }) {
+	beforeContentReplace({ containers }: { containers: Array<string> }) {
 		this.updateContent(containers, "app:destroy")
 	}
 
@@ -47,7 +73,7 @@ export default class Website extends Mmodule {
 	 * @returns void
 	 */
 	updateContent(
-		containers: Array<HTMLElement>,
+		containers: Array<string>,
 		method: "app:update" | "app:destroy",
 	): void {
 		const elements = containers.join(", ")
