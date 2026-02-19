@@ -11,10 +11,10 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build.yml
-		with:
+    with:
       environment: preprod
       node_version: 22.22
-		secrets: inherit
+    secrets: inherit
 
   deploy:
     runs-on: ubuntu-latest
@@ -27,8 +27,8 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build
-          path: build
+          name: dist
+          path: dist
 
       # - name: Add resource hints in the .htaccess
       #   run: |
@@ -74,11 +74,11 @@ jobs:
         run: |
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git,.htacces,.htpasswd" -av --delete build/ \
+          --exclude=".git,.htacces,.htpasswd" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }} || true
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" -av --delete build/ \
+          --exclude=".git" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
 
       - name: Cleaning SSH keys

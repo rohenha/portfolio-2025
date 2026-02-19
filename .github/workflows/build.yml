@@ -1,6 +1,6 @@
 on:
   workflow_call:
-		inputs:
+    inputs:
       image:
         required: true
         type: string
@@ -9,18 +9,18 @@ on:
         required: true
         type: string
         default: preprod
-			node_version:
+      node_version:
         required: false
         type: string
         default: 20.12
-			build_script:
+      build_script:
         required: false
         type: string
         default: npm run build
 jobs:
   build:
     name: Build Astro
-		runs-on: ${{ inputs.image }}
+    runs-on: ${{ inputs.image }}
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Build website
-				run: |
+        run: |
           ${{ inputs.build_script }}
 
       - name: Upload Build Artifact
