@@ -78,11 +78,11 @@ jobs:
         run: |
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude-from="./CI/exclude.txt" -av --delete dist/ \
+          --exclude=".git" --exclude=".htaccess" --exclude=".htpasswd" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }} || true
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" -av --delete dist/ \
+          --exclude=".git" --exclude=".htaccess" --exclude=".htpasswd" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
       # - name: Rsync to Distant Environment
       #   uses: burnett01/rsync-deployments@5.2

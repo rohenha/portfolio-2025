@@ -38,6 +38,8 @@ jobs:
       - name: Build website
         run: |
           ${{ inputs.build_script }}
+        env:
+          SPACE: ${{ inputs.environment }}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
