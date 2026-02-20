@@ -47,17 +47,20 @@ jobs:
 
       - name: Removing all whitelisted IP
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          curl -k --retry 3 --retry-delay 2 --retry-all-errors -sm 45 \
+          -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
 
       - name: Whitelisting the runner IP
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          curl -k --retry 3 --retry-delay 2 --retry-all-errors -sm 45 \
+          -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
 
       - name: Making sure the IP is whitelisted
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          curl -k --retry 3 --retry-delay 2 --retry-all-errors -sm 45 \
+          -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
 
       - name: Installing the SSH Key
