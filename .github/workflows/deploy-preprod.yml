@@ -47,26 +47,18 @@ jobs:
 
       - name: Removing all whitelisted IP
         run: |
-          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
-          curl -sm 45 -u "${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-          -H 'Accept: application/json' \
-          "https://${{ secrets.CPANEL_SERVER }}:2083/${ENDPOINT}?r=remove_all" | grep -q '"status":1'
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
 
       - name: Whitelisting the runner IP
         run: |
-          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
-          curl -sm 45 -u "${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-          -H 'Accept: application/json' \
-          -d 'whitelist[address]=${{ steps.ip.outputs.ipv4 }}' \
-          -d 'whitelist[port]=22' \
-          "https://${{ secrets.CPANEL_SERVER }}:2083/${ENDPOINT}?r=add" | grep -q '"status":1'
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
 
       - name: Making sure the IP is whitelisted
         run: |
-          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
-          curl -sm 45 -u "${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-          -H 'Accept: application/json' \
-          "https://${{ secrets.CPANEL_SERVER }}:2083/${ENDPOINT}?r=list" | grep ${{ steps.ip.outputs.ipv4 }}
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
 
       - name: Installing the SSH Key
         run: |
