@@ -78,12 +78,23 @@ jobs:
         run: |
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git,.htacces,.htpasswd" -av --delete dist/ \
+          --exclude-from="./CI/exclude.txt" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }} || true
           sleep 2
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude=".git" -av --delete dist/ \
           ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
+      # - name: Rsync to Distant Environment
+      #   uses: burnett01/rsync-deployments@5.2
+      #   with:
+      #     switches: -uvr --delete --exclude-from="./CI/exclude.txt"
+      #     path: ${{ inputs.build_folder }}
+      #     remote_path: ${{ vars.REMOTE_PATH }}
+      #     remote_host: ${{ vars.DEPLOY_HOSTNAME }}
+      #     remote_user: ${{ secrets.CPANEL_USERNAME }}
+      #     remote_key: ${{ secrets.DEPLOY_KEY }}
+      #     remote_key_pass: ${{ secrets.DEPLOY_KEY_PASS }}
+      #     remote_port: ${{ vars.DEPLOY_PORT || 22 }}
 
       - name: Cleaning SSH keys
         if: always()
