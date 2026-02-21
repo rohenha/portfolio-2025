@@ -63,42 +63,17 @@ jobs:
           -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
 
-      - name: Installing the SSH Key
-        run: |
-          eval $(ssh-agent -s)
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 0400 ~/.ssh/id_rsa
-
-      # Run rsync twice to see if it solves my issue. I have an issue where rsync is hanging randomly.
-      # It might be related to the Imunify360 firewall. When this occurs, Imunify seems to be reloading the ipset list.
-      # I need to investigate further.
-      - name: Sending data with RSYNC
-        run: |
-          sleep 2
-          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" --exclude=".htaccess" --exclude=".htpasswd" -av --delete dist/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }} || true
-          sleep 2
-          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" --exclude=".htaccess" --exclude=".htpasswd" -av --delete dist/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
-      # - name: Rsync to Distant Environment
-      #   uses: burnett01/rsync-deployments@5.2
-      #   with:
-      #     switches: -uvr --delete --exclude-from="./CI/exclude.txt"
-      #     path: ${{ inputs.build_folder }}
-      #     remote_path: ${{ vars.REMOTE_PATH }}
-      #     remote_host: ${{ vars.DEPLOY_HOSTNAME }}
-      #     remote_user: ${{ secrets.CPANEL_USERNAME }}
-      #     remote_key: ${{ secrets.DEPLOY_KEY }}
-      #     remote_key_pass: ${{ secrets.DEPLOY_KEY_PASS }}
-      #     remote_port: ${{ vars.DEPLOY_PORT || 22 }}
-
-      - name: Cleaning SSH keys
-        if: always()
-        run: rm -fr ~/.ssh
+      - name: Rsync to Distant Environment
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -av --delete --exclude-from="./CI/exclude.txt"
+          path: dist/
+          remote_path:
+            /home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
+          remote_host: ${{ secrets.CPANEL_SERVER }}
+          remote_user: ${{ secrets.CPANEL_USERNAME }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_port: 22
 
       - name: Cleaning artifacts
         uses: geekyeggo/delete-artifact@v5
