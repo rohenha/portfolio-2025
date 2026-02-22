@@ -100,7 +100,7 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body class="" data-module-website>
+	<body class="" data-module-website="website">
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />
@@ -110,6 +110,21 @@ const {
 		</Button>
 		<Prefooter />
 		<Footer />
+		<noscript>
+			<style type="text/css">
+				.t-initTemplate .transition-fade {
+					opacity: 1;
+					transform: translate(0, 0);
+				}
+
+				.t-initTemplate .o-header > p {
+					opacity: 1;
+				}
+				.t-initTemplate .o-header > nav {
+					opacity: 1;
+				}
+			</style>
+		</noscript>
 	</body>
 </html>
 

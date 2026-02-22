@@ -81,7 +81,7 @@ export default class Counter extends Mmodule {
 
 	onUnMount(): void {
 		console.log("TestScroll unmounted")
-		this.bus.emit("observer:off", `${this.dataName}_${this.id}`)
+		this.bus.emit("plugins:observer:off", `${this.dataName}_${this.id}`)
 	}
 
 	onResize(): void {

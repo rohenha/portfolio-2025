@@ -1,29 +1,26 @@
 import Mmodule from "@js/classes/module"
 import { isReduced, isMobile } from "@js/utils/tools"
+import { animateCss, type CancelledPromise } from "@js/utils/animations"
 
 export default class HeroTitle extends Mmodule {
+	private promise: CancelledPromise<void> | null
 	constructor(params: any) {
 		super(params)
+		this.promise = null
 		this.busMap = {
 			"website:loaded": "onLoaded",
 		}
 		this.timeout = null
+	}
 
-		console.log(isReduced(), isMobile(), "test")
+	onMount() {
 		if (isReduced() || isMobile()) {
 			return
 		}
 
-		console.log("test")
 		const parent = this.el.parentNode as HTMLElement
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}:enter`,
-			animation: {
-				animate: () => {
-					parent.classList.add("-animating")
-				},
-				keep: false,
-			},
+		this.animate("enterFirst", () => {
+			parent.classList.add("-animating")
 		})
 	}
 
@@ -31,7 +28,6 @@ export default class HeroTitle extends Mmodule {
 		if (isReduced() || isMobile()) {
 			return
 		}
-
 		const letters = this.$("letter") as HTMLElement[]
 		const words = this.$("word") as HTMLElement[]
 		const data: Array<{ el: HTMLElement; transform: string }> = []
@@ -41,55 +37,47 @@ export default class HeroTitle extends Mmodule {
 			const wordRect = word.getBoundingClientRect()
 			const offsetX = letterRect.left - wordRect.left
 			const offsetY = letterRect.top - wordRect.top
-			console.log(letterRect.top, wordRect.top)
 			data.push({
 				el: letter,
 				transform: `translate(${-offsetX}px, ${-offsetY}px)`,
 			})
 		})
 
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}:enter`,
-			animation: {
-				animate: () => {
-					data.forEach(({ el, transform }) => {
-						el.style.transform = transform
-					})
-				},
-				keep: false,
+		const parent = this.el.parentNode as HTMLElement
+		const firstAnimation = animateCss({
+			name: `letterHero:enter`,
+			parent: this.el,
+			handler: () => {
+				data.forEach(({ el, transform }) => {
+					el.style.transform = transform
+				})
 			},
 		})
-
-		const parent = this.el.parentNode as HTMLElement
-		this.timeout = setTimeout(() => {
-			this.emit("plugins:animations:add", {
-				name: `${this.moduleKey}:enter`,
-				animation: {
-					animate: () => {
-						parent.classList.add("-entered")
-						this.timeout = setTimeout(() => {
-							this.emit("plugins:animations:add", {
-								name: `${this.moduleKey}:enter`,
-								animation: {
-									animate: () => {
-										parent.classList.remove("-animating")
-										parent.classList.remove("-entered")
-									},
-									keep: false,
-								},
-							})
-						}, 1600)
-					},
-					keep: false,
+		this.promise = firstAnimation
+		firstAnimation.then(() => {
+			const secondAnimation = animateCss({
+				name: `introHero:enter`,
+				parent: parent,
+				handler: () => {
+					parent.classList.add("-entered")
 				},
 			})
-		}, 1600)
+			this.promise = secondAnimation
+			secondAnimation.then(() => {
+				this.animate("enter", () => {
+					parent.classList.remove("-animating")
+					parent.classList.remove("-entered")
+				})
+			})
+		})
 	}
 
 	onUnMount(): void {
+		this.emit("plugins:animations:remove", `${this.moduleKey}:enterFirst`)
+		this.emit("plugins:animations:remove", `${this.moduleKey}:enter`)
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 		}
-		this.emit("plugins:animations:remove", `${this.moduleKey}:enter`)
+		this.promise?.cancel()
 	}
 }

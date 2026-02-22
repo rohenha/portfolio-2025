@@ -11,6 +11,7 @@
 		display: inline-block;
 		background-repeat: no-repeat;
 		height: 1rem;
+		margin-left: var(--spacing-tiny);
 		width: 1rem;
 		@extend .icon-arrow;
 	}
@@ -140,7 +141,7 @@
 			transform: translate(-90%, -50%);
 		}
 
-		@media (hover: hover) {
+		@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 			span {
 				transition: transform 0.3s ease;
 			}

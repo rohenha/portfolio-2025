@@ -1,11 +1,23 @@
-import Swup from "swup"
+import SwupRouteNamePlugin from "@swup/route-name-plugin"
 import Mmodule from "@js/classes/module"
+import Swup, { type Visit, type HookArguments } from "swup"
 
 export default class Website extends Mmodule {
 	onMount() {
-		console.log("Website initialized")
 		this.swup = new Swup({
 			containers: ['[data-swup="container"]'],
+			plugins: [
+				new SwupRouteNamePlugin({
+					routes: [
+						{ name: "home", path: "/" },
+						{ name: "methodo", path: "/methodo" },
+						{ name: "about", path: "/a-propos" },
+						{ name: "default", path: "(.*)" },
+					],
+				}),
+			],
+			cache: false,
+			animateHistoryBrowsing: true,
 		})
 		this.swup.hooks.on("content:replace", this.afterContentReplace.bind(this), {
 			before: false,
@@ -17,53 +29,62 @@ export default class Website extends Mmodule {
 				before: true,
 			},
 		)
-		this.swup.hooks.on("page:view", this.onPageView.bind(this))
-		this.enter()
+		this.swup.hooks.on("animation:in:end", this.onPageView.bind(this), {
+			before: false,
+		})
+		this.swup.hooks.on("enable", this.enter.bind(this), {
+			before: false,
+			once: true,
+		})
+		// this.enter()
 	}
 
-	enter() {
+	enter(visit: Visit) {
 		const html = document.documentElement
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}.enter`,
-			animation: {
-				animate: () => {
-					html.classList.add("is-changing")
-					setTimeout(() => {
-						this.onPageView()
-					}, 500)
-					setTimeout(() => {
-						html.classList.remove("t-initTemplate")
-						html.classList.remove("is-changing")
-					}, 2000)
-				},
-			},
+		this.animate("enter", () => {
+			html.classList.add("is-changing")
+			this.animate("enter", () => {
+				this.onPageView(visit)
+			})
+			setTimeout(() => {
+				html.classList.remove("t-initTemplate")
+				html.classList.remove("is-changing")
+			}, 2000)
 		})
 	}
 
-	onPageView() {
+	onPageView(visit: Visit) {
+		this.emit("toggleExperience:experience:experience", {
+			enable: visit.to.route !== "default",
+		})
 		this.emit("website:loaded")
 	}
 
 	/**
 	 * @description Emit events to update modules within the specified containers and update navigation links after content replacement
 	 */
-	afterContentReplace({
-		containers,
-		to,
-	}: {
-		containers: Array<string>
-		to: { hash: string; html: string; url: string }
-	}) {
-		this.updateContent(containers, "app:update")
+	afterContentReplace(
+		visit: Visit,
+		{ page }: HookArguments<"content:replace">,
+	) {
+		this.updateContent(visit.containers, "app:update")
 		window.scrollTo(0, 0)
-		this.updateNav(to)
+		this.updateNav({
+			hash: visit.to.hash,
+			html: page.html,
+			url: page.url,
+		})
 	}
 
 	/**
 	 * @description Emit events to destroy modules within the specified containers before content replacement
 	 */
-	beforeContentReplace({ containers }: { containers: Array<string> }) {
-		this.updateContent(containers, "app:destroy")
+	beforeContentReplace(
+		visit: Visit,
+		args: HookArguments<"content:replace">,
+	): void {
+		void args
+		this.updateContent(visit.containers, "app:destroy")
 	}
 
 	/**
@@ -88,26 +109,28 @@ export default class Website extends Mmodule {
 	 * @param to - The target URL and related information
 	 * @returns void
 	 */
-	updateNav(to: { hash: string; html: string; url: string }): void {
+	updateNav(to: { hash?: string; html: string; url: string }): void {
 		const navLinks = this.$("navLink")
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}.nav`,
-			animation: {
-				animate: () => {
-					navLinks.forEach((link) => {
-						const url = link.getAttribute("href")
-						if (
-							url === to.url ||
-							(to.url.startsWith(url as string) && to.url !== "/")
-						) {
-							link.setAttribute("aria-current", "page")
-						} else {
-							link.removeAttribute("aria-current")
-						}
-					})
-				},
-				keep: false,
-			},
+		this.animate("nav", () => {
+			navLinks.forEach((link) => {
+				const url = link.getAttribute("href")
+				if (
+					url === to.url ||
+					(to.url.startsWith(url as string) && to.url !== "/")
+				) {
+					link.setAttribute("aria-current", "page")
+				} else {
+					link.removeAttribute("aria-current")
+				}
+			})
 		})
+	}
+
+	navigate({ url }: { url: string }): void {
+		this.swup?.navigate(url)
+	}
+
+	onUnMount() {
+		this.swup?.destroy()
 	}
 }

@@ -1,7 +1,9 @@
 import { type ModuleConfig } from "@js/classes/modular"
 // import Scroll from "./scroll"
 import Website from "./website"
-import Hero from "./hero"
+// import Hero from "./hero"
+import Experience from "./experience"
+import Morse from "./morse"
 
 const config: Array<ModuleConfig> = [
 	// {
@@ -17,8 +19,16 @@ const config: Array<ModuleConfig> = [
 	// 	loader: () => import("./resizer"),
 	// },
 	{
+		name: "morse",
+		module: Morse,
+	},
+	{
+		name: "experience",
+		module: Experience,
+	},
+	{
 		name: "hero",
-		module: Hero,
+		loader: () => import("./hero"),
 	},
 	{
 		name: "website",

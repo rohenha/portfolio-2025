@@ -52,20 +52,15 @@ export default class ObserverPlugin extends ModularPlugin {
 		entries.forEach((entry) => {
 			if (!this.elements.has(entry.target)) return
 			const key = this.elements.get(entry.target)
-			// if (el === entry.target) {
 			this.bus.emit(`call:${key}`, {
 				method: "updateView",
 				payload: entry.isIntersecting,
 			})
 			if (entry.isIntersecting && this.once.has(key)) {
-				console.log(`Unobserving ${key} after first intersection`)
 				observer.unobserve(entry.target)
 				this.elements.delete(entry.target)
 				this.once.delete(key)
 			}
-			// this.elements.forEach((el, key) => {
-			// 	// }
-			// })
 		})
 	}
 }

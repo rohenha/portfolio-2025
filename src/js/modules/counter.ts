@@ -8,14 +8,13 @@ export default class Counter extends Mmodule {
 		this.states = {
 			number: 0,
 		}
+	}
 
+	onMount() {
 		this.emit("plugins:observer:on", {
 			el: this.el,
 			key: `${this.moduleKey}`,
 		})
-	}
-
-	onMount() {
 		console.log("Counter mounted")
 	}
 
@@ -53,7 +52,7 @@ export default class Counter extends Mmodule {
 
 	onUnMount(): void {
 		console.log("Counter unmounted")
-		this.emit("observer:off", this.el)
+		this.emit("plugins:observer:off", this.el)
 	}
 
 	test() {

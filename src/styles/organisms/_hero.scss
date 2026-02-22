@@ -1,0 +1,67 @@
+.o-hero {
+	&__space {
+		display: none;
+	}
+	[data-hero="letters"] {
+		display: none;
+	}
+	[data-hero="word"] {
+		display: inline-block;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		&.-animating {
+			.o-hero__content {
+				opacity: 0.01;
+			}
+
+			[data-hero="letters"] {
+				display: block;
+			}
+
+			[data-hero="letter"] {
+				display: inline-block;
+			}
+
+			[data-hero="word"] {
+				color: var(--color-gray-300);
+				opacity: 0.01;
+			}
+		}
+		[data-module-hero="heroTitle"] {
+			position: relative;
+		}
+
+		[data-hero="letters"] {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: none;
+		}
+
+		[data-hero="letter"] {
+			display: none;
+			transform-origin: left center;
+			transition: transform 1.6s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+		}
+
+		&.-entered {
+			.o-hero__content {
+				opacity: 1;
+				transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+			}
+
+			[data-hero="word"] {
+				color: var(--color-gray-900);
+				opacity: 1;
+				transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+			}
+		}
+	}
+
+	@media (width >= 768px) {
+		// @media (min-width: theme("screens.md")) {
+		&__space {
+			display: inline-block;
+		}
+	}
+}

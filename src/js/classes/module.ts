@@ -2,14 +2,14 @@ import { debounce } from "@js/utils/tools"
 import type EventBus from "@js/classes/event-bus"
 
 export interface ModuleConstructorParams {
-	el: Element
+	el: HTMLElement
 	id: string
 	dataName: string
 	bus: EventBus
 }
 
 export default class Mmodule {
-	public el: Element
+	public el: HTMLElement
 	public id: string
 	public dataName: string
 	public moduleKey: string
@@ -206,6 +206,24 @@ export default class Mmodule {
 				return true
 			},
 		})
+	}
+
+	animate(name: string, animate: () => void, keep: boolean = false) {
+		this.emit("plugins:animations:add", {
+			name: `${this.moduleKey}.${name}`,
+			animation: { animate: animate, keep: keep },
+		})
+	}
+
+	observe(state: boolean) {
+		if (state) {
+			this.emit("plugins:observer:on", {
+				el: this.el,
+				key: `${this.moduleKey}`,
+			})
+		} else {
+			this.emit("plugins:observer:off", this.el)
+		}
 	}
 }
 

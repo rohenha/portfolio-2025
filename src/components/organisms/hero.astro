@@ -27,7 +27,10 @@ const {
 <Grid Tag="header" class="o-hero pt-[43rem] pb-[2rem] items-end">
 	{
 		suptitle || description ? (
-			<div class="o-hero__content col-span-full md:col-span-16">
+			<div
+				class="o-hero__content col-span-full md:col-span-16"
+				data-transition="introHero:enter"
+			>
 				{suptitle ? (
 					<Text variant="tsm" class="mb-tiny">
 						{suptitle}
@@ -61,7 +64,13 @@ const {
 		}}
 		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
 		><span aria-hidden="true" data-hero="letters">
-			{letters.map((letter) => <span data-hero="letter">{letter}</span>)}
+			{
+				letters.map((letter) => (
+					<span data-hero="letter" data-transition="letterHero:enter">
+						{letter}
+					</span>
+				))
+			}
 		</span>
 		{
 			title.split(" ").map((word, i) =>
@@ -71,74 +80,3 @@ const {
 		}
 	</Text>
 </Grid>
-
-<style lang="scss" is:global>
-	.o-hero {
-		&__space {
-			display: none;
-		}
-		[data-hero="letters"] {
-			display: none;
-		}
-		[data-hero="word"] {
-			display: inline-block;
-		}
-		@media (prefers-reduced-motion: no-preference) {
-			transition: none;
-			&.-animating {
-				.o-hero__content {
-					opacity: 0.01;
-				}
-
-				[data-hero="letters"] {
-					display: block;
-				}
-
-				[data-hero="letter"] {
-					display: inline-block;
-				}
-
-				[data-hero="word"] {
-					opacity: 0.01;
-					color: var(--color-gray-300);
-				}
-			}
-			[data-module-hero="heroTitle"] {
-				position: relative;
-			}
-
-			[data-hero="letters"] {
-				position: absolute;
-				top: 0;
-				left: 0;
-				display: none;
-			}
-
-			[data-hero="letter"] {
-				transition: transform 1.6s cubic-bezier(0.35, -0.01, 0.4, 0.99);
-				transform-origin: left center;
-				display: none;
-			}
-
-			&.-entered {
-				.o-hero__content {
-					opacity: 1;
-					transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
-				}
-
-				[data-hero="word"] {
-					opacity: 1;
-					color: var(--color-gray-900);
-					transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
-				}
-			}
-		}
-
-		// @media screen and (min-width: var(--breakpoint-md)) {
-		@media (min-width: theme("screens.md")) {
-			&__space {
-				display: inline-block;
-			}
-		}
-	}
-</style>
