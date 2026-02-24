@@ -5,25 +5,25 @@
 
 	&.-active {
 		&::before {
-			animation: morse-dot 5s infinite;
+			animation: morse-dot 5s infinite steps(8);
 		}
 	}
 }
 
 @keyframes morse-dot {
 	0%,
-	60% {
+	50% {
 		content: "-";
 	}
-	30%,
-	40%,
-	50%,
-	90% {
+	15%,
+	25%,
+	35%,
+	65% {
 		content: " ";
 	}
 
-	35%,
-	45% {
+	20%,
+	30% {
 		content: "·";
 	}
 }

@@ -219,6 +219,7 @@
 	padding-bottom: 1.2rem;
 	padding-top: 1.2rem;
 	&::after {
+		margin-left: 0;
 		transform: rotate(-45deg);
 	}
 }

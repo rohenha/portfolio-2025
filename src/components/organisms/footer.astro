@@ -14,13 +14,13 @@ const currentPath = Astro.url.pathname
 <footer class="o-footer bg-gray-900 text-gray-300 py-xxlg transition-fade">
 	<Grid Tag="div">
 		<nav
-			class="col-span-full md:col-span-12 flex flex-col md:flex-row md:flex-wrap gap-y-sm md:gap-x-xlg md:gap-y-sm mb-lg md:mb-0"
+			class="col-span-full md:col-span-12 flex flex-row flex-wrap gap-y-md md:gap-x-xlg md:gap-y-sm"
 			aria-labelledby="footer-nav-label"
 		>
 			<span id="footer-nav-label" class="sr-only">Navigation complète</span>
 			<ul
 				role="list"
-				class="flex flex-col gap-xsm md:gap-tiny items-center md:items-start"
+				class="w-[50%] md:w-full flex flex-col gap-xsm md:gap-tiny items-start"
 			>
 				<li class="relative -top-px">
 					<a
@@ -56,7 +56,7 @@ const currentPath = Astro.url.pathname
 			</ul>
 			<ul
 				role="list"
-				class="flex flex-wrap gap-sm justify-center md:flex-col md:justify-start md:gap-tiny"
+				class="w-[50%] md:w-full flex flex-col gap-xsm md:gap-tiny items-end md:items-start"
 			>
 				{
 					nav.footerSecondary.map((item) => (
@@ -101,7 +101,7 @@ const currentPath = Astro.url.pathname
 			</ul>
 		</nav>
 		<div
-			class="col-span-full md:col-span-12 flex flex-col gap-sm items-center md:items-end"
+			class="hidden col-span-full md:col-span-12 md:flex flex-col gap-sm items-center md:items-end"
 		>
 			<Text class="text-center md:text-right max-w-[40rem]" variant="bmd"
 				>Dans une optique d’éco-conception, le site est allégé par défaut. Et si
@@ -122,11 +122,6 @@ const currentPath = Astro.url.pathname
 			<p
 				class="flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
 			>
-				<!-- <span
-					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center"
-					data-module-morse="morse"
-				>
-				</span> -->
 				<span
 					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse"
 					data-module-morse="morse"
