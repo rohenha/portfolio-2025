@@ -1,0 +1,29 @@
+.a-morse {
+	&::before {
+		content: "";
+	}
+
+	&.-active {
+		&::before {
+			animation: morse-dot 5s infinite;
+		}
+	}
+}
+
+@keyframes morse-dot {
+	0%,
+	60% {
+		content: "-";
+	}
+	30%,
+	40%,
+	50%,
+	90% {
+		content: " ";
+	}
+
+	35%,
+	45% {
+		content: "·";
+	}
+}

@@ -5,16 +5,16 @@ export default class Experience extends Mmodule {
 	private interval: ReturnType<typeof setInterval> | null
 	private defaultTimer: number
 	private circleLength: number
-	private experience: { finished: boolean; loop: number; viewPopin: boolean }
+	private experience: { finished: boolean; loop: number }
 	constructor(params: any) {
 		super(params)
 		this.interval = null
-		this.defaultTimer = 30
-		// this.defaultTimer = 60 * 1 // 5 minutes
+		this.defaultTimer = 30 // 30 seconds for testing
+		// this.defaultTimer = 60 * 5 // 5 minutes
 		this.busMap = {
 			toggleExperience: "toggleExperience",
 		}
-		this.experience = { finished: false, loop: 1, viewPopin: false }
+		this.experience = { finished: false, loop: 1 }
 		this.states = {
 			number: this.defaultTimer,
 		}
@@ -24,9 +24,6 @@ export default class Experience extends Mmodule {
 		this.onBeforeUnload = this.onBeforeUnload.bind(this)
 		this.onChangeVisibility = this.onChangeVisibility.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
-		window.addEventListener("beforeunload", this.onBeforeUnload)
-		window.addEventListener("visibilitychange", this.onChangeVisibility)
-		window.addEventListener("keydown", this.onKeyDown)
 	}
 
 	/**
@@ -78,39 +75,55 @@ export default class Experience extends Mmodule {
 		const cookieValue = getCookie("experience")
 		if (!cookieValue) {
 			this.observe(true)
-			setCookie(
-				"experience",
-				JSON.stringify({ finished: false, loop: 1, viewPopin: false }),
-				365,
-			)
+			this.addListeners()
+			setCookie("experience", JSON.stringify({ finished: false, loop: 1 }), 365)
 		} else {
 			this.experience = JSON.parse(cookieValue)
-			if (this.experience.finished) {
-				if (!this.experience.viewPopin) {
-					this.experience.viewPopin = true
-					this.finishExperience(false)
-				}
-			} else {
+			if (!this.experience.finished) {
 				this.observe(true)
+				this.addListeners()
+			} else {
+				this.off(`toggleExperience:${this.moduleKey}`)
 			}
 		}
 	}
 
 	/**
+	 * @description Add event listeners for beforeunload, visibilitychange, and keydown events to manage the experience state and user interactions effectively
+	 */
+	addListeners() {
+		window.addEventListener("beforeunload", this.onBeforeUnload)
+		window.addEventListener("visibilitychange", this.onChangeVisibility)
+		window.addEventListener("keydown", this.onKeyDown)
+	}
+
+	/**
+	 * @description Remove event listeners when the experience is finished or when the user leaves the page to prevent memory leaks and unintended behavior
+	 */
+	removeListeners() {
+		window.removeEventListener("beforeunload", this.onBeforeUnload)
+		window.removeEventListener("visibilitychange", this.onChangeVisibility)
+		window.removeEventListener("keydown", this.onKeyDown)
+	}
+
+	/**
 	 * @description disable experience when the user finishes the experience with the good combination
 	 */
-	finishExperience(once: boolean = true) {
+	finishExperience() {
 		this.experience.finished = true
-		setCookie("experience", JSON.stringify(this.experience), 365)
+		this.onBeforeUnload()
+		this.removeListeners()
+		this.emit("experience:loop", { loop: this.experience.loop })
 		const parent = this.el.parentNode as HTMLElement
 		this.animate("finish", () => {
 			parent.style.display = "none"
-			if (once) {
-				this.setFinishPopin()
-			}
+			this.setFinishPopin()
 		})
 	}
 
+	/**
+	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
+	 */
 	async setFinishPopin() {
 		document.body.setAttribute("data-module-popin", "experience-finish-popin")
 		const promise = await this.emitAsync("app:addAloneModules", [
@@ -210,8 +223,7 @@ export default class Experience extends Mmodule {
 	onUnMount(): void {
 		clearInterval(this.interval!)
 		this.observe(false)
-		window.removeEventListener("beforeunload", this.onBeforeUnload)
-		window.removeEventListener("visibilitychange", this.onChangeVisibility)
+		this.removeListeners()
 	}
 
 	////////// Events

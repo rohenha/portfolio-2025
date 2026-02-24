@@ -1,9 +1,6 @@
 import Mmodule from "@js/classes/module"
 
 export default class Morse extends Mmodule {
-	private timeout: ReturnType<typeof setTimeout> | null
-	private index: number
-	private morse: string[]
 	constructor(params: any) {
 		super(params)
 		this.index = 0
@@ -11,8 +8,6 @@ export default class Morse extends Mmodule {
 			"experience:loop": "resetExperience",
 			"call:initMorse": "initMorse",
 		}
-		this.morse = "- . . - ".split("")
-		this.timeout = null
 		this.active = false
 	}
 
@@ -22,36 +17,27 @@ export default class Morse extends Mmodule {
 
 	initMorse() {
 		this.active = true
-		this.increaseMorse()
+		this.animate("morse", () => {
+			this.el.classList.add("-active")
+		})
 	}
 
 	increaseMorse() {
 		if (!this.visible) return
-		const { morse } = this
-		const tag = morse[this.index]
-		clearTimeout(this.timeout!)
 		this.animate("morse", () => {
-			this.el.textContent = tag
-			let delay = tag === "-" ? 700 : 350
-			if (tag === "") {
-				delay = 200
-			}
-			if (this.index + 1 >= morse.length) {
-				delay = 3000
-			}
-			this.timeout = setTimeout(() => {
-				this.index = (this.index + 1) % morse.length
-				this.increaseMorse()
-			}, delay)
+			this.el.classList.add("-active")
 		})
 	}
 
 	onUpdateView(state: boolean) {
 		if (!state) {
 			this.resetExperience()
-		} else {
+			return
+		}
+
+		if (this.active) {
 			this.index = 0
-			this.increaseMorse()
+			this.initMorse()
 		}
 	}
 
@@ -59,9 +45,9 @@ export default class Morse extends Mmodule {
 
 	resetExperience() {
 		this.active = false
-		clearTimeout(this.timeout!)
+		console.log("Resetting Morse experience")
 		this.animate("morse", () => {
-			this.el.textContent = ""
+			this.el.classList.remove("-active")
 		})
 	}
 
