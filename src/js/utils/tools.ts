@@ -33,10 +33,7 @@ export const debounce = <T extends unknown[]>(
 }
 
 export const isReduced = () => {
-	return (
-		window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
-		window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
-	)
+	return window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
 }
 
 export const isMobile = () => {

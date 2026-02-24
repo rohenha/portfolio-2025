@@ -5,7 +5,7 @@ export default class Experience extends Mmodule {
 	private interval: ReturnType<typeof setInterval> | null
 	private defaultTimer: number
 	private circleLength: number
-	private experience: { finished: boolean; loop: number }
+	private experience: { finished: boolean; loop: number; viewPopin: boolean }
 	constructor(params: any) {
 		super(params)
 		this.interval = null
@@ -14,7 +14,7 @@ export default class Experience extends Mmodule {
 		this.busMap = {
 			toggleExperience: "toggleExperience",
 		}
-		this.experience = { finished: false, loop: 1 }
+		this.experience = { finished: false, loop: 1, viewPopin: false }
 		this.states = {
 			number: this.defaultTimer,
 		}
@@ -48,8 +48,8 @@ export default class Experience extends Mmodule {
 		if (e.key === code[this.combination.length]) {
 			this.combination.push(e.key)
 			if (this.combination.length === code.length) {
-				console.log("Konami code entered!")
-				// this.finishExperience()
+				// console.log("Konami code entered!")
+				this.finishExperience()
 				this.combination = []
 			}
 		} else {
@@ -75,14 +75,23 @@ export default class Experience extends Mmodule {
 	 * @description Initialize the experience state from a cookie and set up the timer if the experience is not finished
 	 */
 	onMount() {
-		this.observe(true)
 		const cookieValue = getCookie("experience")
 		if (!cookieValue) {
-			setCookie("experience", JSON.stringify({ finished: false, loop: 1 }), 365)
+			this.observe(true)
+			setCookie(
+				"experience",
+				JSON.stringify({ finished: false, loop: 1, viewPopin: false }),
+				365,
+			)
 		} else {
 			this.experience = JSON.parse(cookieValue)
 			if (this.experience.finished) {
-				this.finishExperience()
+				if (!this.experience.viewPopin) {
+					this.experience.viewPopin = true
+					this.finishExperience(false)
+				}
+			} else {
+				this.observe(true)
 			}
 		}
 	}
@@ -90,13 +99,30 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description disable experience when the user finishes the experience with the good combination
 	 */
-	finishExperience() {
+	finishExperience(once: boolean = true) {
 		this.experience.finished = true
 		setCookie("experience", JSON.stringify(this.experience), 365)
 		const parent = this.el.parentNode as HTMLElement
 		this.animate("finish", () => {
 			parent.style.display = "none"
+			if (once) {
+				this.setFinishPopin()
+			}
 		})
+	}
+
+	async setFinishPopin() {
+		document.body.setAttribute("data-module-popin", "experience-finish-popin")
+		const promise = await this.emitAsync("app:addAloneModules", [
+			{
+				element: document.body,
+				moduleItem: {
+					name: "popin",
+					loader: () => import("./popin"),
+				},
+			},
+		])
+		promise[0][0].open()
 	}
 
 	/**
@@ -108,7 +134,6 @@ export default class Experience extends Mmodule {
 		}
 		if (enable) {
 			this.interval = setInterval(this.onUpdateTime, 1000)
-			// this.emit("call:toggle")
 		} else {
 			clearInterval(this.interval!)
 			this.interval = null

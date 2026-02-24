@@ -62,6 +62,5 @@ export const animateCss = ({
 	parentEl.addEventListener("transitionend", afterTransition)
 
 	raf = window.requestAnimationFrame(handler)
-
 	return Object.assign(promise, { cancel })
 }

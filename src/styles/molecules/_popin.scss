@@ -1,5 +1,28 @@
 .m-popin {
+	&[aria-hidden="true"] {
+		display: none;
+	}
 	&__overlay {
 		background-color: rgba(17, 16, 15, 0.4);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		&__overlay {
+			opacity: 0;
+			transition: opacity 0.4s cubic-bezier(0.11, 0.62, 0.46, 0.99);
+		}
+		&__container {
+			transform: translate(0, 20px);
+			transition: transform 0.4s cubic-bezier(0.11, 0.62, 0.46, 0.99);
+		}
+
+		&.-visible {
+			.m-popin__overlay {
+				opacity: 1;
+			}
+			.m-popin__container {
+				transform: translate(0, 0);
+			}
+		}
 	}
 }

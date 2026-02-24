@@ -65,6 +65,7 @@ export default class ModulesManager {
 
 	initEvents() {
 		this.bus.on("app:update", this.update.bind(this))
+		this.bus.on("app:addAloneModules", this.addAloneModules.bind(this))
 		this.bus.on("app:destroy", this.destroy.bind(this))
 	}
 
@@ -86,14 +87,14 @@ export default class ModulesManager {
 	 */
 	private async mountModules(
 		scope: HTMLElement | Document,
-	): Promise<void[] | void> {
-		const promises: Array<Promise<void>> = []
+	): Promise<Array<Mmodule | void> | void> {
+		const promises: Array<Promise<Mmodule | void>> = []
 		const elementsModule = scope.querySelectorAll(this.optimalSelector)
 
 		elementsModule.forEach((element) => {
 			this.modules.forEach((moduleItem, name) => {
 				if (element.hasAttribute(`data-module-${name}`)) {
-					promises.push(this.mountModule(element, moduleItem))
+					promises.push(this.mountModule({ element, moduleItem }))
 				}
 			})
 		})
@@ -128,7 +129,13 @@ export default class ModulesManager {
 	 * @param moduleItem ModuleConfig object containing the information about the module to initialize.
 	 * @returns void
 	 */
-	async mountModule(element: Element, moduleItem: ModuleConfig): Promise<void> {
+	async mountModule({
+		element,
+		moduleItem,
+	}: {
+		element: Element
+		moduleItem: ModuleConfig
+	}): Promise<Mmodule | void> {
 		let moduleId = element.getAttribute(`data-module-${moduleItem.name}`)
 		if (this.currentModules.get(moduleId ?? "")) {
 			// Module already exists, skip initialization
@@ -147,12 +154,13 @@ export default class ModulesManager {
 			}
 
 			const moduleInstance = new moduleConstructor({
-				el: element,
+				el: element as HTMLElement,
 				id: moduleId,
 				dataName: moduleItem.name,
 				bus: this.bus,
 			})
 			this.newModules.set(moduleId, moduleInstance)
+			return moduleInstance
 		} catch (error) {
 			console.error(`Error loading module ${moduleItem.name}:`, error)
 		}
@@ -181,6 +189,42 @@ export default class ModulesManager {
 					instance: moduleInstance,
 				} as ModularPluginMethod)
 				this.currentModules.delete(moduleId)
+			})
+		})
+	}
+
+	async addAloneModules(
+		items: Array<{
+			element: Element
+			moduleItem: ModuleConfig
+		}>,
+	): Promise<Mmodule[] | void> {
+		return new Promise(async (resolve) => {
+			const promises: Array<Promise<any>> = []
+			items.forEach(async (itemData) => {
+				this.modules.set(itemData.moduleItem.name, itemData.moduleItem)
+				promises.push(this.mountModule(itemData))
+			})
+
+			Promise.all(promises).then(() => {
+				this.newModules.forEach((moduleInstance) => {
+					moduleInstance.mount()
+					this.bus.emit("app:module:onMount", {
+						instance: moduleInstance,
+					} as ModularPluginMethod)
+				})
+
+				this.bus.emit("app:onUpdate")
+
+				const newModulesArray = Array.from(this.newModules.values())
+
+				this.currentModules = new Map([
+					...this.currentModules,
+					...this.newModules,
+				])
+				resolve(newModulesArray)
+
+				this.newModules = new Map()
 			})
 		})
 	}
