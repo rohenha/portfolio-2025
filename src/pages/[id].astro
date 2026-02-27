@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from "astro:content"
+// Components
+import DefaultLayout from "@layouts/default.astro"
+import HeroAlt from "@components/organisms/hero-alt.astro"
+// import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+
+// 1. Génére un nouveau chemin pour chaque entrée de collection
+export async function getStaticPaths() {
+	const posts = await getCollection("text", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true
+	})
+	const data = posts.map((post) => ({
+		params: { id: post.id },
+		props: { post },
+	}))
+	return data
+}
+// 2. Pour votre modèle, vous pouvez obtenir l'entrée directement à partir de la propriété
+const { post } = Astro.props
+const { title } = post.data
+const { Content } = await render(post)
+---
+
+<DefaultLayout explorer={false}>
+	<main id="main" data-swup="container" class="transition-fade">
+		<HeroAlt title={title} />
+		<Grid class="mb-giant">
+			<div
+				class="m-markdown col-span-full lg:col-start-3 lg:col-end-15 flex flex-col"
+			>
+				<Content />
+			</div>
+		</Grid>
+	</main>
+</DefaultLayout>

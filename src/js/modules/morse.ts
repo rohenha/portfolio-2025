@@ -16,6 +16,7 @@ export default class Morse extends Mmodule {
 	}
 
 	initMorse() {
+		if (this.active) return
 		this.active = true
 		this.animate("morse", () => {
 			this.el.classList.add("-active")
@@ -44,8 +45,8 @@ export default class Morse extends Mmodule {
 	updateMorse() {}
 
 	resetExperience() {
+		if (!this.active) return
 		this.active = false
-		console.log("Resetting Morse experience")
 		this.animate("morse", () => {
 			this.el.classList.remove("-active")
 		})

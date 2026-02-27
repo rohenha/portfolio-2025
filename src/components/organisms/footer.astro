@@ -14,13 +14,13 @@ const currentPath = Astro.url.pathname
 <footer class="o-footer bg-gray-900 text-gray-300 py-xxlg transition-fade">
 	<Grid Tag="div">
 		<nav
-			class="col-span-full md:col-span-12 flex flex-row flex-wrap gap-y-md md:gap-x-xlg md:gap-y-sm"
+			class="col-span-full lg:col-span-12 flex flex-row flex-wrap gap-y-md lg:gap-x-xlg lg:gap-y-sm"
 			aria-labelledby="footer-nav-label"
 		>
 			<span id="footer-nav-label" class="sr-only">Navigation complète</span>
 			<ul
 				role="list"
-				class="w-[50%] md:w-full flex flex-col gap-xsm md:gap-tiny items-start"
+				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
 			>
 				<li class="relative -top-px">
 					<a
@@ -43,7 +43,8 @@ const currentPath = Astro.url.pathname
 										"data-website": "navLink",
 									}}
 									href={item.url}
-									variant="nav-gray-300"
+									variant={item.external ? "link-gray-300" : "nav-gray-300"}
+									icon={item.external ? "arrow" : ""}
 								>
 									{item.name}
 								</Button>
@@ -56,33 +57,7 @@ const currentPath = Astro.url.pathname
 			</ul>
 			<ul
 				role="list"
-				class="w-[50%] md:w-full flex flex-col gap-xsm md:gap-tiny items-end md:items-start"
-			>
-				{
-					nav.footerSecondary.map((item) => (
-						<li>
-							{item.url ? (
-								<Button
-									attributes={{
-										...formatLink(item, currentPath),
-										"data-website": "navLink",
-									}}
-									href={item.url}
-									variant="link-gray-300"
-									icon="arrow"
-								>
-									{item.name}
-								</Button>
-							) : (
-								<Text variant="bmd">{item.name}</Text>
-							)}
-						</li>
-					))
-				}
-			</ul>
-			<ul
-				role="list"
-				class="flex flex-wrap gap-sm justify-center md:flex-col md:gap-tiny md:justify-start"
+				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
 			>
 				{
 					nav.socials.map((social) => (
@@ -101,9 +76,9 @@ const currentPath = Astro.url.pathname
 			</ul>
 		</nav>
 		<div
-			class="hidden col-span-full md:col-span-12 md:flex flex-col gap-sm items-center md:items-end"
+			class="hidden col-span-full lg:col-span-12 md:flex flex-col gap-sm items-start lg:items-end md:mt-xlg lg:mt-0"
 		>
-			<Text class="text-center md:text-right max-w-[40rem]" variant="bmd"
+			<Text class="md:text-left lg:text-right max-w-[40rem]" variant="bmd"
 				>Dans une optique d’éco-conception, le site est allégé par défaut. Et si
 				on re découvrait le site avec un peu de piquant ?</Text
 			>
@@ -117,26 +92,26 @@ const currentPath = Astro.url.pathname
 			>Romain Breton</Text
 		>
 		<div
-			class="col-span-full flex flex-col items-center gap-sm lg:flex-row lg:justify-between"
+			class="col-span-full flex flex-col items-start gap-sm lg:flex-row lg:justify-between lg:items-center"
 		>
 			<p
-				class="flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
+				class="hidden md:flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
 			>
+				<Button variant="primary-gray-300" icon="arrow">
+					Rapporter les codes d'erreur
+				</Button>
 				<span
 					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse"
 					data-module-morse="morse"
 				>
 				</span>
-				<Button variant="primary-gray-300" icon="arrow"
-					>Rapporter les codes d'erreur</Button
-				>
 			</p>
 			<ul
 				role="list"
-				class="flex flex-wrap gap-x-sm gap-y-tiny justify-center lg:justify-end"
+				class="flex flex-wrap gap-sm justify-start lg:justify-end"
 			>
 				{
-					nav.footerThird.map((item) => {
+					nav.footerSecondary.map((item) => {
 						return item.url ? (
 							<li>
 								<Button
@@ -146,6 +121,7 @@ const currentPath = Astro.url.pathname
 									}}
 									href={item.url}
 									variant="link-gray-300"
+									icon={item.external ? "arrow" : ""}
 								>
 									{item.name}
 								</Button>

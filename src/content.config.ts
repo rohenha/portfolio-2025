@@ -13,6 +13,14 @@ const blog = defineCollection({
 	}),
 })
 
+const text = defineCollection({
+	loader: glob({ pattern: "*.{md,mdx}", base: "./content/text" }),
+	schema: z.object({
+		title: z.string(),
+		draft: z.boolean(),
+	}),
+})
+
 const repos = defineCollection({
 	loader: file("./content/repos.json", {
 		parser: (text) => JSON.parse(text).list,
@@ -26,7 +34,7 @@ const repos = defineCollection({
 	}),
 })
 
-export const collections = { blog, repos }
+export const collections = { blog, repos, text }
 
 // {
 // 	loader: file("content/repos.json", { parser: (text) => JSON.parse(text).dogs }),
