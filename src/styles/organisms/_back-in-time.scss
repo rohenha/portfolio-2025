@@ -1,0 +1,47 @@
+.o-backInTime {
+	// display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	padding-bottom: 100%;
+	transform: translate(-50%, -50%) scale(0);
+	width: 100vw;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background: radial-gradient(
+			circle,
+			rgba(255, 255, 255, 1) 50%,
+			rgba(170, 89, 57, 1) 75%
+		);
+		border-radius: 50%;
+		height: 100%;
+		width: 100%;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		background: radial-gradient(
+			circle,
+			rgba(170, 89, 57, 1) 10%,
+			rgba(255, 255, 255, 0) 90%
+		);
+		border-radius: 50%;
+		height: 100%;
+		transform: scale(1.5);
+		width: 100%;
+	}
+
+	&.-active {
+		animation: back-in-time 1.5s ease-out forwards infinite;
+	}
+}

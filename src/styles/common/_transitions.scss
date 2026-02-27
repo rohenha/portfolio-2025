@@ -1,14 +1,21 @@
-html.is-changing .transition-fade {
-	opacity: 1;
-	transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+html.is-changing {
+	overflow-x: hidden;
+	.transition-fade {
+		opacity: 1;
+		transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
 
-	@media (prefers-reduced-motion: reduce) {
-		transition: none;
+		@media (prefers-reduced-motion: reduce) {
+			transition: none;
+		}
 	}
 }
 html.is-animating .transition-fade {
 	opacity: 0.01;
-	transition: opacity 0.3s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+	// transform: perspective(500px) translate3d(0, -20px, -30px);
+	transform-origin: top center;
+	transition:
+		opacity 0.2s cubic-bezier(0.09, 0.42, 0.18, 0.99),
+		transform 0.6s cubic-bezier(0.09, 0.42, 0.18, 0.99);
 
 	@media (prefers-reduced-motion: reduce) {
 		transition: none;
@@ -18,7 +25,6 @@ html.is-animating .transition-fade {
 .t-initTemplate {
 	.transition-fade {
 		opacity: 0.01;
-		transform: translate(0, 1rem);
 	}
 
 	.o-header {
@@ -42,10 +48,7 @@ html.is-animating .transition-fade {
 		}
 		.transition-fade {
 			opacity: 1;
-			transform: translate(0, 0);
-			transition:
-				opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99),
-				transform 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+			transition: opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
 
 			@media (prefers-reduced-motion: reduce) {
 				transition: none;
