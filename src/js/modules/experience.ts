@@ -159,9 +159,10 @@ export default class Experience extends Mmodule {
 	onUpdateTime() {
 		const newNumber = this.states.number - 1
 		const events = new Map([
+			[28, "call:initTree"],
 			[25, "call:initMorse"],
 			[20, "addLog"],
-			[28, "call:initTree"],
+			[15, "addComment"],
 		])
 		if (this.states.number <= 0) {
 			this.loop()
@@ -224,5 +225,10 @@ export default class Experience extends Mmodule {
 	////////// Events
 	addLog() {
 		console.log("T")
+	}
+
+	addComment() {
+		const comment = document.createComment("J")
+		document.documentElement.appendChild(comment)
 	}
 }
