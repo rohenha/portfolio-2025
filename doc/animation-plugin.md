@@ -46,6 +46,14 @@ this.emit("plugins:animations:add", {
 })
 ```
 
+### Animate 
+
+```js
+this.animate("experience", () => {
+	this.render()
+})
+```
+
 ### Parameters
 | Name | type | description |
 | `name` | `sring` | key id of your animation |

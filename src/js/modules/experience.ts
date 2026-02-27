@@ -159,8 +159,9 @@ export default class Experience extends Mmodule {
 	onUpdateTime() {
 		const newNumber = this.states.number - 1
 		const events = new Map([
-			[20, "addLog"],
 			[25, "call:initMorse"],
+			[20, "addLog"],
+			[28, "call:initTree"],
 		])
 		if (this.states.number <= 0) {
 			this.loop()
@@ -197,14 +198,8 @@ export default class Experience extends Mmodule {
 	 * @description Event to target number value update and render the module with the new value.
 	 */
 	onWatch(): void {
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}`,
-			animation: {
-				animate: () => {
-					this.render()
-				},
-				keep: false,
-			},
+		this.animate("experience", () => {
+			this.render()
 		})
 	}
 

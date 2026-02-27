@@ -34,6 +34,10 @@ const config: Array<ModuleConfig> = [
 		name: "website",
 		module: Website,
 	},
+	{
+		name: "tree",
+		loader: () => import("./tree"),
+	},
 ]
 
 export default config

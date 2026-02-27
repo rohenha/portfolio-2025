@@ -23,5 +23,9 @@
 		~ span {
 			margin-left: var(--spacing-xlg);
 		}
+
+		&.-active {
+			cursor: pointer;
+		}
 	}
 }

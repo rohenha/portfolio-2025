@@ -14,6 +14,7 @@ export interface Props {
 	title?: string
 	link?: NavItem
 	treeVariant?: keyof typeof TreeItemVariants
+	treeAttributes?: Record<string, string>
 	tree?: Array<{
 		title: string
 		href?: string
@@ -29,6 +30,7 @@ const {
 	link = null,
 	tree = null,
 	treeVariant = "default",
+	treeAttributes = {},
 } = Astro.props
 ---
 
@@ -50,6 +52,7 @@ const {
 		{tree && (
 			<ul
 					class:list={["m-tree relative pt-sm grid grid-col-1 gap-xsm col-span-full md:col-start-17 md:col-end-25 md:self-start lg:col-start-17 lg:col-end-24 mb-md md:md-0", variant == "gray-900" ? "text-gray-300" : "text-gray-900"]}
+					{...treeAttributes}
 				>
 					{tree.map((item) => (
 						<TreeItem

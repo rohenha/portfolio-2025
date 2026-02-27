@@ -34,14 +34,8 @@ export default class Counter extends Mmodule {
 
 	onWatch() {
 		const [text] = this.$("message")
-		this.emit("plugins:animations:add", {
-			name: `${this.moduleKey}`,
-			animation: {
-				animate: () => {
-					this.render(text)
-				},
-				keep: false,
-			},
+		this.animate("counter", () => {
+			this.render(text)
 		})
 	}
 

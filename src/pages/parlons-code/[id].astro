@@ -42,7 +42,7 @@ const relativePost = posts.find((p) => p.id === relative)
 		>
 			<HeroArticle title={title} date={date} tags={tags} />
 			<Content />
-			<nav>
+			<!-- <nav>
 				<Button
 					variant="primary-gray-900"
 					href="/parlons-code"
@@ -50,16 +50,16 @@ const relativePost = posts.find((p) => p.id === relative)
 				>
 					Retour aux articles
 				</Button>
-			</nav>
+			</nav> -->
 		</main>
 		<aside
-			class="col-span-full md:col-end-18 lg:col-start-17 lg:col-end-24 xlg:col-end-23 md:sticky md:top-xlg self-start"
+			class="col-span-full md:col-end-18 lg:col-start-17 lg:col-end-24 xlg:col-end-23 md:sticky md:top-xxlg self-start"
 		>
 			{
 				relativePost && (
 					<>
 						<Text Tag="h2" variant="tsm" class="mb-md">
-							Article qui complète celui-ci
+							Article pour compléter la lecture
 						</Text>
 						<section class="bg-gray-500 p-md rounded-md">
 							<Text Tag="h3" variant="tsm" class="mb-xsm">

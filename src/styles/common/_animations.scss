@@ -9,15 +9,31 @@
 		transform: translate(2px, -2px) rotate(0);
 	}
 
-	50% {
-		transform: translate(0, 0) rotate(0);
-	}
-
 	75% {
 		transform: translate(-2px, 2px) rotate(0);
 	}
 
 	100% {
 		transform: translate(0, 0) rotate(0);
+	}
+}
+
+@keyframes leave-link-icon-top {
+	100% {
+		transform: translate(0, 0) rotate(-45deg);
+	}
+}
+
+@keyframes enter-link-icon-top {
+	25% {
+		transform: translate(0, -2px) rotate(-45deg);
+	}
+
+	75% {
+		transform: translate(0, 2px) rotate(-45deg);
+	}
+
+	100% {
+		transform: translate(0, 0) rotate(-45deg);
 	}
 }

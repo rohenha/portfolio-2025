@@ -19,12 +19,10 @@
 	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 		&::after {
 			animation: leave-link-icon 0.15s ease forwards;
-			// transition: transform 0.3s ease;
 		}
 		&:hover {
 			&::after {
 				animation: enter-link-icon 0.8s ease-in-out forwards infinite;
-				// transform: translate(5px, 0) rotate(45deg);
 			}
 		}
 	}
@@ -254,5 +252,16 @@
 	&::after {
 		margin-left: 0;
 		transform: rotate(-45deg);
+	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		&::after {
+			animation: leave-link-icon-top 0.15s ease forwards;
+		}
+		&:hover {
+			&::after {
+				animation: enter-link-icon-top 0.8s ease-in-out forwards infinite;
+			}
+		}
 	}
 }
