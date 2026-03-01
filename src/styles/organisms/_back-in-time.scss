@@ -1,47 +1,43 @@
 .o-backInTime {
 	// display: none;
 	position: fixed;
-	top: 50%;
-	left: 50%;
-	border-radius: 50%;
-	padding-bottom: 100%;
-	transform: translate(-50%, -50%) scale(0);
-	width: 100vw;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	height: 100%;
+	pointer-events: none;
+	width: 100%;
 
-	&::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 1;
-		background: radial-gradient(
-			circle,
-			rgba(255, 255, 255, 1) 50%,
-			rgba(170, 89, 57, 1) 75%
-		);
-		border-radius: 50%;
-		height: 100%;
-		width: 100%;
-	}
-
+	&::before,
 	&::after {
 		content: "";
 		position: absolute;
-		top: 0;
 		left: 0;
-		z-index: 0;
-		background: radial-gradient(
-			circle,
-			rgba(170, 89, 57, 1) 10%,
-			rgba(255, 255, 255, 0) 90%
-		);
-		border-radius: 50%;
-		height: 100%;
-		transform: scale(1.5);
+		background-color: var(--color-gray-900);
+		height: 51%;
+		transform: scaleY(0);
 		width: 100%;
 	}
 
+	&::before {
+		top: 0;
+		transform-origin: center top;
+	}
+
+	&::after {
+		bottom: 0;
+		transform-origin: center bottom;
+	}
+
 	&.-active {
-		animation: back-in-time 1.5s ease-out forwards infinite;
+		&::before,
+		&::after {
+			transform: scaleY(1);
+			transition: transform 0.3s cubic-bezier(0.34, 1.07, 0.52, 0.99);
+		}
+	}
+	&.-leave {
+		opacity: 0;
+		transition: opacity 0.5s ease-out;
 	}
 }

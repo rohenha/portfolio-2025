@@ -1,11 +1,15 @@
 import Mmodule from "@js/classes/module"
 import { getCookie, setCookie } from "@js/utils/cookies"
+import { animateCss } from "@js/utils/animations"
+import { isMobile } from "@js/utils/tools"
 
 export default class Experience extends Mmodule {
 	private interval: ReturnType<typeof setInterval> | null
 	private defaultTimer: number
 	private circleLength: number
 	private experience: { finished: boolean; loop: number }
+	private backInTime: HTMLElement | null
+	private comment: CharacterData | null
 	constructor(params: any) {
 		super(params)
 		this.interval = null
@@ -13,17 +17,24 @@ export default class Experience extends Mmodule {
 		// this.defaultTimer = 60 * 5 // 5 minutes
 		this.busMap = {
 			toggleExperience: "toggleExperience",
+			"website:loaded": "onWebsiteLoaded",
 		}
+		this.comment = null
 		this.experience = { finished: false, loop: 1 }
 		this.states = {
 			number: this.defaultTimer,
 		}
+		this.backInTime = null
 		this.circleLength = 33
 		this.onUpdateTime = this.onUpdateTime.bind(this)
 		this.combination = []
 		this.onBeforeUnload = this.onBeforeUnload.bind(this)
 		this.onChangeVisibility = this.onChangeVisibility.bind(this)
 		this.onKeyDown = this.onKeyDown.bind(this)
+	}
+
+	getExperienceStatus(): { finished: boolean; loop: number } {
+		return this.experience
 	}
 
 	/**
@@ -73,6 +84,10 @@ export default class Experience extends Mmodule {
 	 */
 	onMount() {
 		const cookieValue = getCookie("experience")
+		if (isMobile()) {
+			return
+		}
+
 		if (!cookieValue) {
 			this.observe(true)
 			this.addListeners()
@@ -138,11 +153,32 @@ export default class Experience extends Mmodule {
 		promise[0][0].open()
 	}
 
+	onWebsiteLoaded() {
+		if (!this.backInTime) {
+			return
+		}
+		const backInTime = this.backInTime
+		this.backInTime = null
+		const promiseThen = animateCss({
+			name: "backInTime",
+			parent: backInTime,
+			handler: () => {
+				backInTime.classList.add("-leave")
+			},
+		})
+		promiseThen.then(() => {
+			document.body.removeChild(backInTime)
+		})
+	}
+
 	/**
 	 * @description Toggle the experience timer based on the enable parameter, starting or stopping the timer accordingly
 	 */
 	toggleExperience({ enable }: { enable: boolean }) {
-		if (this.experience.finished || (enable && this.interval)) {
+		this.animate("toggle", () => {
+			document.body.classList.toggle("-experience", enable)
+		})
+		if (this.experience.finished || (enable && this.interval) || isMobile()) {
 			return
 		}
 		if (enable) {
@@ -160,9 +196,11 @@ export default class Experience extends Mmodule {
 		const newNumber = this.states.number - 1
 		const events = new Map([
 			[28, "call:initTree"],
-			[25, "call:initMorse"],
+			[25, "call:initMorse:morse:morse"],
 			[20, "addLog"],
 			[15, "addComment"],
+			[10, "call:resetMorse:morse:morse"],
+			[5, "removeComment"],
 		])
 		if (this.states.number <= 0) {
 			this.loop()
@@ -187,12 +225,28 @@ export default class Experience extends Mmodule {
 		this.states.number = this.defaultTimer
 		this.experience.loop += 1
 		this.emit("experience:loop", { loop: this.experience.loop })
-		// this.emit("call:website:website", {
-		// 	method: "navigate",
-		// 	payload: {
-		// 		url: "/",
-		// 	},
-		// })
+		const backInTime = document.createElement("div")
+		this.backInTime = backInTime
+		backInTime.classList.add("o-backInTime")
+		backInTime.setAttribute("data-transition", "backInTime")
+		document.body.appendChild(backInTime)
+		window.requestAnimationFrame(() => {
+			const promise = animateCss({
+				name: "backInTime",
+				parent: backInTime,
+				handler: () => {
+					backInTime.classList.add("-active")
+				},
+			})
+			promise.then(() => {
+				this.emit("call:website:website", {
+					method: "navigate",
+					payload: {
+						url: "/",
+					},
+				})
+			})
+		})
 	}
 
 	/**
@@ -229,6 +283,12 @@ export default class Experience extends Mmodule {
 
 	addComment() {
 		const comment = document.createComment("J")
+		this.comment = comment
 		document.documentElement.appendChild(comment)
+	}
+
+	removeComment() {
+		this.comment?.remove()
+		this.comment = null
 	}
 }

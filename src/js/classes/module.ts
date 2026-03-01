@@ -215,6 +215,10 @@ export default class Mmodule {
 		})
 	}
 
+	cleanAnimation(name: string): void {
+		this.emit("plugins:animations:remove", `${this.moduleKey}.${name}`)
+	}
+
 	observe(state: boolean) {
 		if (state) {
 			this.emit("plugins:observer:on", {

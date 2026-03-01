@@ -44,7 +44,10 @@ export default class Website extends Mmodule {
 		this.animate("enter", () => {
 			html.classList.add("is-changing")
 			this.animate("enter", () => {
-				this.onPageView(visit)
+				this.onPageView()
+				this.emit("toggleExperience:experience:experience", {
+					enable: visit.to.route !== "default",
+				})
 			})
 			setTimeout(() => {
 				html.classList.remove("t-initTemplate")
@@ -53,10 +56,7 @@ export default class Website extends Mmodule {
 		})
 	}
 
-	onPageView(visit: Visit) {
-		this.emit("toggleExperience:experience:experience", {
-			enable: visit.to.route !== "default",
-		})
+	onPageView() {
 		this.emit("website:loaded")
 	}
 
@@ -69,6 +69,9 @@ export default class Website extends Mmodule {
 	) {
 		this.updateContent(visit.containers, "app:update")
 		window.scrollTo(0, 0)
+		this.emit("toggleExperience:experience:experience", {
+			enable: visit.to.route !== "default",
+		})
 		this.updateNav({
 			hash: visit.to.hash,
 			html: page.html,
@@ -85,6 +88,9 @@ export default class Website extends Mmodule {
 	): void {
 		void args
 		this.updateContent(visit.containers, "app:destroy")
+		// this.animate("toggle", () => {
+		// 	document.body.classList.toggle("-experience", enable)
+		// })
 	}
 
 	/**

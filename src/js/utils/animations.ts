@@ -10,7 +10,10 @@ export const animateCss = ({
 	handler: () => void
 }): CancelledPromise<void> => {
 	const parentEl = parent || document.documentElement
-	const items = parentEl.querySelectorAll(`[data-transition="${name}"]`).length
+	let items = parentEl.querySelectorAll(`[data-transition="${name}"]`).length
+	if (parentEl.dataset.transition === name) {
+		items += 1
+	}
 	let count = 0
 
 	if (items === 0) {

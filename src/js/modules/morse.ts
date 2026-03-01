@@ -7,6 +7,7 @@ export default class Morse extends Mmodule {
 		this.busMap = {
 			"experience:loop": "resetExperience",
 			"call:initMorse": "initMorse",
+			"call:resetMorse": "resetExperience",
 		}
 		this.active = false
 	}

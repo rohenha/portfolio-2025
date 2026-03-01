@@ -113,12 +113,12 @@
 	&::before {
 		content: "[";
 		display: inline-block;
-		margin-right: 0rem;
+		margin-right: 0.5rem;
 	}
 	&::after {
 		content: "]";
 		display: inline-block;
-		margin-left: 0rem;
+		margin-left: 0.5rem;
 	}
 
 	&:hover {

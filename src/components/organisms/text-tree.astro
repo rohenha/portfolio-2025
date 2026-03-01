@@ -47,6 +47,16 @@ const {
 				class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-14 mb-md md:mb-xxxlg self-start"
 			>
 				<slot name="content" />
+				{link && (
+					<Button
+						variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
+						class="justify-self-start"
+						attributes={formatLink(link)}
+						href={link.url}
+					>
+						{link.name}
+					</Button>
+				)}
 			</div>
 		)}
 		{tree && (
@@ -68,16 +78,6 @@ const {
 
 
 			</ul>
-		)}
-		{link && (
-			<Button
-				variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
-				class="col-span-full justify-self-start md:justify-self-end lg:col-end-22"
-				attributes={formatLink(link)}
-				href={link.url}
-			>
-				{link.name}
-			</Button>
 		)}
 	</Grid>
 </section>

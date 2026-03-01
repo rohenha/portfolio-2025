@@ -18,14 +18,12 @@ const currentPath = Astro.url.pathname
 
 {
 	explorer && (
-		<div class="hidden md:block absolute top-0 left-[50%] w-full translate-x-[-50%] pt-md pl-sm md:pl-lg z-10 pointer-events-none">
-			<Text variant="bmd" class="md:w-[50%] md:max-w-[20rem]">
-				Bonjour,
-				<br />
-				...
-				<br />
-				Attends, j'ai comme un air de déjà vu.
-			</Text>
+		<div class="o-explorer hidden md:block absolute top-0 left-[50%] w-full translate-x-[-50%] pt-md pl-sm md:pl-lg max-w-[140rem] mx-auto z-10 pointer-events-none">
+			<Text
+				variant="tag"
+				class="md:w-[50%] md:max-w-[30rem]"
+				attributes={{ "data-module-message": "message" }}
+			/>
 		</div>
 	)
 }

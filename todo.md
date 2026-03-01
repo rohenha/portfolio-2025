@@ -13,6 +13,8 @@
 - [x] Avoir un système de plugin que je pourrai ajouter (intersection observer,
       resize, animation), ce qui permettrait de pouvoir alléger de base le
       script et d'ajouter de futures fonctionnalités
-- [] Animations : Morse, Console.log, commentaire, hover prestashop
-- [] Rendre animation timer en CSS
+- [x] Animations : Morse, Console.log, commentaire, hover prestashop, mot caché
+      couleur
+- [x] Rendre animation timer en CSS
 - [] Définir le mot mystère
+- [] Fixer pour les animations message + tree en cas de + de 60 fps

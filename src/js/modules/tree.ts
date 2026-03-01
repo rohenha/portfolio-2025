@@ -1,7 +1,7 @@
 import Mmodule from "@js/classes/module"
 
 export default class Tree extends Mmodule {
-	private interval: ReturnType<typeof setInterval> | null
+	// private interval: ReturnType<typeof setInterval> | null
 	private last: HTMLElement | null
 	private originalText: string | null
 	private state: boolean
@@ -11,9 +11,11 @@ export default class Tree extends Mmodule {
 			"experience:loop": "resetExperience",
 			"call:initTree": "initTree",
 		}
-		this.states = {
-			index: 0,
-		}
+		// this.states = {
+		// 	index: 0,
+		// }
+		this.delta = 0
+		this.index = 0
 		this.last = null
 		this.active = false
 		this.originalText = null
@@ -33,44 +35,62 @@ export default class Tree extends Mmodule {
 	}
 
 	onRender() {
-		if (!this.last || !this.originalText) return
-		if (
-			this.states.index === 0 ||
-			this.states.index > this.originalText.length
-		) {
+		this.delta -= 1
+		if (!this.last || !this.originalText || this.delta > 0) return
+		this.delta = 10
+		this.index = (this.index + 1) % (this.originalText!.length + 1)
+
+		if (this.index === 0 || this.index > this.originalText.length) {
 			this.last.textContent = this.originalText
 			return
 		}
-		let firstPart = this.originalText.substring(0, this.states.index - 1)
-		let lastPart = this.originalText.substring(this.states.index)
+		let firstPart = this.originalText.substring(0, this.index - 1)
+		let lastPart = this.originalText.substring(this.index)
 		this.last.textContent = firstPart + "Y" + lastPart
 	}
 
 	toggleHover(state: boolean) {
 		if (!this.active || this.state === state) return
-		clearInterval(this.interval!)
-		this.emit("plugins:animations:remove", `${this.moduleKey}.treeanim`)
-		this.emit("plugins:animations:remove", `${this.moduleKey}.treehover`)
+		// clearInterval(this.interval!)
+		this.cleanAnimation("treeanim")
+		this.cleanAnimation("treehover")
 		this.state = state
 		if (state) {
-			this.interval = setInterval(() => {
-				this.states.index =
-					(this.states.index + 1) % (this.originalText!.length + 1)
-			}, 200)
+			this.animate(
+				"treeanim",
+				() => {
+					this.render()
+				},
+				true,
+			)
+			// this.interval = setInterval(() => {
+			// 	this.states.index =
+			// 		(this.states.index + 1) % (this.originalText!.length + 1)
+			// }, 200)
 		} else {
-			this.states.index = 0
+			// this.cleanAnimation("treeanim")
+			this.delta = 0
+			this.animate("treeAnim", () => {
+				if (!this.last) {
+					return
+				}
+				this.last.textContent = this.originalText
+			})
+			// this.states.index = 0
 		}
 	}
 
-	onWatch(): void {
-		this.animate("treeanim", () => {
-			this.render()
-		})
-	}
+	// onWatch(): void {
+	// 	this.animate("treeanim", () => {
+	// 		this.render()
+	// 	})
+	// }
 
 	onUnMount(): void {
-		this.emit("plugins:animations:remove", `${this.moduleKey}.treeanim`)
-		this.emit("plugins:animations:remove", `${this.moduleKey}.treehover`)
+		this.cleanAnimation("treeanim")
+		this.cleanAnimation("treehover")
+		// this.emit("plugins:animations:remove", `${this.moduleKey}.treeanim`)
+		// this.emit("plugins:animations:remove", `${this.moduleKey}.treehover`)
 		this.last?.removeEventListener("mouseenter", this.onMouseEnter)
 		this.last?.removeEventListener("mouseleave", this.onMouseLeave)
 	}
@@ -78,7 +98,7 @@ export default class Tree extends Mmodule {
 	initTree() {
 		if (this.active) return
 		this.active = true
-		this.animate("morse", () => {
+		this.animate("treeInit", () => {
 			this.last?.classList.add("-active")
 		})
 	}
@@ -86,11 +106,10 @@ export default class Tree extends Mmodule {
 	resetExperience() {
 		if (!this.active) return
 		this.active = false
-		clearInterval(this.interval!)
-		console.log("reset experience")
-		this.emit("plugins:animations:remove", `${this.moduleKey}.treeanim`)
+		// clearInterval(this.interval!)
+		this.cleanAnimation("treeanim")
 		this.states.index = 0
-		this.animate("tree", () => {
+		this.animate("treeInit", () => {
 			this.last?.classList.remove("-active")
 		})
 	}

@@ -4,6 +4,7 @@ import Website from "./website"
 // import Hero from "./hero"
 import Experience from "./experience"
 import Morse from "./morse"
+import Message from "./message"
 
 const config: Array<ModuleConfig> = [
 	// {
@@ -37,6 +38,10 @@ const config: Array<ModuleConfig> = [
 	{
 		name: "tree",
 		loader: () => import("./tree"),
+	},
+	{
+		name: "message",
+		module: Message,
 	},
 ]
 

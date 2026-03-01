@@ -27,6 +27,9 @@ html.is-animating .transition-fade {
 		opacity: 0.01;
 	}
 
+	.o-explorer {
+		opacity: 0.01;
+	}
 	.o-header {
 		> p {
 			opacity: 0.01;
@@ -37,6 +40,7 @@ html.is-animating .transition-fade {
 	}
 
 	&.is-changing {
+		.o-explorer,
 		.o-header > p,
 		.o-header > nav {
 			opacity: 1;
