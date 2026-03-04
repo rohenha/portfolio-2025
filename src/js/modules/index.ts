@@ -43,6 +43,10 @@ const config: Array<ModuleConfig> = [
 		name: "message",
 		module: Message,
 	},
+	{
+		name: "hidden",
+		loader: () => import("./hidden"),
+	},
 ]
 
 export default config

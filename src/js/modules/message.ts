@@ -6,12 +6,15 @@ export default class Message extends Mmodule {
 		array: Array<string>
 		charIndex: number
 		wordIndex: number
-		delta: number
 	}
+	private then: number
+	private index: number
 	constructor(params: any) {
 		super(params)
 		this.index = 0
-		this.interval = null
+		// this.interval = null
+		this.then = new Date().getTime()
+		this.interval = 1000 / 30
 		this.busMap = {
 			"experience:loop": "resetExperience",
 			"website:loaded": "startMessage",
@@ -21,7 +24,6 @@ export default class Message extends Mmodule {
 			array: [],
 			charIndex: 0,
 			wordIndex: 0,
-			delta: 0,
 		}
 		this.onReset = true
 		this.active = false
@@ -47,7 +49,6 @@ export default class Message extends Mmodule {
 					: ["Bienvenue"],
 			charIndex: 0,
 			wordIndex: 0,
-			delta: 0,
 		}
 
 		this.animate(
@@ -68,15 +69,21 @@ export default class Message extends Mmodule {
 	}
 
 	onRender(): void {
-		this.message.delta -= 1
-		if (this.message.delta > 0) {
+		// this.message.delta -= 1
+		const now = new Date().getTime()
+		const delta = now - this.then
+		if (delta < this.interval) {
 			return
 		}
+		// if (this.message.delta > 0) {
+		// 	return
+		// }
 
 		let newMessage =
 			this.message.array[this.message.wordIndex][this.message.charIndex]
 		this.message.charIndex += 1
-		this.message.delta = 2
+		// this.message.delta = 2
+		this.then = now - (delta % this.interval)
 
 		if (
 			this.message.charIndex >=
@@ -84,7 +91,7 @@ export default class Message extends Mmodule {
 		) {
 			this.message.charIndex = 0
 			this.message.wordIndex += 1
-			this.message.delta = 40
+			this.then = now - (delta % this.interval) + 600
 			if (this.message.wordIndex >= this.message.array.length) {
 				this.cleanAnimation("message")
 			} else {

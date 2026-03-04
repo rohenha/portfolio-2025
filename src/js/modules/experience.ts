@@ -197,8 +197,10 @@ export default class Experience extends Mmodule {
 		const events = new Map([
 			[28, "call:initTree"],
 			[25, "call:initMorse:morse:morse"],
+			[25, "call:initHidden:hidden:hidden"],
 			[20, "addLog"],
 			[15, "addComment"],
+			[10, "call:resetHidden:hidden:hidden"],
 			[10, "call:resetMorse:morse:morse"],
 			[5, "removeComment"],
 		])
@@ -210,6 +212,7 @@ export default class Experience extends Mmodule {
 		if (events.has(newNumber)) {
 			const eventName = events.get(newNumber)!
 			if (eventName.startsWith("call")) {
+				console.log(eventName)
 				this.emit(eventName)
 			} else {
 				this[eventName]()
@@ -225,28 +228,28 @@ export default class Experience extends Mmodule {
 		this.states.number = this.defaultTimer
 		this.experience.loop += 1
 		this.emit("experience:loop", { loop: this.experience.loop })
-		const backInTime = document.createElement("div")
-		this.backInTime = backInTime
-		backInTime.classList.add("o-backInTime")
-		backInTime.setAttribute("data-transition", "backInTime")
-		document.body.appendChild(backInTime)
-		window.requestAnimationFrame(() => {
-			const promise = animateCss({
-				name: "backInTime",
-				parent: backInTime,
-				handler: () => {
-					backInTime.classList.add("-active")
-				},
-			})
-			promise.then(() => {
-				this.emit("call:website:website", {
-					method: "navigate",
-					payload: {
-						url: "/",
-					},
-				})
-			})
-		})
+		// const backInTime = document.createElement("div")
+		// this.backInTime = backInTime
+		// backInTime.classList.add("o-backInTime")
+		// backInTime.setAttribute("data-transition", "backInTime")
+		// document.body.appendChild(backInTime)
+		// window.requestAnimationFrame(() => {
+		// 	const promise = animateCss({
+		// 		name: "backInTime",
+		// 		parent: backInTime,
+		// 		handler: () => {
+		// 			backInTime.classList.add("-active")
+		// 		},
+		// 	})
+		// 	promise.then(() => {
+		// 		this.emit("call:website:website", {
+		// 			method: "navigate",
+		// 			payload: {
+		// 				url: "/",
+		// 			},
+		// 		})
+		// 	})
+		// })
 	}
 
 	/**
@@ -284,11 +287,15 @@ export default class Experience extends Mmodule {
 	addComment() {
 		const comment = document.createComment("J")
 		this.comment = comment
-		document.documentElement.appendChild(comment)
+		this.animate("comment", () => {
+			document.documentElement.appendChild(comment)
+		})
 	}
 
 	removeComment() {
-		this.comment?.remove()
-		this.comment = null
+		this.animate("comment", () => {
+			this.comment?.remove()
+			this.comment = null
+		})
 	}
 }

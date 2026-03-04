@@ -5,6 +5,8 @@ export default class Tree extends Mmodule {
 	private last: HTMLElement | null
 	private originalText: string | null
 	private state: boolean
+	private then: number
+	private index: number
 	constructor(params: any) {
 		super(params)
 		this.busMap = {
@@ -14,7 +16,8 @@ export default class Tree extends Mmodule {
 		// this.states = {
 		// 	index: 0,
 		// }
-		this.delta = 0
+		this.then = new Date().getTime()
+		this.interval = 1000 / 60
 		this.index = 0
 		this.last = null
 		this.active = false
@@ -35,9 +38,10 @@ export default class Tree extends Mmodule {
 	}
 
 	onRender() {
-		this.delta -= 1
-		if (!this.last || !this.originalText || this.delta > 0) return
-		this.delta = 10
+		const now = new Date().getTime()
+		const delta = now - this.then
+		if (!this.last || !this.originalText || delta > this.interval) return
+		this.then = now - (delta % this.interval)
 		this.index = (this.index + 1) % (this.originalText!.length + 1)
 
 		if (this.index === 0 || this.index > this.originalText.length) {
@@ -51,11 +55,11 @@ export default class Tree extends Mmodule {
 
 	toggleHover(state: boolean) {
 		if (!this.active || this.state === state) return
-		// clearInterval(this.interval!)
 		this.cleanAnimation("treeanim")
 		this.cleanAnimation("treehover")
 		this.state = state
 		if (state) {
+			this.then = new Date().getTime()
 			this.animate(
 				"treeanim",
 				() => {
@@ -63,34 +67,19 @@ export default class Tree extends Mmodule {
 				},
 				true,
 			)
-			// this.interval = setInterval(() => {
-			// 	this.states.index =
-			// 		(this.states.index + 1) % (this.originalText!.length + 1)
-			// }, 200)
 		} else {
-			// this.cleanAnimation("treeanim")
-			this.delta = 0
 			this.animate("treeAnim", () => {
 				if (!this.last) {
 					return
 				}
 				this.last.textContent = this.originalText
 			})
-			// this.states.index = 0
 		}
 	}
-
-	// onWatch(): void {
-	// 	this.animate("treeanim", () => {
-	// 		this.render()
-	// 	})
-	// }
 
 	onUnMount(): void {
 		this.cleanAnimation("treeanim")
 		this.cleanAnimation("treehover")
-		// this.emit("plugins:animations:remove", `${this.moduleKey}.treeanim`)
-		// this.emit("plugins:animations:remove", `${this.moduleKey}.treehover`)
 		this.last?.removeEventListener("mouseenter", this.onMouseEnter)
 		this.last?.removeEventListener("mouseleave", this.onMouseLeave)
 	}

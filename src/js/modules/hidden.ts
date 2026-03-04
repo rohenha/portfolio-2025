@@ -1,13 +1,13 @@
 import Mmodule from "@js/classes/module"
 
-export default class Morse extends Mmodule {
+export default class Hidden extends Mmodule {
 	constructor(params: any) {
 		super(params)
 		this.index = 0
 		this.busMap = {
 			"experience:loop": "resetExperience",
-			"call:initMorse": "initMorse",
-			"call:resetMorse": "resetExperience",
+			"call:initHidden": "initHidden",
+			"call:resetHidden": "resetExperience",
 		}
 		this.active = false
 	}
@@ -16,7 +16,7 @@ export default class Morse extends Mmodule {
 		this.observe(true)
 	}
 
-	initMorse() {
+	initHidden() {
 		if (this.active) return
 		this.active = true
 		this.animate("morse", () => {
@@ -32,7 +32,7 @@ export default class Morse extends Mmodule {
 
 		if (this.active) {
 			this.index = 0
-			this.initMorse()
+			this.initHidden()
 		}
 	}
 

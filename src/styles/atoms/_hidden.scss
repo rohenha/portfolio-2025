@@ -1,0 +1,6 @@
+[data-module-hidden] {
+	opacity: 0;
+	&.-active {
+		animation: flash 5s linear infinite;
+	}
+}
