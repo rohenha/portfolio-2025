@@ -1,0 +1,44 @@
+---
+import Grid from "@components/organisms/grid.astro"
+import Text from "@components/atoms/text.astro"
+import ProjectCard from "@components/molecules/project-card.astro"
+import type { CollectionEntry } from "astro:content"
+// import Button from "@components/atoms/button.astro"
+
+export interface Props {
+	title: string
+	projects: Array<CollectionEntry<"projects">>
+}
+
+const { title = "", projects = [] } = Astro.props
+---
+
+<Grid class="py-giant">
+	{
+		title && (
+			<Text
+				variant="tlg"
+				class="mb-lg col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-12"
+				set:html={title}
+			/>
+
+			<div class="col-span-full md:col-start-1 md:col-end-22 lg:col-start-4 lg:col-end-17 grid grid-cols-1 gap-md" data-module-projects="projects">
+				{projects.map((project) => (
+					<ProjectCard id={project.id} title={project.data.name} description={project.data.description} tags={project.data.tags} url={project.data.url} role={project.data.role} credits={project.data.credits} year={project.data.year} />
+				))}
+			</div>
+			<nav class="hidden lg:flex lg:flex-col lg:gap-tiny lg:col-start-18 lg:col-end-22 lg:sticky lg:top-xxxlg self-start">
+				{projects.map((project, i) => (
+					<Text
+						Tag="a"
+						variant="pmd"
+						class={i === 0 ? " a-btnIcon -arrow flex flex-row gap-tiny items-center hover:text-green-700 text-green-700" : " a-btnIcon -arrow flex flex-row gap-tiny items-center hover:text-green-700"}
+						attributes={{ href: `#${project.id}`, 'data-projects': 'item' }}
+					>
+						{project.data.name}
+					</Text>
+				))}
+			</nav>
+		)
+	}
+</Grid>

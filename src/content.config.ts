@@ -34,7 +34,23 @@ const repos = defineCollection({
 	}),
 })
 
-export const collections = { blog, repos, text }
+const projects = defineCollection({
+	loader: file("./content/projects.json", {
+		parser: (text) => JSON.parse(text).list,
+	}),
+	schema: z.object({
+		id: z.string(),
+		name: z.string(),
+		description: z.string(),
+		url: z.string().url(),
+		tags: z.array(z.string()),
+		role: z.string(),
+		credits: z.array(z.string()),
+		year: z.number(),
+	}),
+})
+
+export const collections = { blog, repos, text, projects }
 
 // {
 // 	loader: file("content/repos.json", { parser: (text) => JSON.parse(text).dogs }),

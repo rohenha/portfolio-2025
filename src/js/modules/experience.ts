@@ -212,7 +212,6 @@ export default class Experience extends Mmodule {
 		if (events.has(newNumber)) {
 			const eventName = events.get(newNumber)!
 			if (eventName.startsWith("call")) {
-				console.log(eventName)
 				this.emit(eventName)
 			} else {
 				this[eventName]()

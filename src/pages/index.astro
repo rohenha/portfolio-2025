@@ -1,5 +1,6 @@
 ---
 // Content
+import { getCollection } from "astro:content"
 import contact from "@content/contact"
 // Components
 import DefaultLayout from "@layouts/default.astro"
@@ -7,6 +8,9 @@ import Hero from "@components/organisms/hero.astro"
 import Text from "@components/atoms/text.astro"
 // import Popin from "@components/molecules/popin.astro"
 import TextTree from "@components/organisms/text-tree.astro"
+import Projects from "@components/organisms/projects.astro"
+
+const projects = await getCollection("projects")
 ---
 
 <DefaultLayout>
@@ -80,5 +84,6 @@ import TextTree from "@components/organisms/text-tree.astro"
 				</Text>
 			</Fragment>
 		</TextTree>
+		<Projects title="Mes meilleures<br/>partitions" projects={projects} />
 	</main>
 </DefaultLayout>

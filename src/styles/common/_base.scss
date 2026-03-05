@@ -23,6 +23,10 @@ body {
 	}
 }
 
+*[id] {
+	scroll-margin-top: 15rem;
+}
+
 // .bg-white {
 //   ::selection {
 //     background: query.clr('primary');

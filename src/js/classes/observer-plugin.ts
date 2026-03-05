@@ -21,7 +21,7 @@ export default class ObserverPlugin extends ModularPlugin {
 			Object.assign(m.params || {}, {
 				root: null,
 				rootMargin: "0px",
-				threshold: 0.1,
+				threshold: 0,
 			}),
 		)
 		this.busMap = {

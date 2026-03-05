@@ -16,5 +16,5 @@
 - [x] Animations : Morse, Console.log, commentaire, hover prestashop, mot caché
       couleur
 - [x] Rendre animation timer en CSS
-- [] Définir le mot mystère
-- [] Fixer pour les animations message + tree en cas de + de 60 fps
+- [x] Définir le mot mystère - sobre
+- [x] Fixer pour les animations message + tree en cas de + de 60 fps

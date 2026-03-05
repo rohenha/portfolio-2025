@@ -26,9 +26,9 @@
 		"Courier New", monospace;
 
 	/* Font Sizes */
-	--text-txhuge: 14.5vw;
+	--text-txhuge: 16.5cqw;
 	--text-txhuge--line-height: calc(170 / 224);
-	--text-thuge: 29vw;
+	--text-thuge: 31.9cqw;
 	--text-thuge--line-height: calc(170 / 224);
 	--text-txlg: 15rem;
 	--text-txlg--line-height: 1;

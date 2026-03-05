@@ -47,6 +47,10 @@ const config: Array<ModuleConfig> = [
 		name: "hidden",
 		loader: () => import("./hidden"),
 	},
+	{
+		name: "projects",
+		loader: () => import("./projects"),
+	},
 ]
 
 export default config

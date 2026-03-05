@@ -32,6 +32,32 @@ export const debounce = <T extends unknown[]>(
 	}
 }
 
+export const throttle = <T extends unknown[]>(
+	callback: (...args: T) => void,
+	limit: number,
+) => {
+	let lastFunc: ReturnType<typeof setTimeout>
+	let lastRan: number
+
+	return function (...args: T) {
+		if (!lastRan) {
+			callback(...args)
+			lastRan = Date.now()
+		} else {
+			clearTimeout(lastFunc)
+			lastFunc = setTimeout(
+				function () {
+					if (Date.now() - lastRan >= limit) {
+						callback(...args)
+						lastRan = Date.now()
+					}
+				},
+				limit - (Date.now() - lastRan),
+			)
+		}
+	}
+}
+
 export const isReduced = () => {
 	return window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
 }
