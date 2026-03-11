@@ -85,7 +85,35 @@
 }
 
 @layer base {
+	/* @view-transition {
+		navigation: auto;
+	}
+
+	::view-transition-old(hero) {
+		animation: 0.3s ease-in both slide-down-out;
+	}
+
+	::view-transition-new(hero) {
+		animation: 0.3s 0.1s ease-out both slide-up-in;
+	}
+
+	@keyframes slide-down-out {
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-up-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	} */
+
 	html {
 		font-size: calc(100% / 1.6);
+		/* view-transition-name: hero; */
 	}
 }

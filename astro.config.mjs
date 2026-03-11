@@ -22,6 +22,9 @@ export default defineConfig({
 		? "https://romain-breton.com"
 		: "https://preprod.romain-breton.com",
 	output: "static",
+	security: {
+		csp: true,
+	},
 	vite: {
 		plugins: [tailwindcss()],
 		build: {

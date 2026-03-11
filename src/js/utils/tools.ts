@@ -65,3 +65,26 @@ export const isReduced = () => {
 export const isMobile = () => {
 	return window.innerWidth < 768
 }
+
+export const shouldNotIntercept = (navigationEvent) => {
+	return (
+		navigationEvent.canIntercept === false ||
+		// If this is just a hashChange,
+		// just let the browser handle scrolling to the content.
+		navigationEvent.hashChange ||
+		// If this is a download,
+		// let the browser perform the download.
+		navigationEvent.downloadRequest ||
+		// If this is a form submission,
+		// let that go to the server.
+		navigationEvent.formData
+	)
+}
+
+export const getPersistentElement = (parent = document) => {
+  return parent.querySelector('[data-persist="true"]')
+}
+
+export const getPersistentElementContainer = (parent = document) => {
+  return parent.querySelector('[data-persist-container="true"]')
+}

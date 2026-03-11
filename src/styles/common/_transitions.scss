@@ -1,6 +1,12 @@
-html.is-changing {
-	overflow-x: hidden;
-	.transition-fade {
+[data-transition="container"].-animating {
+	opacity: 0.01;
+	transition: opacity 0.2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+
+	&.-enter {
 		opacity: 1;
 		transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
 
@@ -9,21 +15,9 @@ html.is-changing {
 		}
 	}
 }
-html.is-animating .transition-fade {
-	opacity: 0.01;
-	// transform: perspective(500px) translate3d(0, -20px, -30px);
-	transform-origin: top center;
-	transition:
-		opacity 0.2s cubic-bezier(0.09, 0.42, 0.18, 0.99),
-		transform 0.6s cubic-bezier(0.09, 0.42, 0.18, 0.99);
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: none;
-	}
-}
 
 .t-initTemplate {
-	.transition-fade {
+	[data-transition="container"] {
 		opacity: 0.01;
 	}
 
@@ -50,7 +44,7 @@ html.is-animating .transition-fade {
 				transition: none;
 			}
 		}
-		.transition-fade {
+		[data-transition="container"] {
 			opacity: 1;
 			transition: opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
 

@@ -5,23 +5,16 @@ import Website from "./website"
 import Experience from "./experience"
 import Morse from "./morse"
 import Message from "./message"
+import Transition from "./transition"
 
 const config: Array<ModuleConfig> = [
-	// {
-	// 	name: "scroll",
-	// 	module: Scroll,
-	// },
-	// {
-	// 	name: "counter",
-	// 	loader: () => import("./counter"),
-	// },
-	// {
-	// 	name: "resizer",
-	// 	loader: () => import("./resizer"),
-	// },
 	{
 		name: "morse",
 		module: Morse,
+	},
+	{
+		name: "transition",
+		module: Transition,
 	},
 	{
 		name: "experience",
@@ -31,10 +24,10 @@ const config: Array<ModuleConfig> = [
 		name: "hero",
 		loader: () => import("./hero"),
 	},
-	{
-		name: "website",
-		module: Website,
-	},
+	// {
+	// 	name: "website",
+	// 	module: Website,
+	// },
 	{
 		name: "tree",
 		loader: () => import("./tree"),
