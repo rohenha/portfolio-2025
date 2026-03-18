@@ -80,11 +80,3 @@ export const shouldNotIntercept = (navigationEvent) => {
 		navigationEvent.formData
 	)
 }
-
-export const getPersistentElement = (parent = document) => {
-  return parent.querySelector('[data-persist="true"]')
-}
-
-export const getPersistentElementContainer = (parent = document) => {
-  return parent.querySelector('[data-persist-container="true"]')
-}

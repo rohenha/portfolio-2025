@@ -12,17 +12,17 @@ export default class Tree extends Mmodule {
 		this.busMap = {
 			"experience:loop": "resetExperience",
 			"call:initTree": "initTree",
+			"call:resetTree": "resetExperience",
 		}
 		// this.states = {
 		// 	index: 0,
 		// }
 		this.then = new Date().getTime()
-		this.interval = 1000 / 60
+		this.interval = 1000 / 10
 		this.index = 0
 		this.last = null
 		this.active = false
 		this.originalText = null
-		this.interval = null
 		this.visible = true
 		this.state = false
 		this.onMouseEnter = this.toggleHover.bind(this, true)
@@ -35,12 +35,15 @@ export default class Tree extends Mmodule {
 		this.originalText = this.last.textContent
 		this.last.addEventListener("mouseenter", this.onMouseEnter)
 		this.last.addEventListener("mouseleave", this.onMouseLeave)
+		this.animate("treeInit", () => {
+			this.last?.classList.add("-active")
+		})
 	}
 
 	onRender() {
 		const now = new Date().getTime()
 		const delta = now - this.then
-		if (!this.last || !this.originalText || delta > this.interval) return
+		if (!this.last || !this.originalText || delta < this.interval) return
 		this.then = now - (delta % this.interval)
 		this.index = (this.index + 1) % (this.originalText!.length + 1)
 
@@ -87,19 +90,20 @@ export default class Tree extends Mmodule {
 	initTree() {
 		if (this.active) return
 		this.active = true
-		this.animate("treeInit", () => {
-			this.last?.classList.add("-active")
-		})
+		// this.animate("treeInit", () => {
+		// 	this.last?.classList.add("-active")
+		// })
 	}
 
 	resetExperience() {
+		this.toggleHover(false)
 		if (!this.active) return
 		this.active = false
 		// clearInterval(this.interval!)
 		this.cleanAnimation("treeanim")
 		this.states.index = 0
-		this.animate("treeInit", () => {
-			this.last?.classList.remove("-active")
-		})
+		// this.animate("treeInit", () => {
+		// 	this.last?.classList.remove("-active")
+		// })
 	}
 }

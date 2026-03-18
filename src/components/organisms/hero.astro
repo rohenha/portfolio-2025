@@ -62,21 +62,28 @@ const {
 		attributes={{
 			"data-module-hero": "heroTitle",
 		}}
-		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
-		><span aria-hidden="true" data-hero="letters">
-			{
-				letters.map((letter) => (
-					<span data-hero="letter" data-transition="letterHero:enter">
-						{letter}
-					</span>
-				))
-			}
-		</span>
+		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2 -entered"
+	>
+		<!-- <span aria-hidden="true" data-hero="letters"></span> -->
+		<!-- <span aria-hidden="true" data-hero="letters"> -->
 		{
-			title.split(" ").map((word, i) =>
-				// prettier-ignore
-				<><span data-hero="word">{word}</span>{i < title.split(" ").length - 1 ? <span class="o-hero__space">&nbsp;</span> : null}</>,
-			)
+			title.split("").map((letter, index) => (
+				<span
+					data-hero="letter"
+					class={letter === " " ? " -space" : ""}
+					style={`--delay:${index * 0.05 + 0.5}s;`}
+				>
+					{letter === " " ? "\u00A0" : letter}
+				</span>
+			))
 		}
+		<!-- </span> -->
+		<!-- <span data-hero="word" class="opacity-0">{title}</span> -->
+		<!-- {
+			// title.split(" ").map((word, i) =>
+			// 	// prettier-ignore
+			// 	<><span data-hero="word">{word}</span>{i < title.split(" ").length - 1 ? <span class="o-hero__space">&nbsp;</span> : null}</>,
+			// )
+		} -->
 	</Text>
 </Grid>

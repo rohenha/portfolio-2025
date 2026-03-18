@@ -1,0 +1,65 @@
+---
+export interface Props {
+	name: string
+	id: string
+	label: string
+}
+
+const { name = "", id = "", label = "" } = Astro.props
+---
+
+<div class="m-inputQuest relative">
+	<input
+		type="text"
+		name={name}
+		id={id}
+		placeholder="_"
+		class="border-t border-b border-r border-gray-300 text-input font-serif tracking-sm focus:outline-2 focus:outline-gray-300 focus:outline-offset-2 p-[2rem] w-[6.5rem] text-center js-inputQuest"
+	/>
+	<label class="sr-only" for={id}>{label}</label>
+</div>
+
+<style lang="scss">
+	.m-inputQuest {
+		&:first-child {
+			input {
+				border-top-left-radius: var(--radius-md);
+				border-bottom-left-radius: var(--radius-md);
+				border-left: 1px solid var(--color-gray-300);
+			}
+		}
+
+		&:last-child {
+			input {
+				border-top-right-radius: var(--radius-md);
+				border-bottom-right-radius: var(--radius-md);
+			}
+		}
+	}
+</style>
+
+<script>
+	const inputQuests = document.querySelectorAll(
+		".js-inputQuest",
+	) as NodeListOf<HTMLInputElement>
+	const submitButton = document.querySelector(".js-submitQuest") as HTMLElement
+	if (!inputQuests.length || !submitButton) {
+		throw new Error("Input quests or submit button not found")
+	}
+	inputQuests.forEach((input) => {
+		input.addEventListener("keydown", (e) => {
+			if (e.key.length !== 1) return
+
+			e.preventDefault()
+			input.value = e.key.toUpperCase()
+
+			const nextInput =
+				input.parentElement?.nextElementSibling?.querySelector("input")
+			if (nextInput) {
+				;(nextInput as HTMLInputElement).focus()
+			} else {
+				submitButton.focus()
+			}
+		})
+	})
+</script>

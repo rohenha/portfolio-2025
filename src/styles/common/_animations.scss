@@ -4,6 +4,16 @@
 	}
 }
 
+@keyframes enter-link-point {
+	from {
+		transform: rotate(0);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 @keyframes enter-link-icon {
 	25% {
 		transform: translate(2px, -2px) rotate(0);

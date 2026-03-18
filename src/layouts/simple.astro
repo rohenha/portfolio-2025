@@ -2,13 +2,7 @@
 // Content
 import metadata from "@content/metadata"
 // Components
-import AccessibilityButton from "@components/atoms/accessibility-button.astro"
-import Button from "@components/atoms/button.astro"
-import Footer from "@components/organisms/footer.astro"
-import Header from "@components/organisms/header.astro"
-import Prefooter from "@components/organisms/prefooter.astro"
-import BackInTime from "@components/organisms/back-in-time.astro"
-import Message from "@components/molecules/message.astro"
+// import Button from "@components/atoms/button.astro"
 // Styles
 import "../styles/tailwind.css"
 import "../styles/global.scss"
@@ -28,7 +22,6 @@ export interface Props {
 	twitterCreator?: string
 	colorMeta?: string
 	metas?: Array<{ content: string; type: string; key: string }>
-	explorer?: boolean
 }
 
 const {
@@ -45,11 +38,10 @@ const {
 	twitterCreator = metadata.twitterCreator,
 	colorMeta = metadata.colorMeta,
 	metas = metadata.metas,
-	explorer = true,
 } = Astro.props
 ---
 
-<html lang={lang} class="bg-gray-300 text-gray-900 font-mono t-initTemplate">
+<html lang={lang} class="bg-gray-900 text-gray-300 font-mono">
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
@@ -103,21 +95,7 @@ const {
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body data-module-transition="transition">
-		<AccessibilityButton href="#main" text="Voir le contenu principal" />
-		<AccessibilityButton href="#footer" text="Accéder au footer" />
-		<Header explorer={explorer} />
 		<slot />
-		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow">
-			<span class="sr-only">Retour en haut</span>
-		</Button>
-		<Prefooter />
-		<Footer />
-		<div
-			class="a-tile bg-gray-900 fixed top-0 left-0 w-full h-full"
-			data-transition="container"
-		>
-		</div>
-		<Message />
 		<!-- <BackInTime /> -->
 		<noscript>
 			<style type="text/css">
@@ -145,17 +123,4 @@ const {
 	</body>
 </html>
 
-<script>
-	import Modular from "@js/classes/modular"
-	import modules from "@js/modules/index"
-	import ResizePlugin from "@js/classes/resize-plugin"
-	import ObserverPlugin from "@js/classes/observer-plugin"
-	import AnimationsPlugin from "@js/classes/animations-plugin"
-
-	window.addEventListener("load", () => {
-		new Modular({
-			modules,
-			plugins: [[ObserverPlugin], [AnimationsPlugin], [ResizePlugin]],
-		})
-	})
-</script>
+<script></script>

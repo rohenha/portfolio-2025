@@ -1,0 +1,147 @@
+---
+// Components
+import SimpleLayout from "@layouts/simple.astro"
+import HeroAlt from "@components/organisms/hero-alt.astro"
+import Text from "@components/atoms/text.astro"
+import Grid from "@components/organisms/grid.astro"
+import Button from "@components/atoms/button.astro"
+import InputQuest from "@components/atoms/input-quest.astro"
+import Key from "@components/atoms/key.astro"
+---
+
+<SimpleLayout>
+	<main id="main">
+		<HeroAlt title="La quête">
+			<Text variant="pmd" class="">
+				Vous voilà ici. Vous avez désormais pris connaissance des choses
+				étranges qui se passent sur mon site internet. Une boucle temporelle a
+				pris le contrôle impossible à désactiver naturellement.
+			</Text>
+			<Text variant="pmd" class=""
+				>La légende raconte que 8 codes y ont été cachés, et que les trouver,
+				permettra de connaître la combinaison permettant de stopper la boucle.
+			</Text>
+			<Text variant="pmd" class=""
+				>Parcours le site, certains évènements peuvent se produire à un moment
+				précis de la boucle. Soit vigilant et rapporte les codes ici afin de
+				découvrir la combinaison permettant de désactiver la boucle temporelle
+			</Text>
+		</HeroAlt>
+		<Grid class="mb-giant">
+			<form
+				action="#"
+				method="POST"
+				class="col-span-full lg:col-start-4 lg:col-end-15 flex flex-col gap-y-sm js-form"
+			>
+				<div class="flex items-center">
+					<InputQuest name="i1" label="lettre 1" id="i1" />
+					<InputQuest name="i2" label="lettre 2" id="i2" />
+					<InputQuest name="i3" label="lettre 3" id="i3" />
+					<InputQuest name="i4" label="lettre 4" id="i4" />
+					<InputQuest name="i5" label="lettre 5" id="i5" />
+				</div>
+				<Button
+					class="mt-md self-start js-submitQuest"
+					icon="arrow"
+					attributes={{}}
+					variant="primary-gray-300"
+				>
+					Tester le code
+				</Button>
+			</form>
+			<!-- <div
+				class="bg-gray-300 text-gray-900 rounded-md p-md col-span-full lg:col-start-4 lg:col-end-19 mt-md"
+			>
+				<Text variant="tag" class="mb-sm"
+					>Code déverrouillé.<br />Pour désactiver la boucle temporelle réalisez
+					l’enchainement suivant :</Text
+				>
+				<div class="flex flex-row flex-wrap gap-xsm">
+					<Key>HAUT</Key>
+					<Key>HAUT</Key>
+					<Key>BAS</Key>
+					<Key>BAS</Key>
+					<Key>GAUCHE</Key>
+					<Key>DROITE</Key>
+					<Key>GAUCHE</Key>
+					<Key>DROITE</Key>
+					<Key>B</Key>
+					<Key>A</Key>
+				</div>
+			</div> -->
+		</Grid>
+	</main>
+</SimpleLayout>
+
+<script>
+	const CODE_HASH =
+		"45bc0bad18824b5b347717a809582350a4b2695bea3152ab631edec34ca87404"
+
+	async function hashCode(input: string): Promise<string> {
+		const data = new TextEncoder().encode(input)
+		const buffer = await crypto.subtle.digest("SHA-256", data)
+		return Array.from(new Uint8Array(buffer))
+			.map((b) => b.toString(16).padStart(2, "0"))
+			.join("")
+	}
+
+	const form = document.querySelector(".js-form") as HTMLFormElement
+	const buttonSubmit = form.querySelector(
+		".js-submitQuest",
+	) as HTMLButtonElement
+	let timeout: ReturnType<typeof setTimeout> | undefined
+
+	form.addEventListener("submit", async (e) => {
+		e.preventDefault()
+		if (timeout !== undefined) clearTimeout(timeout)
+		const formData = new FormData(form)
+		const code = Array.from(formData.values()).join("").toUpperCase()
+		const hash = await hashCode(code)
+		if (hash === CODE_HASH) {
+			const content = document.createElement("div")
+			content.classList.add(
+				"bg-gray-300",
+				"text-gray-900",
+				"rounded-md",
+				"p-md",
+				"col-span-full",
+				"lg:col-start-4",
+				"lg:col-end-19",
+				"mt-md",
+			)
+			content.innerHTML = `
+				<p class="text-tag tracking-md mb-sm">Code déverrouillé.<br />Pour désactiver la boucle temporelle réalisez
+				’enchainement suivant :</p>
+				<div class="flex flex-row flex-wrap gap-xsm">
+					${[
+						"HAUT",
+						"HAUT",
+						"BAS",
+						"BAS",
+						"GAUCHE",
+						"DROITE",
+						"GAUCHE",
+						"DROITE",
+						"B",
+						"A",
+					]
+						.map(
+							(key) =>
+								`<span class="bg-gray-900 text-gray-300 rounded-sm text-btn tracking-sm py-[0.4rem] px-[0.8rem]">${key}</span>`,
+						)
+						.join("")}
+				</div>
+			`
+			buttonSubmit.replaceWith(content)
+			// form.classList.add("hidden")
+			// combo.classList.remove("hidden")
+		} else {
+			buttonSubmit.innerText = "Code incorrect, essayez encore."
+			buttonSubmit.classList.add("-error")
+			timeout = setTimeout(() => {
+				buttonSubmit.classList.remove("-error")
+				buttonSubmit.innerText = "Tester le code"
+			}, 2000)
+		}
+	})
+</script>

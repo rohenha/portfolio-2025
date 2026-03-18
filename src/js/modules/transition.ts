@@ -1,5 +1,5 @@
 import Mmodule from "@js/classes/module"
-import { shouldNotIntercept } from "@js/utils/tools"
+import { shouldNotIntercept, isReduced } from "@js/utils/tools"
 import { animateCss, type CancelledPromise } from "@js/utils/animations"
 
 type TransitionParams = {
@@ -16,7 +16,7 @@ export default class Transition extends Mmodule {
 	onMount() {
 		const html = document.documentElement
 		this.animate("enter", () => {
-			html.classList.add("is-changing")
+			html.classList.add("-animating")
 			this.animate("enter", () => {
 				this.onPageView()
 				const url = new URL(location.href)
@@ -27,7 +27,7 @@ export default class Transition extends Mmodule {
 			setTimeout(() => {
 				this.animate("enter", () => {
 					html.classList.remove("t-initTemplate")
-					html.classList.remove("is-changing")
+					html.classList.remove("-animating")
 				})
 			}, 1500)
 		})
@@ -60,18 +60,6 @@ export default class Transition extends Mmodule {
 			const fromPath = location.pathname
 			this.handleNavigationEvent(toPath, fromPath, true)
 		})
-
-		// navigation.addEventListener("navigate", (navigateEvent: AnimationEvent) => {
-		// 	if (shouldNotIntercept(navigateEvent) || this.loading) return
-		// 	this.loading = true
-		// 	const toUrl = new URL(navigateEvent.destination.url)
-		// 	const toPath = toUrl.pathname
-		// 	const fromPath = location.pathname
-
-		// 	if (location.origin !== toUrl.origin) return
-
-		// 	this.handleNavigationEvent(navigateEvent, toPath, fromPath)
-		// })
 	}
 
 	onPageView() {
@@ -79,30 +67,36 @@ export default class Transition extends Mmodule {
 	}
 
 	async leave({ from }: TransitionParams): Promise<CancelledPromise<void>> {
+		const tile = document.querySelector(".a-tile") as HTMLElement
 		const animationLeave = animateCss({
 			name: "container",
-			parent: from.container,
+			parent: tile,
 			handler: () => {
-				from.container.classList.add("-animating")
+				tile.classList.add("-active")
+				this.animate("enter", () => {
+					tile.classList.add("-leave")
+				})
 			},
 		})
 		return animationLeave
 	}
 
 	async enter({ to }: TransitionParams): Promise<CancelledPromise<void>> {
-		this.updateNav(to.url)
+		const tile = document.querySelector(".a-tile") as HTMLElement
 		const animationEnter = animateCss({
 			name: "container",
-			parent: to.container,
+			parent: tile,
 			handler: () => {
-				to.container.classList.add("-enter")
+				tile.classList.add("-enter")
 				this.onPageView()
 			},
 		})
 		animationEnter.then(() => {
 			this.animate("transition:entered", () => {
+				tile.classList.remove("-enter")
+				tile.classList.remove("-leave")
+				tile.classList.remove("-active")
 				to.container.classList.remove("-enter")
-				to.container.classList.remove("-animating")
 			})
 		})
 		return animationEnter
@@ -126,14 +120,10 @@ export default class Transition extends Mmodule {
 	}
 
 	async handleNavigationEvent(
-		// navigateEvent: AnimationEvent,
 		toPath: string,
 		fromPath: string,
 		push: boolean = true,
 	) {
-		// navigateEvent.intercept({
-		// 	scroll: "manual",
-		// 	handler: async () => {
 		const response = await fetch(toPath)
 		const data = await response.text()
 		const [container] = this.$("container")
@@ -146,7 +136,6 @@ export default class Transition extends Mmodule {
 		if (push) {
 			history.pushState(null, "", toPath)
 		}
-		newContainer.classList.add("-animating")
 		const params: TransitionParams = {
 			from: { url: fromPath, container, title: document.title },
 			to: {
@@ -155,7 +144,17 @@ export default class Transition extends Mmodule {
 				title: newDoc.title,
 			},
 		}
+
+		if (isReduced()) {
+			this.beforeLeave(params)
+			await this.afterLeave(params)
+			this.afterEnter(params)
+			this.loading = false
+			return
+		}
+
 		this.beforeLeave(params)
+		newContainer.classList.add("-animating")
 		await this.leave(params)
 		await this.afterLeave(params)
 		await this.enter(params)
@@ -171,6 +170,7 @@ export default class Transition extends Mmodule {
 			this.emit("app:destroy", { scope: from.container })
 			this.emit("app:update", { scope: to.container })
 			window.scrollTo(0, 0)
+			this.updateNav(to.url)
 			this.animate("transition:enter", () => {
 				document.title = to.title
 				from.container.replaceWith(to.container)

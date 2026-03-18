@@ -1,67 +1,60 @@
 .o-hero {
-	&__space {
-		display: none;
-	}
-	[data-hero="letters"] {
-		display: none;
-	}
-	[data-hero="word"] {
+	overflow: hidden;
+
+	[data-hero="letter"] {
 		display: inline-block;
 	}
-	@media (prefers-reduced-motion: no-preference) {
-		&.-animating {
-			.o-hero__content {
-				opacity: 0.01;
-			}
 
-			[data-hero="letters"] {
-				display: block;
-			}
+	.-space {
+		display: none;
+	}
 
-			[data-hero="letter"] {
-				display: inline-block;
-			}
-
-			[data-hero="word"] {
-				color: var(--color-gray-300);
-				opacity: 0.01;
-			}
+	[data-module-hero="heroTitle"] {
+		letter-spacing: -0.115em;
+	}
+	@media (width >= 768px) and (prefers-reduced-motion: no-preference) {
+		.o-hero__content {
+			opacity: 0.01;
 		}
+
+		[data-hero="letter"] {
+			opacity: 0;
+			transform: translate(20px, 0) scaleX(1.1) scaleY(0.8);
+			transform-origin: left bottom;
+		}
+
+		[data-hero="word"] {
+			color: var(--color-gray-300);
+			opacity: 0.01;
+		}
+
 		[data-module-hero="heroTitle"] {
 			position: relative;
 		}
 
-		[data-hero="letters"] {
-			position: absolute;
-			top: 0;
-			left: 0;
-			display: none;
-		}
-
-		[data-hero="letter"] {
-			display: none;
-			transform-origin: left center;
-			transition: transform 1.6s cubic-bezier(0.35, -0.01, 0.4, 0.99);
-		}
-
-		&.-entered {
+		&.-animating {
+			[data-hero="letter"] {
+				opacity: 1;
+				transform: translate(0, 0) scaleY(1);
+				transition:
+					opacity 0.7s cubic-bezier(0.08, 0.47, 0.16, 1) var(--delay, 0s),
+					transform 0.8s cubic-bezier(0.08, 0.47, 0.16, 1) var(--delay, 0s);
+			}
 			.o-hero__content {
 				opacity: 1;
-				transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
-			}
-
-			[data-hero="word"] {
-				color: var(--color-gray-900);
-				opacity: 1;
-				transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99);
+				transition: opacity 1s cubic-bezier(0.35, -0.01, 0.4, 0.99) 1.5s;
 			}
 		}
 	}
 
 	@media (width >= 768px) {
-		// @media (min-width: theme("screens.md")) {
-		&__space {
+		.-space {
 			display: inline-block;
 		}
 	}
+	// 	// @media (min-width: theme("screens.md")) {
+	// 	&__space {
+	// 		display: inline-block;
+	// 	}
+	// }
 }

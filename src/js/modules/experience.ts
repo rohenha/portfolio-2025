@@ -10,6 +10,9 @@ export default class Experience extends Mmodule {
 	private experience: { finished: boolean; loop: number }
 	private backInTime: HTMLElement | null
 	private comment: CharacterData | null
+	private static readonly COMBO_HASH =
+		"d7e9b6abf3c848b4a5b797b0fb64ba2bea63e6853464384d0ba83b9bc2f25dc4"
+	private static readonly COMBO_LENGTH = 10
 	constructor(params: any) {
 		super(params)
 		this.interval = null
@@ -38,30 +41,34 @@ export default class Experience extends Mmodule {
 	}
 
 	/**
+	 * @description Hash a string using SHA-256 via the Web Crypto API
+	 */
+	private async hashCombo(input: string): Promise<string> {
+		const data = new TextEncoder().encode(input)
+		const buffer = await crypto.subtle.digest("SHA-256", data)
+		return Array.from(new Uint8Array(buffer))
+			.map((b) => b.toString(16).padStart(2, "0"))
+			.join("")
+	}
+
+	/**
 	 * @description Listen for keydown events. It check user combination to finish the experience when the user enter the good combination.
 	 */
-	onKeyDown(e: KeyboardEvent) {
-		const code = [
-			"ArrowUp",
-			"ArrowUp",
-			"ArrowDown",
-			"ArrowDown",
-			"ArrowLeft",
-			"ArrowRight",
-			"ArrowLeft",
-			"ArrowRight",
-			"b",
-			"a",
-		]
-		if (e.key === code[this.combination.length]) {
-			this.combination.push(e.key)
-			if (this.combination.length === code.length) {
-				// console.log("Konami code entered!")
+	async onKeyDown(e: KeyboardEvent) {
+		this.combination.push(e.key)
+
+		// Keep only the last N keys (combo length)
+		if (this.combination.length > Experience.COMBO_LENGTH) {
+			this.combination.shift()
+		}
+
+		// Only check when we have enough keys
+		if (this.combination.length === Experience.COMBO_LENGTH) {
+			const hash = await this.hashCombo(this.combination.join(","))
+			if (hash === Experience.COMBO_HASH) {
 				this.finishExperience()
 				this.combination = []
 			}
-		} else {
-			this.combination = []
 		}
 	}
 
@@ -196,10 +203,11 @@ export default class Experience extends Mmodule {
 		const newNumber = this.states.number - 1
 		const events = new Map([
 			[28, "call:initTree"],
-			[25, "call:initMorse:morse:morse"],
 			[25, "call:initHidden:hidden:hidden"],
+			[25, "call:initMorse:morse:morse"],
 			[20, "addLog"],
 			[15, "addComment"],
+			[18, "call:resetTree"],
 			[10, "call:resetHidden:hidden:hidden"],
 			[10, "call:resetMorse:morse:morse"],
 			[5, "removeComment"],
