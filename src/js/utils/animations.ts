@@ -67,3 +67,7 @@ export const animateCss = ({
 	raf = window.requestAnimationFrame(handler)
 	return Object.assign(promise, { cancel })
 }
+
+export const lerp = (start: number, end: number, t: number): number => {
+	return start * (1 - t) + end * t
+}

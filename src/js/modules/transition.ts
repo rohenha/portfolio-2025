@@ -50,9 +50,14 @@ export default class Transition extends Mmodule {
 			const link = target.closest("a")
 			if (!link) return
 			const href = link.getAttribute("href")
-			if (!href || href.startsWith("#") || link.target === "_blank") return
+			if (
+				!href ||
+				href.startsWith("#") ||
+				link.target === "_blank" ||
+				link.getAttribute("data-prevent")
+			)
+				return
 			e.preventDefault()
-			console.log(this.loading, href)
 			if (this.loading) return
 			this.loading = true
 			const toUrl = new URL(link.href)

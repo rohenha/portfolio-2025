@@ -102,7 +102,10 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body data-module-transition="transition">
+	<body
+		data-module-transition="transition"
+		data-module-interactions="interactions"
+	>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />

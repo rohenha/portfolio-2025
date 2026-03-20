@@ -42,7 +42,7 @@ export default class Message extends Mmodule {
 		const [data] = this.emit("call:experience:experience", {
 			method: "getExperienceStatus",
 		})
-		if (data.loop <= 2) {
+		if (data.loop <= 2 || data.finished) {
 			// if (data.loop <= 2 || data.loop >= 4) {
 			return
 		}

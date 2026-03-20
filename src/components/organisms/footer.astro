@@ -82,8 +82,11 @@ const currentPath = Astro.url.pathname
 				>Dans une optique d’éco-conception, le site est allégé par défaut. Et si
 				on re découvrait le site avec un peu de piquant ?</Text
 			>
-			<Button variant="primary-gray-300" icon="arrow" href="#"
-				>Ajouter des paillettes</Button
+			<Button
+				variant="primary-gray-300"
+				icon="arrow"
+				href=`${currentPath}?interactions=1`
+				attributes={{ "data-prevent": "true" }}>Ajouter des paillettes</Button
 			>
 		</div>
 		<Text

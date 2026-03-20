@@ -7,7 +7,6 @@ export interface Props {
 	title?: string
 	description?: string
 	suptitle?: string
-	letters?: Array<string>
 	link?: {
 		url: string
 		label: string
@@ -15,16 +14,14 @@ export interface Props {
 	}
 }
 
-const {
-	title = "",
-	description = "",
-	suptitle = "",
-	link = null,
-	letters = [],
-} = Astro.props
+const { title = "", description = "", suptitle = "", link = null } = Astro.props
 ---
 
-<Grid Tag="header" class="o-hero pt-[43rem] pb-[2rem] items-end">
+<Grid
+	Tag="header"
+	class="o-hero pt-[43rem] pb-[2rem] items-end relative z-index-1"
+	attributes={{ "data-module-background": "bg" }}
+>
 	{
 		suptitle || description ? (
 			<div
@@ -64,8 +61,6 @@ const {
 		}}
 		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2 -entered"
 	>
-		<!-- <span aria-hidden="true" data-hero="letters"></span> -->
-		<!-- <span aria-hidden="true" data-hero="letters"> -->
 		{
 			title.split("").map((letter, index) => (
 				<span
@@ -77,13 +72,5 @@ const {
 				</span>
 			))
 		}
-		<!-- </span> -->
-		<!-- <span data-hero="word" class="opacity-0">{title}</span> -->
-		<!-- {
-			// title.split(" ").map((word, i) =>
-			// 	// prettier-ignore
-			// 	<><span data-hero="word">{word}</span>{i < title.split(" ").length - 1 ? <span class="o-hero__space">&nbsp;</span> : null}</>,
-			// )
-		} -->
 	</Text>
 </Grid>

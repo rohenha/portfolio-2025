@@ -12,6 +12,23 @@
 	[data-module-hero="heroTitle"] {
 		letter-spacing: -0.115em;
 	}
+
+	canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background: var(--color-gray-300);
+		height: 100%;
+		opacity: 0;
+		pointer-events: none;
+		width: 100%;
+
+		&.-active {
+			opacity: 1;
+			transition: opacity 1s ease-in-out;
+		}
+	}
 	@media (width >= 768px) and (prefers-reduced-motion: no-preference) {
 		.o-hero__content {
 			opacity: 0.01;

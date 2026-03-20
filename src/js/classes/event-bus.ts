@@ -50,6 +50,8 @@ export default class EventBus {
 		const handlers = new Set<Handler>()
 		this.listeners.get(event)?.forEach((h) => handlers.add(h))
 		this.prefixListeners.get(event)?.forEach((h) => handlers.add(h))
+		// console.log(`Getting handlers for event "${event}":`, Array.from(handlers))
+		// console.log(this.listeners, this.prefixListeners)
 		return Array.from(handlers)
 	}
 

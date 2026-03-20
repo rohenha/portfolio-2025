@@ -3,6 +3,7 @@ import Experience from "./experience"
 import Morse from "./morse"
 import Message from "./message"
 import Transition from "./transition"
+import Interactions from "./interactions"
 
 const config: Array<ModuleConfig> = [
 	{
@@ -24,6 +25,10 @@ const config: Array<ModuleConfig> = [
 	{
 		name: "tree",
 		loader: () => import("./tree"),
+	},
+	{
+		name: "interactions",
+		module: Interactions,
 	},
 	{
 		name: "message",

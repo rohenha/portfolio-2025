@@ -178,7 +178,6 @@ export default class ModulesManager {
 				if (!element.hasAttribute(`data-module-${name}`)) {
 					return
 				}
-				console.log("Unmounting module", name)
 				const moduleId = element.getAttribute(`data-module-${name}`) as string
 				const moduleInstance = this.currentModules.get(moduleId ?? "")
 				if (!moduleInstance) {
@@ -223,6 +222,8 @@ export default class ModulesManager {
 					...this.newModules,
 				])
 				resolve(newModulesArray)
+
+				this.optimalSelector = this.buildOptimalSelector()
 
 				this.newModules = new Map()
 			})
