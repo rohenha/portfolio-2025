@@ -7,6 +7,8 @@ import Button from "@components/atoms/button.astro"
 import Footer from "@components/organisms/footer.astro"
 import Header from "@components/organisms/header.astro"
 import Prefooter from "@components/organisms/prefooter.astro"
+import BackInTime from "@components/organisms/back-in-time.astro"
+import Message from "@components/molecules/message.astro"
 // Styles
 import "../styles/tailwind.css"
 import "../styles/global.scss"
@@ -47,7 +49,7 @@ const {
 } = Astro.props
 ---
 
-<html lang={lang} class="bg-gray-300 clr-gray-900 font-mono">
+<html lang={lang} class="bg-gray-300 text-gray-900 font-mono t-initTemplate">
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
@@ -75,23 +77,19 @@ const {
 		<meta name="twitter:description" content={ogDescription} />
 		<!-- Icon -->
 		<link
+			rel="icon"
+			type="image/png"
+			href="/favicon/favicon-96x96.png"
+			sizes="96x96"
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
 			href="/favicon/apple-touch-icon.png"
 		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="/favicon/favicon-32x32.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="/favicon/favicon-16x16.png"
-		/>
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="apple-mobile-web-app-title" content="Romain Breton" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<!-- Others -->
 		{metas.map((meta) => <meta meta.type={meta.key} content={meta.content} />)}
@@ -99,15 +97,72 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body class="">
+	<body
+		data-module-transition="transition"
+		data-module-interactions="interactions"
+	>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />
 		<slot />
-		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow"
-			><span class="sr-only">Retour en haut</span></Button
+		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow">
+			<span class="sr-only">Retour en haut</span>
+		</Button>
+		<Button
+			class="absolute top-md left-md z-12"
+			href="/experience"
+			attributes={{ target: "_blank" }}
+			variant="link-gray-900"
+			icon="arrow"
 		>
+			DXKjhf
+		</Button>
 		<Prefooter />
 		<Footer />
+		<div
+			class="a-tile bg-gray-900 fixed top-0 left-0 w-full h-full"
+			data-transition="container"
+		>
+		</div>
+		<Message />
+		<!-- <BackInTime /> -->
+		<noscript>
+			<style type="text/css">
+				.t-initTemplate .o-header {
+					opacity: 1;
+				}
+
+				.m-interactive {
+					visibility: hidden;
+				}
+
+				.t-initTemplate .o-progress {
+					display: none;
+				}
+
+				.t-initTemplate [data-transition="container"] {
+					opacity: 1;
+				}
+
+				.t-initTemplate [data-transition="container"] ~ *:not(.m-message) {
+					opacity: 1;
+				}
+			</style>
+		</noscript>
 	</body>
 </html>
+
+<script>
+	import Modular from "@js/classes/modular"
+	import modules from "@js/modules/index"
+	import ResizePlugin from "@js/classes/resize-plugin"
+	import ObserverPlugin from "@js/classes/observer-plugin"
+	import AnimationsPlugin from "@js/classes/animations-plugin"
+
+	window.addEventListener("load", () => {
+		new Modular({
+			modules,
+			plugins: [[ObserverPlugin], [AnimationsPlugin], [ResizePlugin]],
+		})
+	})
+</script>

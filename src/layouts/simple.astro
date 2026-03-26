@@ -1,0 +1,126 @@
+---
+// Content
+import metadata from "@content/metadata"
+// Components
+// import Button from "@components/atoms/button.astro"
+// Styles
+import "../styles/tailwind.css"
+import "../styles/global.scss"
+
+export interface Props {
+	lang?: string
+	locale?: string
+	seoTitle?: string
+	seoDescription?: string
+	ogImage?: string
+	robots?: string
+	ogType?: string
+	ogTitle?: string
+	ogDescription?: string
+	twitterCard?: string
+	twitterSite?: string
+	twitterCreator?: string
+	colorMeta?: string
+	metas?: Array<{ content: string; type: string; key: string }>
+}
+
+const {
+	lang = metadata.lang,
+	locale = metadata.locale,
+	seoTitle = metadata.seoTitle,
+	seoDescription = metadata.seoDescription,
+	// ogImage = metadata.ogImage,
+	robots = metadata.robots,
+	ogType = metadata.ogType,
+	ogTitle = metadata.ogTitle,
+	ogDescription = metadata.ogDescription,
+	twitterCard = metadata.twitterCard,
+	twitterCreator = metadata.twitterCreator,
+	colorMeta = metadata.colorMeta,
+	metas = metadata.metas,
+} = Astro.props
+---
+
+<html lang={lang} class="bg-gray-900 text-gray-300 font-mono">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=5"
+		/>
+		<meta name="language" content={locale} />
+		<meta name="robots" content={robots} />
+		<!-- data -->
+		<title>{seoTitle + metadata.suffixTitle}</title>
+		<meta name="description" content={seoDescription} />
+		<!-- Open graph -->
+		<meta property="og:locale" content={locale} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={ogType} />
+		<meta property="og:site_name" content={metadata.siteName} />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={ogDescription} />
+		<!-- Twitter -->
+		<meta name="twitter:card" content={twitterCard} />
+		<meta name="twitter:site" content={metadata.twitterSite} />
+		<meta name="twitter:creator" content={twitterCreator} />
+		<meta name="twitter:title" content={ogTitle} />
+		<meta name="twitter:description" content={ogDescription} />
+		<!-- Icon -->
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="/favicon/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="/favicon/favicon-16x16.png"
+		/>
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<!-- Others -->
+		{metas.map((meta) => <meta meta.type={meta.key} content={meta.content} />)}
+		<meta name="msapplication-TileColor" content={colorMeta} />
+		<meta name="theme-color" content={colorMeta} />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body data-module-transition="transition">
+		<slot />
+		<!-- <BackInTime /> -->
+		<noscript>
+			<style type="text/css">
+				.t-initTemplate .o-header {
+					opacity: 1;
+				}
+
+				.m-interactive {
+					visibility: hidden;
+				}
+
+				.t-initTemplate .o-progress {
+					display: none;
+				}
+
+				.t-initTemplate [data-transition="container"] {
+					opacity: 1;
+				}
+
+				.t-initTemplate [data-transition="container"] ~ *:not(.m-message) {
+					opacity: 1;
+				}
+			</style>
+		</noscript>
+	</body>
+</html>
+
+<script></script>

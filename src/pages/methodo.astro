@@ -5,13 +5,14 @@ import Text from "@components/atoms/text.astro"
 import TextSection from "@components/organisms/text-section.astro"
 ---
 
-<DefaultLayout>
-	<main id="main">
-		<HeroSimple title="Methodologie" />
+<DefaultLayout seoTitle="Ma méthodologie">
+	<main id="main" data-transition="container">
+		<HeroSimple title="Ma méthodo" />
 		<TextSection
 			variant="gray-900"
 			title1="Pour la beauté du code"
 			title2="Aussi rapide<br />qu’Usain Bolt"
+			secret="0"
 		>
 			<Fragment slot="content1">
 				<Text variant="pmd" class="">

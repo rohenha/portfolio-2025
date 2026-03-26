@@ -1,0 +1,23 @@
+---
+import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
+---
+
+<div
+	class="m-message rounded-md bg-gray-900 text-gray-300 p-md fixed bottom-md right-[7rem] z-10 none flex-col gap-xsm w-full max-w-[35rem] border border-gray-500 opacity-0 pointer-events-none"
+	data-module-message="message"
+>
+	<Button
+		class="absolute top-sm right-sm -only"
+		icon="point"
+		attributes={{ "data-message": "close" }}
+	>
+		<span class="sr-only">Fermer</span>
+	</Button>
+	<Text variant="tag">Bienvenue,</Text>
+	<Text variant="tag"
+		>Attends, il s'est passé une chose étrange on est d'accord ?<br />On ne
+		serait pas dans une boucle temporelle ?</Text
+	>
+	<Text variant="tag">Il doit exister un moyen de la désactiver.</Text>
+</div>

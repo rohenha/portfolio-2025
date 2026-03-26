@@ -29,7 +29,7 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 ---
 
 <DefaultLayout explorer={false}>
-	<main id="main">
+	<main id="main" data-transition="container">
 		{
 			page.url.first ? (
 				<HeroAlt title={`Page ${page.currentPage}`} />

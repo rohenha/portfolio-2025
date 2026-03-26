@@ -11,8 +11,15 @@
 		display: inline-block;
 		background-repeat: no-repeat;
 		height: 1rem;
+		margin-left: var(--spacing-tiny);
 		width: 1rem;
 		@extend .icon-arrow;
+	}
+
+	&.-only {
+		&::after {
+			margin-left: 0;
+		}
 	}
 
 	&.text-gray-300 {
@@ -47,6 +54,20 @@
 					filter: invert(70%) sepia(8%) saturate(0%) hue-rotate(180deg)
 						brightness(90%) contrast(85%);
 				}
+			}
+		}
+	}
+
+	&.-error {
+		background-color: var(--color-green-700);
+		color: var(--color-gray-300);
+		&::after {
+			filter: invert(97%) sepia(2%) saturate(0%) hue-rotate(180deg)
+				brightness(95%) contrast(90%);
+		}
+		&:hover {
+			@media (hover: hover) {
+				background-color: var(--color-green-700);
 			}
 		}
 	}
@@ -94,17 +115,64 @@
 	&::after {
 		@extend .icon-arrow;
 	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		&::after {
+			animation: leave-link-icon 0.15s ease forwards;
+		}
+		&:hover {
+			&::after {
+				animation: enter-link-icon 0.8s ease-in-out forwards infinite;
+			}
+		}
+	}
+}
+
+.a-btnIcon.-point {
+	&::after {
+		@extend .icon-point;
+	}
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		&::after {
+			animation: leave-link-icon 0.15s ease forwards;
+		}
+		&:hover {
+			&::after {
+				animation: enter-link-point 2s ease-in-out forwards infinite;
+			}
+		}
+	}
 }
 
 // Btn Secondary
 .a-btnSecondary {
 	&::before {
 		content: "[";
+		display: inline-block;
 		margin-right: 0.5rem;
 	}
 	&::after {
 		content: "]";
+		display: inline-block;
 		margin-left: 0.5rem;
+	}
+
+	&:hover {
+		@media (hover: hover) {
+			&::before {
+				transform: translate(2px, 0);
+			}
+			&::after {
+				transform: translate(-2px, 0);
+			}
+		}
+	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		&::before,
+		&::after {
+			transition: transform 0.15s ease-in-out;
+		}
 	}
 }
 
@@ -140,7 +208,7 @@
 			transform: translate(-90%, -50%);
 		}
 
-		@media (hover: hover) {
+		@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 			span {
 				transition: transform 0.3s ease;
 			}
@@ -218,6 +286,19 @@
 	padding-bottom: 1.2rem;
 	padding-top: 1.2rem;
 	&::after {
+		margin-left: 0;
 		transform: rotate(-45deg);
+	}
+	&.-arrow {
+		@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+			&::after {
+				animation: leave-link-icon-top 0.15s ease forwards;
+			}
+			&:hover {
+				&::after {
+					animation: enter-link-icon-top 0.8s ease-in-out forwards infinite;
+				}
+			}
+		}
 	}
 }

@@ -16,43 +16,46 @@ const { explorer = true } = Astro.props
 const currentPath = Astro.url.pathname
 ---
 
+<!-- {
+	explorer && (
+		<div class="o-explorer hidden md:block absolute top-0 left-[50%] w-full translate-x-[-50%] pt-md pl-sm md:pl-lg max-w-[140rem] mx-auto z-10 pointer-events-none">
+			<Text
+				variant="tag"
+				class="md:w-[50%] md:max-w-[30rem]"
+				attributes={{ "data-module-message": "message" }}
+			/>
+		</div>
+	)
+} -->
 <header
-	class="absolute top-0 left-[50%] w-full translate-x-[-50%] py-md px-sm md:px-lg max-w-[140rem] mx-auto flex items-start"
+	class="o-header fixed top-0 left-[50%] z-11 w-full translate-x-[-50%] py-sm px-sm md:px-lg max-w-[140rem] mx-auto flex items-start"
 >
-	{
-		explorer && (
-			<Text variant="bmd" class="hidden md:block md:w-[50%] md:max-w-[20rem]">
-				Bonjour,
-				<br />
-				...
-				<br />
-				Attends, j'ai comme un air de déjà vu.
-			</Text>
-		)
-	}
 	<nav
-		class="md:ml-auto w-full flex flex-row items-start md:items-center md:justify-end gap-xsm md:gap-sm text-right"
+		class="w-full md:w-auto md:ml-auto flex flex-row items-center md:justify-end gap-xsm md:gap-sm text-right p-sm rounded-sm backdrop-blur-[10px]"
 		aria-labelledby="header-nav-label"
 	>
 		<span id="header-nav-label" class="sr-only">Naviagtion principale</span>
 		<a
 			href="/"
 			class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 md:relative md:top-[-0.1rem] focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1 -order-2"
+			data-transition="navLink"
 		>
 			R<span class="sr-only">omain</span> B<span class="sr-only">reton</span>
 		</a>
 		<ul
 			role="list"
-			class="flex flex-col md:flex-row gap-xsm md:gap-sm items-end md:items-center ml-auto md:ml-0"
+			class="flex flex-row gap-xsm md:gap-sm items-end md:items-center ml-auto md:ml-0"
 		>
 			{
 				nav.header.map((item) => (
 					<li>
 						<Button
-							attributes={formatLink(item, currentPath)}
+							attributes={{
+								...formatLink(item, currentPath),
+								"data-transition": "navLink",
+							}}
 							href={item.url}
 							variant="nav-alt-gray-900"
-							class={currentPath === item.url ? " -active" : ""}
 						>
 							{item.name}
 						</Button>
@@ -60,6 +63,8 @@ const currentPath = Astro.url.pathname
 				))
 			}
 		</ul>
-		<Progress class="md:relative md:top-[-0.1rem] -order-1 md:order-3" />
+		<Progress
+			class="hidden md:block md:relative md:top-[-0.1rem] -order-1 md:order-3"
+		/>
 	</nav>
 </header>

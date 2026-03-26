@@ -1,67 +1,75 @@
 {
-  "name": "portfolio-2025",
-  "type": "module",
-  "version": "0.0.1",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rohenha/portfolio-2025.git"
-  },
-  "keywords": [
-    "astro",
-    "vite",
-    "typescript",
-    "tsx",
-    "sass",
-    "vitest",
-    "low",
-    "code",
-    "vanilla",
-    "js",
-    "eco",
-    "low",
-    "carbon",
-    "jamstack"
-  ],
-  "author": "Romain Breton",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rohenha/portfolio-2025/issues"
-  },
-  "homepage": "https://github.com/rohenha/portfolio-2025#readme",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "sprite": "node ./tools/sprite.js"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.17.1",
-    "astro-critical-css": "^0.0.7",
-    "rehype-class-names": "^2.0.0",
-    "sass": "^1.97.3",
-    "tailwindcss": "^4.1.18"
-  },
-  "devDependencies": {
-    "@eslint/markdown": "^7.5.1",
-    "@types/eslint-plugin-jsx-a11y": "^6.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@typescript-eslint/parser": "^8.54.0",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-astro": "^1.5.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "prettier": "^3.8.1",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "stylelint": "^17.1.1",
-    "stylelint-config-html": "^1.1.0",
-    "stylelint-config-recommended": "^18.0.0",
-    "stylelint-config-recommended-scss": "^17.0.0",
-    "stylelint-config-tailwindcss": "^1.0.1",
-    "stylelint-order": "^7.0.1",
-    "svg-sprite": "^2.0.4"
-  }
+	"name": "portfolio-2025",
+	"type": "module",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rohenha/portfolio-2025.git"
+	},
+	"keywords": [
+		"astro",
+		"vite",
+		"typescript",
+		"tsx",
+		"sass",
+		"vitest",
+		"low",
+		"code",
+		"vanilla",
+		"js",
+		"eco",
+		"low",
+		"carbon",
+		"jamstack"
+	],
+	"author": "Romain Breton",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/rohenha/portfolio-2025/issues"
+	},
+	"homepage": "https://github.com/rohenha/portfolio-2025#readme",
+	"scripts": {
+		"dev": "astro dev --host",
+		"build": "astro build --space preprod",
+		"build:prod": "astro build --space prod",
+		"preview": "astro preview",
+		"astro": "astro",
+		"sprite": "node ./tools/sprite.js",
+		"lint:js": "eslint src/js/**/*",
+		"lint:scss": "stylelint src/styles/**/*"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^4.3.13",
+		"@astrojs/sitemap": "^3.7.0",
+		"@swup/route-name-plugin": "^4.1.0",
+		"@tailwindcss/vite": "^4.1.18",
+		"astro": "^5.17.1",
+		"astro-critical-css": "^0.0.7",
+		"install": "^0.13.0",
+		"npm": "^11.9.0",
+		"rehype-class-names": "^2.0.0",
+		"sass": "^1.97.3",
+		"swup": "^4.8.2",
+		"tailwindcss": "^4.1.18"
+	},
+	"devDependencies": {
+		"@eslint/markdown": "^7.5.1",
+		"@types/eslint-plugin-jsx-a11y": "^6.10.1",
+		"@typescript-eslint/eslint-plugin": "^8.54.0",
+		"@typescript-eslint/parser": "^8.54.0",
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-astro": "^1.5.0",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"prettier": "^3.8.1",
+		"prettier-plugin-astro": "^0.14.1",
+		"prettier-plugin-tailwindcss": "^0.7.2",
+		"stylelint": "^17.1.1",
+		"stylelint-config-html": "^1.1.0",
+		"stylelint-config-recommended": "^18.0.0",
+		"stylelint-config-recommended-scss": "^17.0.0",
+		"stylelint-config-tailwindcss": "^1.0.1",
+		"stylelint-order": "^7.0.1",
+		"svg-sprite": "^2.0.4"
+	}
 }

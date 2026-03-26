@@ -1,0 +1,97 @@
+.a-tile {
+	z-index: 999;
+	display: none;
+
+	&.-active {
+		display: block;
+		opacity: 0;
+	}
+
+	&.-leave {
+		opacity: 1;
+		transition: opacity 0.45s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+	}
+
+	&.-enter {
+		opacity: 1;
+		transform: translate(100%, 0);
+		transition: transform 1s cubic-bezier(0.04, 0.5, 0.23, 0.86);
+	}
+}
+
+[data-transition="container"].-animating {
+	@media (prefers-reduced-motion: no-preference) {
+		// > *:not(header) > * {
+		// 	opacity: 0.01;
+		// 	transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+		// }
+		// &.-enter {
+		// 	> *:not(header) > * {
+		// 		opacity: 1;
+		// 		transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+		// 	}
+		// }
+
+		// // ~ .a-tile {
+		// // 	display: block;
+		// // 	opacity: 0;
+		// // 	transition: transform 1s cubic-bezier(0.04, 0.5, 0.23, 0.86);
+		// // 	// animation: fade-in 1s cubic-bezier(0.09, 0.42, 0.18, 0.99) forwards;
+		// // }
+		// &.-leave {
+		// 	~ .a-tile {
+		// 		opacity: 1;
+		// 		transition: opacity 0.45s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+		// 	}
+		// 	// transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+		// 	// }
+		// }
+		// &.-enter {
+		// 	~ .a-tile {
+		// 		opacity: 1;
+		// 		transform: translate(0, 100%);
+		// 		transition: transform 1s cubic-bezier(0.04, 0.5, 0.23, 0.86);
+		// 		// animation: enter-tile 1s cubic-bezier(0.09, 0.42, 0.18, 0.99) forwards;
+		// 	}
+		// 	// transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+		// 	// }
+		// }
+	}
+}
+
+.t-initTemplate {
+	@media (prefers-reduced-motion: no-preference) {
+		[data-transition="container"] {
+			// // opacity: 0.01;
+
+			// ~ *:not(.m-message, .a-tile) {
+			// 	opacity: 0.01;
+			// }
+		}
+
+		.a-tile {
+			display: block;
+			transition: transform 1s cubic-bezier(0.04, 0.5, 0.23, 0.86);
+		}
+
+		&.-animating {
+			// .o-header {
+			// 	opacity: 1;
+			// 	transition: opacity 1s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+			// }
+			.a-tile {
+				transform: translate(100%, 0);
+				// animation: leave-tile 1s cubic-bezier(0.09, 0.42, 0.18, 0.99) forwards;
+			}
+			// [data-transition="container"] {
+			// 	opacity: 1;
+			// 	transition: opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+
+			// 	~ *:not(.m-message) {
+			// 		opacity: 1;
+			// 		transition: opacity 2s cubic-bezier(0.09, 0.42, 0.18, 0.99);
+			// 	}
+			// }
+		}
+	}
+}

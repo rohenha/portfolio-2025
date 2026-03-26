@@ -37,8 +37,6 @@ const nav: NavProps = {
 			name: "Repos",
 			url: "/repos",
 		},
-	],
-	footerSecondary: [
 		{
 			id: "Sport",
 			name: "Sport",
@@ -58,7 +56,7 @@ const nav: NavProps = {
 			external: true,
 		},
 	],
-	footerThird: [
+	footerSecondary: [
 		{
 			id: "label",
 			name: "@Romain Breton - 2026",

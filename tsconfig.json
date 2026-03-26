@@ -17,7 +17,8 @@
 			"@content/*": ["./content/*"],
 			"@utils/*": ["./utils/*"],
 			"@config/*": ["./config/*"],
-			"@images/*": ["./src/images/*"]
+			"@images/*": ["./src/images/*"],
+			"@js/*": ["./src/js/*"]
 		}
 	}
 }

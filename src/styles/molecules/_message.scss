@@ -1,0 +1,14 @@
+.m-message {
+	transform: translate(0, 10px);
+	&.-visible {
+		display: flex;
+		transition:
+			opacity 0.3s ease-in-out,
+			transform 0.3s ease-in-out;
+	}
+	&.-active {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translate(0, 0);
+	}
+}

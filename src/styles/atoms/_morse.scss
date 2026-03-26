@@ -1,0 +1,50 @@
+.a-morse {
+	&::before {
+		content: "";
+	}
+
+	&.-active {
+		&::before {
+			animation: morse-dot 5s infinite steps(8);
+		}
+	}
+}
+
+@keyframes morse-dot {
+	0% {
+		content: "·";
+	}
+	8% {
+		content: " ";
+	}
+	12% {
+		content: "-";
+	}
+	20% {
+		content: " ";
+	}
+	24% {
+		content: "-";
+	}
+	32% {
+		content: " ";
+	}
+	36% {
+		content: "-";
+	}
+	44% {
+		content: " ";
+	}
+	48% {
+		content: "-";
+	}
+	56% {
+		content: " ";
+	}
+	60% {
+		content: " ";
+	}
+	100% {
+		content: " ";
+	}
+}

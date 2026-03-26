@@ -1,7 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config"
 import tailwindcss from "@tailwindcss/vite"
-
+import sitemap from "@astrojs/sitemap"
+import { loadEnv } from "vite"
 // import criticalCss from "astro-critical-css"
 
 import mdx from "@astrojs/mdx"
@@ -9,9 +10,21 @@ import mdxClasses from "./config/mdx-classes.ts"
 import rehypeClassNames from "rehype-class-names"
 
 // https://astro.build/config
+
+const { SPACE } = loadEnv(
+	process.env.NODE_ENV ?? "development",
+	process.cwd(),
+	"",
+)
+const isProdSpaceValue = SPACE === "prod"
 export default defineConfig({
-	site: "https://romain-breton.com",
+	site: isProdSpaceValue
+		? "https://romain-breton.com"
+		: "https://preprod.romain-breton.com",
 	output: "static",
+	security: {
+		csp: true,
+	},
 	vite: {
 		plugins: [tailwindcss()],
 		build: {
@@ -43,6 +56,35 @@ export default defineConfig({
 		//   height: 1080,
 		//   width: 1920,
 		// }),
+		sitemap({
+			filter: (page) => {
+				const excludedPages = ["/design-system"]
+				return !excludedPages.includes(page)
+			},
+			serialize: (page) => {
+				if (page.url.startsWith("/parlons-code/")) {
+					return {
+						url: page.url,
+						priority: 0.6,
+						lastmod: new Date("").toISOString(),
+					}
+				}
+
+				if (page.url === "/") {
+					return {
+						url: page.url,
+						priority: 1.0,
+						lastmod: new Date().toISOString(),
+					}
+				}
+
+				return {
+					url: page.url,
+					priority: 0.8,
+					lastmod: new Date().toISOString(),
+				}
+			},
+		}),
 		mdx({
 			rehypePlugins: [
 				[

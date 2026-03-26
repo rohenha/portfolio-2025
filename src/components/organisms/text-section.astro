@@ -14,12 +14,13 @@ export interface Props {
 	title1?: string
 	title2?: string
 	link?: NavItem
+	secret?: string
 }
 
-const { variant = "gray-900", title1 = "", title2 = "", link } = Astro.props
+const { variant = "gray-900", title1 = "", title2 = "", link, secret } = Astro.props
 ---
 
-<section class:list={[variants[variant], "py-giant"]}>
+<section class:list={[variants[variant], "py-giant relative"]}>
 	<Grid>
 		{title1 && (
 			<Text
@@ -60,4 +61,5 @@ const { variant = "gray-900", title1 = "", title2 = "", link } = Astro.props
 			</Button>
 		)}
 	</Grid>
+	{secret && (<Text class={`absolute bottom-0 left-[50%] translate-[-50%] z-10 ${variant === "gray-900" ? "text-gray-300" : "text-gray-900"}`} attributes={{'data-module-hidden': 'hidden'}}>{secret}</Text>)}
 </section>

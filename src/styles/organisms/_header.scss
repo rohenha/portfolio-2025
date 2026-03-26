@@ -1,0 +1,14 @@
+.o-header > nav {
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background: var(--color-gray-300);
+		border-radius: var(--radius-sm);
+		height: 100%;
+		opacity: 0.6;
+		width: 100%;
+	}
+}

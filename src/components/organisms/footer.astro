@@ -11,21 +11,22 @@ import Grid from "@components/organisms/grid.astro"
 const currentPath = Astro.url.pathname
 ---
 
-<footer class="bg-gray-900 text-gray-300 py-xxlg">
+<footer class="o-footer bg-gray-900 text-gray-300 py-xxlg transition-fade">
 	<Grid Tag="div">
 		<nav
-			class="col-span-full md:col-span-12 flex flex-col md:flex-row md:flex-wrap gap-y-sm md:gap-x-xlg md:gap-y-sm mb-lg md:mb-0"
+			class="col-span-full lg:col-span-12 flex flex-row flex-wrap gap-y-md lg:gap-x-xlg lg:gap-y-sm"
 			aria-labelledby="footer-nav-label"
 		>
 			<span id="footer-nav-label" class="sr-only">Navigation complète</span>
 			<ul
 				role="list"
-				class="flex flex-col gap-xsm md:gap-tiny items-center md:items-start"
+				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
 			>
 				<li class="relative -top-px">
 					<a
 						href="/"
 						class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1"
+						data-transition="navLink"
 					>
 						R<span class="sr-only">omain</span> B<span class="sr-only">
 							reton
@@ -37,10 +38,13 @@ const currentPath = Astro.url.pathname
 						<li>
 							{item.url ? (
 								<Button
-									attributes={formatLink(item, currentPath)}
+									attributes={{
+										...formatLink(item, currentPath),
+										"data-transition": "navLink",
+									}}
 									href={item.url}
-									variant="nav-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
+									variant={item.external ? "link-gray-300" : "nav-gray-300"}
+									icon={item.external ? "arrow" : ""}
 								>
 									{item.name}
 								</Button>
@@ -53,31 +57,7 @@ const currentPath = Astro.url.pathname
 			</ul>
 			<ul
 				role="list"
-				class="flex flex-wrap gap-md justify-center md:flex-col md:gap-tiny md:justify-start"
-			>
-				{
-					nav.footerSecondary.map((item) => (
-						<li>
-							{item.url ? (
-								<Button
-									attributes={formatLink(item, currentPath)}
-									href={item.url}
-									variant="link-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
-									icon="arrow"
-								>
-									{item.name}
-								</Button>
-							) : (
-								<Text variant="bmd">{item.name}</Text>
-							)}
-						</li>
-					))
-				}
-			</ul>
-			<ul
-				role="list"
-				class="flex flex-wrap gap-md justify-center md:flex-col md:gap-tiny md:justify-start"
+				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
 			>
 				{
 					nav.socials.map((social) => (
@@ -96,14 +76,17 @@ const currentPath = Astro.url.pathname
 			</ul>
 		</nav>
 		<div
-			class="col-span-full md:col-span-12 flex flex-col gap-sm items-center md:items-end"
+			class="m-interactive hidden col-span-full lg:col-span-12 md:flex flex-col gap-sm items-start lg:items-end md:mt-xlg lg:mt-0"
 		>
-			<Text class="text-center md:text-right max-w-[40rem]" variant="bmd"
+			<Text class="md:text-left lg:text-right max-w-[40rem]" variant="bmd"
 				>Dans une optique d’éco-conception, le site est allégé par défaut. Et si
 				on re découvrait le site avec un peu de piquant ?</Text
 			>
-			<Button variant="primary-gray-300" icon="arrow"
-				>Ajouter des paillettes</Button
+			<Button
+				variant="primary-gray-300"
+				icon="arrow"
+				href=`${currentPath}?interactions=1`
+				attributes={{ "data-prevent": "true" }}>Ajouter des paillettes</Button
 			>
 		</div>
 		<Text
@@ -112,28 +95,36 @@ const currentPath = Astro.url.pathname
 			>Romain Breton</Text
 		>
 		<div
-			class="col-span-full flex flex-col items-center gap-sm lg:flex-row lg:justify-between"
+			class="col-span-full mb-xlg flex flex-col items-start gap-sm lg:flex-row lg:justify-between lg:items-center"
 		>
 			<p
-				class="flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
+				class="m-interactive hidden md:flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
 			>
-				··· · −·−· ·−· <Button variant="primary-gray-300" icon="arrow"
-					>Rapporter les codes d'erreur</Button
+				<Button variant="primary-gray-300" icon="arrow" href="/experience">
+					Rapporter les codes d'erreur
+				</Button>
+				<span
+					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse"
+					data-module-morse="morse"
 				>
+				</span>
 			</p>
 			<ul
 				role="list"
-				class="flex flex-wrap gap-x-sm gap-y-tiny justify-center lg:justify-end"
+				class="flex flex-wrap gap-sm justify-start lg:justify-end"
 			>
 				{
-					nav.footerThird.map((item) => {
+					nav.footerSecondary.map((item) => {
 						return item.url ? (
 							<li>
 								<Button
-									attributes={formatLink(item, currentPath)}
+									attributes={{
+										...formatLink(item, currentPath),
+										"data-transition": "navLink",
+									}}
 									href={item.url}
 									variant="link-gray-300"
-									class={currentPath === item.url ? " -active" : ""}
+									icon={item.external ? "arrow" : ""}
 								>
 									{item.name}
 								</Button>
@@ -147,5 +138,23 @@ const currentPath = Astro.url.pathname
 				}
 			</ul>
 		</div>
+		<Text
+			class="col-span-full md:text-center max-w-[50rem] md:justify-self-center"
+			variant="tag"
+			>Visiter ce site consomme autant qu'un trajet de 10m en voiture. En
+			moyenne un site consomme environ 1km en voiture.<br />Voir le calcul de <a
+				href="https://www.websitecarbon.com/website/romain-breton-com/"
+				class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2"
+				target="_blank"
+			>
+				Website carbon
+			</a> et <a
+				href="https://www.ecoindex.fr/resultat/?id=66645cb9-ac7d-44ed-98ca-32c4ae0077ed"
+				class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2"
+				target="_blank"
+			>
+				Ecoindex
+			</a></Text
+		>
 	</Grid>
 </footer>

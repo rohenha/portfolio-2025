@@ -2,21 +2,17 @@
 import DefaultLayout from "@layouts/default.astro"
 import HeroSimple from "@components/organisms/hero-simple.astro"
 import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
 // import TextSection from "@components/organisms/text-section.astro"
 import TextTree from "@components/organisms/text-tree.astro"
 ---
 
-<DefaultLayout>
-	<main id="main">
+<DefaultLayout seoTitle="A propos de moi">
+	<main id="main" data-transition="container">
 		<HeroSimple title="A propos de moi" photo={true} />
 		<TextTree
 			variant="gray-900"
 			title="Pur produit Sarthois avec des notes du sud"
-			link={{
-				name: "Voir mon CV",
-				url: "https://romainbreton.fr/CV_Romain_Breton.pdf",
-				external: true,
-			}}
 			treeVariant="ahead"
 			tree={[
 				{
@@ -57,18 +53,27 @@ import TextTree from "@components/organisms/text-tree.astro"
 					tristique eget, tempus quis nisl. Aenean massa nibh, bibendum quis
 					urna et, suscipit ultricies elit.
 				</Text>
+				<Button
+					variant="secondary-gray-300"
+					class="justify-self-start"
+					attributes={{ target: "_blank", rel: "noopener noreferrer" }}
+					href="https://romain-breton.com/cv-2026.pdf"
+				>
+					Voir mon CV
+				</Button>
 			</Fragment>
 		</TextTree>
 
 		<TextTree
 			variant="gray-300"
 			title="Un métier passionnant qui me passionne"
+			treeAttributes={{ "data-module-tree": "tree" }}
 			tree={[
 				{ title: "HTML 5" },
 				{ title: "CSS" },
 				{
 					title: "Javascript",
-					children: ["Vanilla JS", "Vue JS", "React JS"],
+					children: ["Vanilla JS", "Vue JS", "React JS", "Angular"],
 				},
 				{ title: "Typescript" },
 				{
@@ -77,7 +82,7 @@ import TextTree from "@components/organisms/text-tree.astro"
 				},
 				{
 					title: "PHP",
-					children: ["Kirby CMS", "Wordpress", "Laravel"],
+					children: ["Kirby CMS", "Wordpress", "Laravel", "Prestashop"],
 				},
 			]}
 		>

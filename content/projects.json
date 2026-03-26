@@ -1,0 +1,58 @@
+{
+	"list": [
+		{
+			"id": "strava-explorer",
+			"name": "Strava Explorer",
+			"description": "Aplication de suivi de performances sportifve et de statistiques avancées",
+			"url": "https://strava-explorer.romain-breton.com",
+			"tags": ["AdonisJS", "ShadcnUI", "VueJS"],
+			"role": "Développeur Fullstack",
+			"credits": [],
+			"year": 2026
+		},
+		{
+			"id": "toulousefc",
+			"name": "Toulouse FC",
+			"description": "Site vitrine du club de football de Toulouse, avec des fonctionnalités de gestion de contenu et d'actualités.",
+			"url": "https://toulousefc.com",
+			"tags": ["Kirby CMS", "ReactJS", "Opta API"],
+			"role": "Développeur Fullstack chez Troa",
+			"credits": [
+				"Troa - Développement",
+				"Supercolor - Gestion de projet",
+				"Yumans - SEO"
+			],
+			"year": 2024
+		},
+		{
+			"id": "mat&seb",
+			"name": "Mat & Seb",
+			"description": "Site vitrine pour Mat & Seb, une agence immobilière spécialisée dans les propriétés de luxe, avec une interface élégante et des fonctionnalités de recherche avancées.",
+			"url": "https://mat-seb-immo.com",
+			"tags": ["KirbyCMS", "Eco conception", "Animations"],
+			"role": "Développeur Frontend chez Troa",
+			"credits": [],
+			"year": 2025
+		},
+		{
+			"id": "lespoupeesrusses",
+			"name": "Les poupées russes",
+			"description": "Site vitrine de l'agence de communication Les poupées russes, avec une interface moderne et des animations pour présenter leurs services et leur portfolio.",
+			"url": "https://www.lespoupees.paris/",
+			"tags": ["Middleman", "Eco conception"],
+			"role": "Développeur Frontend ches Les poupées russes",
+			"credits": [],
+			"year": 2019
+		},
+		{
+			"id": "justhappiness",
+			"name": "Just Happiness",
+			"description": "Site vitrine de l'agence de communication Just Happiness, avec une interface moderne et des animations pour présenter leurs services et leur portfolio.",
+			"url": "https://justhappiness.fr/",
+			"tags": ["Kirby CMS", "Eco conception"],
+			"role": "Développeur Frontend chez Troa",
+			"credits": [],
+			"year": 2024
+		}
+	]
+}

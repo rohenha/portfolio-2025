@@ -1,18 +1,22 @@
+import { isProdSpace } from "@utils/config"
+
 const metadata: MetadataProps = {
 	siteName: "Romain Breton",
-	siteUrl: "https://ww.romain-breton.com",
+	siteUrl: isProdSpace
+		? "https://www.romain-breton.com"
+		: "https://preprod.romain-breton.com",
 	lang: "fr",
 	locale: "fr_FR",
 	suffixTitle: " - Romain Breton",
 	seoTitle: "Portfolio",
 	seoDescription:
-		"Portfolio of Romain Breton, a web developer specializing in modern web technologies",
+		"Romain Breton, full-stack developpeur orienté créatif, spécialisé dans l'écoconception, l'accessibilité et les performances web.",
 	ogImage: "/assets/og-image.png",
-	robots: "index, follow",
+	robots: isProdSpace ? "index, follow" : "noindex, nofollow",
 	ogType: "website",
 	ogTitle: "Romain Breton - Portfolio",
 	ogDescription:
-		"Portfolio of Romain Breton, a web developer specializing in modern web technologies",
+		"Romain Breton, full-stack developpeur orienté créatif, spécialisé dans l'écoconception, l'accessibilité et les performances web.",
 	twitterCard: "summary_large_image",
 	twitterSite: "@romain_breton",
 	twitterCreator: "@romain_breton",
