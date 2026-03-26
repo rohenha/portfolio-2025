@@ -44,17 +44,22 @@ export default class Background extends Mmodule {
 
 	// Tweakable values
 	private readonly dprScale: number = 0.75 // reduce resolution for perf
-	private frequency: number = 1
+	private frequency: number = 5
 	// private frequency: number = 1.5
-	private speed: number = 0.01
+	private speed: number = 0.05
 	private brightness: number = 0.1
 	private color: [number, number, number] = [1.0, 1.0, 1.0]
+	private digit: number = 7
+	private digitOpacity: number = 0
+	private updateDigit: boolean = false
 	// private color: [number, number, number] = [0.0, 0.5, 0.95]
 
 	constructor(params: any) {
 		super(params)
 		this.busMap = {
 			"plugins:resizer:resize": "onResize",
+			"experience:loop": "resetExperience",
+			"call:initNumber": "initNumber",
 		}
 		this.visible = true
 	}
@@ -63,6 +68,11 @@ export default class Background extends Mmodule {
 		if (isReduced() || isMobile()) {
 			return
 		}
+
+		const [trigger] = this.$("trigger")
+		trigger?.addEventListener("click", () => {
+			this.initNumber()
+		})
 
 		try {
 			await this.initWebGL()
@@ -85,8 +95,6 @@ export default class Background extends Mmodule {
 	private async initWebGL(): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			this.canvas = document.createElement("canvas")
-
-			// this.el.style.position = "relative"
 
 			const gl = this.canvas.getContext("webgl2", {
 				alpha: true,
@@ -166,7 +174,10 @@ export default class Background extends Mmodule {
 		if (now - this.lastFrameTime < this.frameDuration) return
 		this.lastFrameTime = now
 
-		this.frequency = this.tween(this.frequency, 1.5, 0.04)
+		if (this.updateDigit) {
+			this.digitOpacity = this.tween(this.digitOpacity, 1, 0.02)
+		}
+		// this.frequency = this.tween(this.frequency, 18, 0.04)
 
 		const elapsed = (now - this.startTime) * 0.001 // seconds
 		const { gl } = this
@@ -186,6 +197,9 @@ export default class Background extends Mmodule {
 		setUniform1f(gl, this.noiseProgram, "uFrequency", this.frequency)
 		setUniform1f(gl, this.noiseProgram, "uSpeed", this.speed)
 		setUniform1f(gl, this.noiseProgram, "uBrightness", this.brightness)
+		setUniform1f(gl, this.noiseProgram, "uDigit", this.digit)
+		setUniform1f(gl, this.noiseProgram, "uDigitOpacity", this.digitOpacity)
+		setUniform2f(gl, this.noiseProgram, "uResolution", w, h)
 		drawQuad(gl, this.noiseQuad)
 
 		// // ── Pass 2: ASCII post-process → draw to screen ─────────────────
@@ -213,7 +227,6 @@ export default class Background extends Mmodule {
 	onUnMount(): void {
 		this.active = false
 		this.cleanAnimation("background")
-		// cancelAnimationFrame(this.raf)
 
 		if (!this.gl) return
 
@@ -226,5 +239,14 @@ export default class Background extends Mmodule {
 		destroyRenderTarget(gl, this.renderTarget)
 		this.observe(false)
 		this.canvas.remove()
+	}
+
+	initNumber(): void {
+		this.updateDigit = true
+	}
+
+	resetExperience(): void {
+		this.updateDigit = false
+		this.digitOpacity = 0
 	}
 }

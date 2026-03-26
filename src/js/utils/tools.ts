@@ -66,7 +66,7 @@ export const isMobile = () => {
 	return window.innerWidth < 768
 }
 
-export const shouldNotIntercept = (navigationEvent) => {
+export const shouldNotIntercept = (navigationEvent: any) => {
 	return (
 		navigationEvent.canIntercept === false ||
 		// If this is just a hashChange,

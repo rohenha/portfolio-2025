@@ -10,13 +10,13 @@ const metadata: MetadataProps = {
 	suffixTitle: " - Romain Breton",
 	seoTitle: "Portfolio",
 	seoDescription:
-		"Portfolio of Romain Breton, a web developer specializing in modern web technologies",
+		"Romain Breton, full-stack developpeur orienté créatif, spécialisé dans l'écoconception, l'accessibilité et les performances web.",
 	ogImage: "/assets/og-image.png",
 	robots: isProdSpace ? "index, follow" : "noindex, nofollow",
 	ogType: "website",
 	ogTitle: "Romain Breton - Portfolio",
 	ogDescription:
-		"Portfolio of Romain Breton, a web developer specializing in modern web technologies",
+		"Romain Breton, full-stack developpeur orienté créatif, spécialisé dans l'écoconception, l'accessibilité et les performances web.",
 	twitterCard: "summary_large_image",
 	twitterSite: "@romain_breton",
 	twitterCreator: "@romain_breton",

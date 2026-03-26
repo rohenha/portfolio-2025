@@ -19,7 +19,7 @@ export default class Hidden extends Mmodule {
 	initHidden() {
 		if (this.active) return
 		this.active = true
-		this.animate("morse", () => {
+		this.animate("hidden", () => {
 			this.el.classList.add("-active")
 		})
 	}
@@ -41,7 +41,7 @@ export default class Hidden extends Mmodule {
 	resetExperience() {
 		if (!this.active) return
 		this.active = false
-		this.animate("morse", () => {
+		this.animate("hidden", () => {
 			this.el.classList.remove("-active")
 		})
 	}

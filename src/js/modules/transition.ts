@@ -34,14 +34,20 @@ export default class Transition extends Mmodule {
 
 		window.addEventListener("popstate", (e: PopStateEvent) => {
 			if (shouldNotIntercept(e) || this.loading) return
-			this.loading = true
 			const toPath = location.pathname
 			const fromPath =
 				document.documentElement.getAttribute("data-current-path")
+			// Si seule la partie hash change, on ne fait rien
+			if (toPath === fromPath && location.hash) {
+				this.loading = false
+				return
+			}
+			// Si on reste sur la même page (même path), on ne recharge pas
 			if (toPath === fromPath) {
 				this.loading = false
 				return
 			}
+			this.loading = true
 			this.handleNavigationEvent(toPath, fromPath as string, false)
 		})
 
@@ -55,8 +61,10 @@ export default class Transition extends Mmodule {
 				href.startsWith("#") ||
 				link.target === "_blank" ||
 				link.getAttribute("data-prevent")
-			)
+			) {
+				console.log("prevent")
 				return
+			}
 			e.preventDefault()
 			if (this.loading) return
 			this.loading = true
@@ -65,6 +73,11 @@ export default class Transition extends Mmodule {
 			const fromPath = location.pathname
 			this.handleNavigationEvent(toPath, fromPath, true)
 		})
+	}
+
+	navigate(toPath: string) {
+		const fromPath = location.pathname
+		this.handleNavigationEvent(toPath, fromPath, true)
 	}
 
 	onPageView() {

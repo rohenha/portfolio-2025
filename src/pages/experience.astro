@@ -6,7 +6,6 @@ import Text from "@components/atoms/text.astro"
 import Grid from "@components/organisms/grid.astro"
 import Button from "@components/atoms/button.astro"
 import InputQuest from "@components/atoms/input-quest.astro"
-import Key from "@components/atoms/key.astro"
 ---
 
 <SimpleLayout>
@@ -15,7 +14,7 @@ import Key from "@components/atoms/key.astro"
 			<Text variant="pmd" class="">
 				Vous voilà ici. Vous avez désormais pris connaissance des choses
 				étranges qui se passent sur mon site internet. Une boucle temporelle a
-				pris le contrôle impossible à désactiver naturellement.
+				pris le contrôle. Impossible à désactiver naturellement.
 			</Text>
 			<Text variant="pmd" class=""
 				>La légende raconte que 8 codes y ont été cachés, et que les trouver,
@@ -23,9 +22,33 @@ import Key from "@components/atoms/key.astro"
 			</Text>
 			<Text variant="pmd" class=""
 				>Parcours le site, certains évènements peuvent se produire à un moment
-				précis de la boucle. Soit vigilant et rapporte les codes ici afin de
-				découvrir la combinaison permettant de désactiver la boucle temporelle
+				précis de la boucle. Soit vigilant, regarde bien les détails.
 			</Text>
+			<ul class="list-disc list-inside py-md pl-md flex flex-col gap-tiny">
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le premier est plus faible que le deuxième.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le deuxième est le plus puissant de tous.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le troisième est le plus faible de tous.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le quatrième est le deuxième plus grand de la suite.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le cinquième signal vaut 5.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le quatrième domine le cinquième, qui domine le sixième.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic"
+					>Le sixième est le plus petit des trois derniers.</Text
+				>
+				<Text Tag="li" variant="bmd" class="italic">Le septième est pair.</Text>
+			</ul>
+			<Text variant="pmd" class="">Bonne chance, tu en auras besoin.</Text>
 		</HeroAlt>
 		<Grid class="mb-giant">
 			<form
@@ -39,6 +62,8 @@ import Key from "@components/atoms/key.astro"
 					<InputQuest name="i3" label="lettre 3" id="i3" />
 					<InputQuest name="i4" label="lettre 4" id="i4" />
 					<InputQuest name="i5" label="lettre 5" id="i5" />
+					<InputQuest name="i6" label="lettre 6" id="i6" />
+					<InputQuest name="i7" label="lettre 7" id="i7" />
 				</div>
 				<Button
 					class="mt-md self-start js-submitQuest"
@@ -49,33 +74,31 @@ import Key from "@components/atoms/key.astro"
 					Tester le code
 				</Button>
 			</form>
-			<!-- <div
-				class="bg-gray-300 text-gray-900 rounded-md p-md col-span-full lg:col-start-4 lg:col-end-19 mt-md"
-			>
-				<Text variant="tag" class="mb-sm"
-					>Code déverrouillé.<br />Pour désactiver la boucle temporelle réalisez
-					l’enchainement suivant :</Text
-				>
-				<div class="flex flex-row flex-wrap gap-xsm">
-					<Key>HAUT</Key>
-					<Key>HAUT</Key>
-					<Key>BAS</Key>
-					<Key>BAS</Key>
-					<Key>GAUCHE</Key>
-					<Key>DROITE</Key>
-					<Key>GAUCHE</Key>
-					<Key>DROITE</Key>
-					<Key>B</Key>
-					<Key>A</Key>
-				</div>
-			</div> -->
 		</Grid>
 	</main>
 </SimpleLayout>
 
 <script>
 	const CODE_HASH =
-		"45bc0bad18824b5b347717a809582350a4b2695bea3152ab631edec34ca87404"
+		"d2f29c4528181c2aef2e24f21023a746349a49f624e7885680e6b6d553333681"
+
+	// Séquence de touches encodée en base64
+	const COMBO_ENCODED: string[] = [
+		"SEFVVA==", // HAUT
+		"SEFVVA==", // HAUT
+		"QkFT", // BAS
+		"QkFT", // BAS
+		"R0FVR0hF", // GAUCHE
+		"RFJPSVRF", // DROITE
+		"R0FVR0hF", // GAUCHE
+		"RFJPSVRF", // DROITE
+		"Qg==", // B
+		"QQ==", // A
+	]
+
+	function decodeCombo(arr: string[]): string[] {
+		return arr.map((str: string) => atob(str))
+	}
 
 	async function hashCode(input: string): Promise<string> {
 		const data = new TextEncoder().encode(input)
@@ -111,23 +134,12 @@ import Key from "@components/atoms/key.astro"
 			)
 			content.innerHTML = `
 				<p class="text-tag tracking-md mb-sm">Code déverrouillé.<br />Pour désactiver la boucle temporelle réalisez
-				’enchainement suivant :</p>
+				l’enchainement suivant :</p>
 				<div class="flex flex-row flex-wrap gap-xsm">
-					${[
-						"HAUT",
-						"HAUT",
-						"BAS",
-						"BAS",
-						"GAUCHE",
-						"DROITE",
-						"GAUCHE",
-						"DROITE",
-						"B",
-						"A",
-					]
+					${decodeCombo(COMBO_ENCODED)
 						.map(
-							(key) =>
-								`<span class="bg-gray-900 text-gray-300 rounded-sm text-btn tracking-sm py-[0.4rem] px-[0.8rem]">${key}</span>`,
+							(key: string) =>
+								`<span class=\"bg-gray-900 text-gray-300 rounded-sm text-btn tracking-sm py-[0.4rem] px-[0.8rem]\">${key}</span>`,
 						)
 						.join("")}
 				</div>

@@ -14,28 +14,30 @@ export interface Props {
 const { title = "", photo = false } = Astro.props
 ---
 
-<Grid Tag="header" class="pt-[43rem] pb-[2rem] items-end">
-	<Text
-		variant="txlg"
-		Tag="h1"
-		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
-	>
-		{
-			photo ? (
-				<span class="relative">
-					{title}
-					<Image
-						src={Avatar}
-						alt="Photo de profil de Romain Breton"
-						class="w-[7rem] absolute top-0 right-xsm transform translate-y-[-50%] lg:translate-y-[-20%] translate-x-[-10%] rotate-4"
-						sizes="70px"
-						widths={[140]}
-						quality="100"
-					/>
-				</span>
-			) : (
-				<>{title}</>
-			)
-		}
-	</Text>
-</Grid>
+<header class="o-heroCanvas" data-module-background="bg">
+	<Grid Tag="div" class="pt-[43rem] pb-[2rem] items-end">
+		<Text
+			variant="txlg"
+			Tag="h1"
+			class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
+		>
+			{
+				photo ? (
+					<span class="relative">
+						{title}
+						<Image
+							src={Avatar}
+							alt="Photo de profil de Romain Breton"
+							class="w-[7rem] absolute top-0 right-xsm transform translate-y-[-50%] lg:translate-y-[-20%] translate-x-[-10%] rotate-4"
+							sizes="70px"
+							widths={[140]}
+							quality="100"
+						/>
+					</span>
+				) : (
+					<>{title}</>
+				)
+			}
+		</Text>
+	</Grid>
+</header>

@@ -17,60 +17,67 @@ export interface Props {
 const { title = "", description = "", suptitle = "", link = null } = Astro.props
 ---
 
-<Grid
-	Tag="header"
-	class="o-hero pt-[43rem] pb-[2rem] items-end relative z-index-1"
-	attributes={{ "data-module-background": "bg" }}
->
-	{
-		suptitle || description ? (
-			<div
-				class="o-hero__content col-span-full md:col-span-16"
-				data-transition="introHero:enter"
-			>
-				{suptitle ? (
-					<Text variant="tsm" class="mb-tiny">
-						{suptitle}
-					</Text>
-				) : null}
-				{description ? (
-					<Text variant="pmd" class="o-hero__content mb-sm md:mb-0">
-						{description}
-					</Text>
-				) : null}
-			</div>
-		) : null
-	}
-	{
-		link ? (
-			<Button
-				class="o-hero__content col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
-				icon="arrow"
-				href={link.url}
-				attributes={link.attributes}
-			>
-				{link.label}
-			</Button>
-		) : null
-	}
-	<Text
-		variant="thuge"
-		Tag="h1"
-		attributes={{
-			"data-module-hero": "heroTitle",
-		}}
-		class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2 -entered"
+<header class="o-hero o-heroCanvas relative" data-module-background="bg">
+	<Grid
+		Tag="div"
+		class="o-hero__row pt-[43rem] pb-[2rem] items-end relative z-index-1"
 	>
 		{
-			title.split("").map((letter, index) => (
-				<span
-					data-hero="letter"
-					class={letter === " " ? " -space" : ""}
-					style={`--delay:${index * 0.05 + 0.5}s;`}
+			suptitle || description ? (
+				<div
+					class="o-hero__content col-span-full md:col-span-16"
+					data-transition="introHero:enter"
 				>
-					{letter === " " ? "\u00A0" : letter}
-				</span>
-			))
+					{suptitle ? (
+						<Text variant="tsm" class="mb-tiny">
+							{suptitle}
+						</Text>
+					) : null}
+					{description ? (
+						<Text variant="pmd" class="o-hero__content mb-sm md:mb-0">
+							{description}
+						</Text>
+					) : null}
+				</div>
+			) : null
 		}
-	</Text>
-</Grid>
+		{
+			link ? (
+				<Button
+					class="o-hero__content col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
+					icon="arrow"
+					href={link.url}
+					attributes={link.attributes}
+				>
+					{link.label}
+				</Button>
+			) : null
+		}
+		<button
+			class="absolute hidden lg:block bottom-[10.6vw] left-[41%] w-[2.5%] h-[4.5%] focus:outline-2 focus:outline-gray-300 focus:outline-offset-2 z-2 cursor-pointer"
+			data-background="trigger"
+		>
+			<span class="sr-only">Activer</span>
+		</button>
+		<Text
+			variant="thuge"
+			Tag="h1"
+			attributes={{
+				"data-module-hero": "heroTitle",
+			}}
+			class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2 -entered"
+		>
+			{
+				title.split("").map((letter, index) => (
+					<span
+						data-hero="letter"
+						class={letter === " " ? " -space" : ""}
+						style={`--delay:${index * 0.05 + 0.1}s;`}
+					>
+						{letter === " " ? "\u00A0" : letter}
+					</span>
+				))
+			}
+		</Text>
+	</Grid>
+</header>

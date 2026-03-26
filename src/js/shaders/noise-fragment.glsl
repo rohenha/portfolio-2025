@@ -6,10 +6,46 @@ uniform float uTime;
 uniform float uFrequency;
 uniform float uSpeed;
 uniform float uBrightness;
+uniform float uDigit;
+uniform float uDigitOpacity;
+uniform vec2 uResolution;
 
 in vec2 vUv;
 
 out vec4 fragColor;
+
+float seg(vec2 p, vec2 a, vec2 b, float w) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return 1.0 - smoothstep(w, w * 1.5, length(pa - ba * h));
+}
+
+float digitShape(float d, vec2 p) {
+    float w = 0.08;
+    float s = 0.0;
+
+    float A = seg(p, vec2(-0.4, 0.6), vec2(0.4, 0.6), w);
+    float B = seg(p, vec2(0.45, 0.55), vec2(0.45, 0.05), w);
+    float C = seg(p, vec2(0.45, -0.05), vec2(0.45, -0.55), w);
+    float D = seg(p, vec2(-0.4, -0.6), vec2(0.4, -0.6), w);
+    float E = seg(p, vec2(-0.45, -0.55), vec2(-0.45, -0.05), w);
+    float F = seg(p, vec2(-0.45, 0.55), vec2(-0.45, 0.05), w);
+    float G = seg(p, vec2(-0.4, 0.0), vec2(0.4, 0.0), w);
+
+    if (d < 0.5) s = max(max(max(A, B), max(C, D)), max(E, F));
+    else if (d < 1.5) s = max(B, C);
+    else if (d < 2.5) s = max(max(max(A, B), max(G, E)), D);
+    else if (d < 3.5) s = max(max(max(A, B), max(G, C)), D);
+    else if (d < 4.5) s = max(max(F, G), max(B, C));
+    else if (d < 5.5) s = max(max(max(A, F), max(G, C)), D);
+    else if (d < 6.5) s = max(max(max(A, F), max(G, E)), max(C, D));
+    else if (d < 7.5) s = max(max(A, B), C);
+    else if (d < 8.5) s = max(max(max(A, B), max(C, D)), max(E, max(F, G)));
+    else s = max(max(max(A, B), max(G, F)), max(C, D));
+
+    return s;
+}
 
 // Classic Perlin 3D Noise by Stefan Gustavson
 // https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
@@ -101,9 +137,33 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-    float noise = abs(cnoise(vec3(vUv * uFrequency, uTime * uSpeed)));
+    vec2 uv = vUv * uFrequency;
+    float t = uTime * uSpeed;
 
-    // vec3 color = hsv2rgb(vec3(noise, 1.0, uBrightness));
+    // Domain warping léger pour faire évoluer le noise sans le faire défiler
+    vec2 warp = vec2(
+        cnoise(vec3(uv * 0.8, t)),
+        cnoise(vec3(uv * 0.8 + 10.0, t))
+    );
+    uv += warp * 0.3;
 
-    fragColor = vec4(vec3(noise), 1.0);
+    float noise = cnoise(vec3(uv, t));
+    noise = 0.5 + 0.5 * noise;
+
+    vec3 dark = vec3(0.0667, 0.0627, 0.0588); // #11100f
+    vec3 light = vec3(0.9608, 0.9608, 0.9569); // #f5f5f4
+    vec3 color = mix(dark, light, noise);
+
+    // Center digit overlay
+    vec2 centerUv = (gl_FragCoord.xy - 0.5 * uResolution) / min(uResolution.x, uResolution.y);
+    vec2 p = centerUv * 4.0;
+    float digit = digitShape(uDigit, p);
+    float digitSoft = smoothstep(0.1, 1.0, digit);
+    float digitAlpha = digitSoft * uDigitOpacity;
+
+    vec3 digitColor = vec3(1.0, 1.0, 1.0);
+    float strength = 0.85;
+    vec3 mixed = mix(color, digitColor, digitAlpha * strength);
+
+    fragColor = vec4(mixed, 1.0);
 }

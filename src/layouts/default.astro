@@ -77,25 +77,20 @@ const {
 		<meta name="twitter:description" content={ogDescription} />
 		<!-- Icon -->
 		<link
+			rel="icon"
+			type="image/png"
+			href="/favicon/favicon-96x96.png"
+			sizes="96x96"
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
 			href="/favicon/apple-touch-icon.png"
 		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="/favicon/favicon-32x32.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="/favicon/favicon-16x16.png"
-		/>
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="apple-mobile-web-app-title" content="Romain Breton" />
 		<link rel="manifest" href="/site.webmanifest" />
-		<link rel="sitemap" href="/sitemap-index.xml" />
 		<!-- Others -->
 		{metas.map((meta) => <meta meta.type={meta.key} content={meta.content} />)}
 		<meta name="msapplication-TileColor" content={colorMeta} />
@@ -112,6 +107,15 @@ const {
 		<slot />
 		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow">
 			<span class="sr-only">Retour en haut</span>
+		</Button>
+		<Button
+			class="absolute top-md left-md z-12"
+			href="/experience"
+			attributes={{ target: "_blank" }}
+			variant="link-gray-900"
+			icon="arrow"
+		>
+			DXKjhf
 		</Button>
 		<Prefooter />
 		<Footer />

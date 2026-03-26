@@ -1,18 +1,5 @@
-.o-hero {
-	overflow: hidden;
-
-	[data-hero="letter"] {
-		display: inline-block;
-	}
-
-	.-space {
-		display: none;
-	}
-
-	[data-module-hero="heroTitle"] {
-		letter-spacing: -0.115em;
-	}
-
+.o-heroCanvas {
+	position: relative;
 	canvas {
 		position: absolute;
 		top: 0;
@@ -29,6 +16,23 @@
 			transition: opacity 1s ease-in-out;
 		}
 	}
+}
+.o-hero {
+	z-index: 1;
+	overflow: hidden;
+
+	[data-hero="letter"] {
+		display: inline-block;
+	}
+
+	.-space {
+		display: none;
+	}
+
+	[data-module-hero="heroTitle"] {
+		letter-spacing: -0.115em;
+	}
+
 	@media (width >= 768px) and (prefers-reduced-motion: no-preference) {
 		.o-hero__content {
 			opacity: 0.01;

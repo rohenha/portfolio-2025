@@ -11,19 +11,40 @@
 }
 
 @keyframes morse-dot {
-	0%,
-	50% {
-		content: "-";
+	0% {
+		content: "·";
 	}
-	15%,
-	25%,
-	35%,
-	65% {
+	8% {
 		content: " ";
 	}
-
-	20%,
-	30% {
-		content: "·";
+	12% {
+		content: "-";
+	}
+	20% {
+		content: " ";
+	}
+	24% {
+		content: "-";
+	}
+	32% {
+		content: " ";
+	}
+	36% {
+		content: "-";
+	}
+	44% {
+		content: " ";
+	}
+	48% {
+		content: "-";
+	}
+	56% {
+		content: " ";
+	}
+	60% {
+		content: " ";
+	}
+	100% {
+		content: " ";
 	}
 }

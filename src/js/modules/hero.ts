@@ -14,7 +14,7 @@ export default class HeroTitle extends Mmodule {
 			return
 		}
 
-		const parent = this.el.parentNode as HTMLElement
+		const parent = this.el.parentNode?.parentNode as HTMLElement
 		this.animate("enterFirst", () => {
 			parent.classList.add("-animating")
 		})

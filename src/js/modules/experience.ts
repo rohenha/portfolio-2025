@@ -16,7 +16,7 @@ export default class Experience extends Mmodule {
 	constructor(params: any) {
 		super(params)
 		this.interval = null
-		this.defaultTimer = 30 // 30 seconds for testing
+		this.defaultTimer = 60 * 5 // 30 seconds for testing
 		// this.defaultTimer = 60 * 5 // 5 minutes
 		this.busMap = {
 			toggleExperience: "toggleExperience",
@@ -202,13 +202,14 @@ export default class Experience extends Mmodule {
 	onUpdateTime() {
 		const newNumber = this.states.number - 1
 		const events = new Map([
-			[28, "call:initTree"],
-			[25, "call:initHidden:hidden:hidden"],
-			[25, "call:initMorse:morse:morse"],
-			[20, "addLog"],
-			[15, "addComment"],
-			[18, "call:resetTree"],
-			[10, "call:resetHidden:hidden:hidden"],
+			[250, "call:initTree"],
+			[230, "call:initHidden:hidden:hidden"],
+			[150, "call:initMorse:morse:morse"],
+			// [25, "call:initNumber:background:bg"],
+			[100, "call:resetTree"],
+			[100, "addLog"],
+			[60, "addComment"],
+			[50, "call:resetHidden:hidden:hidden"],
 			[10, "call:resetMorse:morse:morse"],
 			[5, "removeComment"],
 		])
@@ -234,29 +235,27 @@ export default class Experience extends Mmodule {
 	loop() {
 		this.states.number = this.defaultTimer
 		this.experience.loop += 1
-		this.emit("experience:loop", { loop: this.experience.loop })
-		// const backInTime = document.createElement("div")
-		// this.backInTime = backInTime
-		// backInTime.classList.add("o-backInTime")
-		// backInTime.setAttribute("data-transition", "backInTime")
-		// document.body.appendChild(backInTime)
-		// window.requestAnimationFrame(() => {
-		// 	const promise = animateCss({
-		// 		name: "backInTime",
-		// 		parent: backInTime,
-		// 		handler: () => {
-		// 			backInTime.classList.add("-active")
-		// 		},
-		// 	})
-		// 	promise.then(() => {
-		// 		this.emit("call:website:website", {
-		// 			method: "navigate",
-		// 			payload: {
-		// 				url: "/",
-		// 			},
-		// 		})
-		// 	})
-		// })
+		const backInTime = document.createElement("div")
+		this.backInTime = backInTime
+		backInTime.classList.add("o-backInTime")
+		backInTime.setAttribute("data-transition", "backInTime")
+		document.body.appendChild(backInTime)
+		window.requestAnimationFrame(() => {
+			const promise = animateCss({
+				name: "backInTime",
+				parent: backInTime,
+				handler: () => {
+					backInTime.classList.add("-active")
+				},
+			})
+			promise.then(() => {
+				this.emit("experience:loop", { loop: this.experience.loop })
+				this.emit("call:transition:transition", {
+					method: "navigate",
+					payload: "/",
+				})
+			})
+		})
 	}
 
 	/**
@@ -288,11 +287,11 @@ export default class Experience extends Mmodule {
 
 	////////// Events
 	addLog() {
-		console.log("T")
+		console.log("3")
 	}
 
 	addComment() {
-		const comment = document.createComment("J")
+		const comment = document.createComment("6")
 		this.comment = comment
 		this.animate("comment", () => {
 			document.documentElement.appendChild(comment)

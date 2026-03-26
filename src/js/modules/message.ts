@@ -42,7 +42,7 @@ export default class Message extends Mmodule {
 		const [data] = this.emit("call:experience:experience", {
 			method: "getExperienceStatus",
 		})
-		if (data.loop <= 2 || data.finished) {
+		if (data.loop <= 2 || data.finished || data.loop >= 4) {
 			// if (data.loop <= 2 || data.loop >= 4) {
 			return
 		}
@@ -61,6 +61,10 @@ export default class Message extends Mmodule {
 
 	resetExperience() {
 		this.onReset = true
+		this.animate("message", () => {
+			this.el.classList.remove("-visible")
+			this.el.classList.remove("-active")
+		})
 	}
 
 	/**

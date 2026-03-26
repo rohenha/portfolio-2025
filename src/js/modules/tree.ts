@@ -14,9 +14,7 @@ export default class Tree extends Mmodule {
 			"call:initTree": "initTree",
 			"call:resetTree": "resetExperience",
 		}
-		// this.states = {
-		// 	index: 0,
-		// }
+
 		this.then = new Date().getTime()
 		this.interval = 1000 / 10
 		this.index = 0
@@ -53,7 +51,7 @@ export default class Tree extends Mmodule {
 		}
 		let firstPart = this.originalText.substring(0, this.index - 1)
 		let lastPart = this.originalText.substring(this.index)
-		this.last.textContent = firstPart + "Y" + lastPart
+		this.last.textContent = firstPart + "9" + lastPart
 	}
 
 	toggleHover(state: boolean) {
