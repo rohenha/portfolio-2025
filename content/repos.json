@@ -3,22 +3,29 @@
 		{
 			"id": "strava-explorer",
 			"name": "Strava Explorer",
-			"description": "A tool to explore Strava data and create custom dashboards.",
+			"description": "Une application pour explorer les données de Strava et créer des tableaux de bord personnalisés, avec des visualisations interactives.",
 			"url": "https://strava-explorer.romain-breton.com",
 			"tags": ["Strava", "Data Visualization", "Dashboard"]
 		},
 		{
-			"id": "strava-explorer2",
-			"name": "Strava Explorer",
-			"description": "A tool to explore Strava data and create custom dashboards.",
-			"url": "https://strava-explorer.romain-breton.com",
+			"id": "micromodules",
+			"name": "Micromodules",
+			"description": "Librairie de micro-modules permettant de créer des composants réutilisables et optimisés avec une approche modulaire et un ensemble de plugins (resize, lazyload, animations). Permet aussi de lazyloader des composants pour ne lmes charger que lorsqu'ils sont nécessaires.",
+			"url": "https://www.npmjs.com/package/@rohenha/vite-plugin-eleventy",
 			"tags": ["Strava", "Data Visualization", "Dashboard"]
 		},
 		{
-			"id": "strava-explorer3",
-			"name": "Strava Explorer",
-			"description": "A tool to explore Strava data and create custom dashboards.",
-			"url": "https://strava-explorer.romain-breton.com",
+			"id": "vite-plugin-critical-css",
+			"name": "Vite Plugin Critical CSS",
+			"description": "Un outil pour extraire et injecter le CSS critique dans les projets Vite, améliorant ainsi les performances du LCP des pages web.",
+			"url": "https://www.npmjs.com/package/@rohenha/vite-plugin-critical-css",
+			"tags": ["Vite", "Critical", "Plugin"]
+		},
+		{
+			"id": "vite-plugin-eleventy",
+			"name": "Vite Plugin Eleventy",
+			"description": "Un outil pour intégrer Eleventy dans les projets Vite. Il permet de créer un middleware et injecter les pages HTML générées par Eleventy dans le projet Vite, facilitant ainsi le développement de sites statiques avec Vite.",
+			"url": "https://www.npmjs.com/package/@rohenha/vite-plugin-eleventy",
 			"tags": ["Strava", "Data Visualization", "Dashboard"]
 		}
 	]
