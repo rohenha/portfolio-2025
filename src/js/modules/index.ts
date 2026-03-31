@@ -6,38 +6,38 @@ import Transition from "./transition"
 import Interactions from "./interactions"
 
 const config: Array<ModuleConfig> = [
-	{
-		name: "morse",
-		module: Morse,
-	},
+	// {
+	// 	name: "morse",
+	// 	module: Morse,
+	// },
 	{
 		name: "transition",
 		module: Transition,
 	},
-	{
-		name: "experience",
-		module: Experience,
-	},
+	// {
+	// 	name: "experience",
+	// 	module: Experience,
+	// },
 	{
 		name: "hero",
 		loader: () => import("./hero"),
 	},
-	{
-		name: "tree",
-		loader: () => import("./tree"),
-	},
+	// {
+	// 	name: "tree",
+	// 	loader: () => import("./tree"),
+	// },
 	{
 		name: "interactions",
 		module: Interactions,
 	},
-	{
-		name: "message",
-		module: Message,
-	},
-	{
-		name: "hidden",
-		loader: () => import("./hidden"),
-	},
+	// {
+	// 	name: "message",
+	// 	module: Message,
+	// },
+	// {
+	// 	name: "hidden",
+	// 	loader: () => import("./hidden"),
+	// },
 	{
 		name: "projects",
 		loader: () => import("./projects"),

@@ -29,6 +29,7 @@ export default class Experience extends Mmodule {
 		}
 		this.backInTime = null
 		this.circleLength = 33
+		this.visible = true
 		this.onUpdateTime = this.onUpdateTime.bind(this)
 		this.combination = []
 		this.onBeforeUnload = this.onBeforeUnload.bind(this)
@@ -95,15 +96,24 @@ export default class Experience extends Mmodule {
 			return
 		}
 
+		const parent = this.el.parentNode as HTMLElement
 		if (!cookieValue) {
-			this.observe(true)
 			this.addListeners()
 			setCookie("experience", JSON.stringify({ finished: false, loop: 1 }), 365)
+			this.animate("initExperience", () => {
+				parent.style.display = "block"
+			})
+			this.setIntroPopin()
 		} else {
 			this.experience = JSON.parse(cookieValue)
 			if (!this.experience.finished) {
-				this.observe(true)
+				this.animate("initExperience", () => {
+					parent.style.display = "block"
+				})
 				this.addListeners()
+				if (this.experience.loop === 1) {
+					this.setIntroPopin()
+				}
 			} else {
 				this.off(`toggleExperience:${this.moduleKey}`)
 			}
@@ -146,15 +156,35 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
 	 */
-	async setFinishPopin() {
-		document.body.setAttribute("data-module-popin", "experience-finish-popin")
-		const promise = await this.emitAsync("app:addAloneModules", [
+	async setIntroPopin() {
+		console.log("setIntroPopin")
+		document.body.setAttribute(
+			"data-module-popin-intro",
+			"experience-intro-popin",
+		)
+		const promise = await this.emitAsync("app:addModules", [
 			{
-				element: document.body,
-				moduleItem: {
-					name: "popin",
-					loader: () => import("./popin"),
-				},
+				name: "popin-intro",
+				loader: () => import("./popin-intro"),
+			},
+		])
+		setTimeout(() => {
+			promise[0][0].open()
+		}, 3000)
+	}
+
+	/**
+	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
+	 */
+	async setFinishPopin() {
+		document.body.setAttribute(
+			"data-module-popin-finish",
+			"experience-finish-popin",
+		)
+		const promise = await this.emitAsync("app:addModules", [
+			{
+				name: "popin-finish",
+				loader: () => import("./popin-finish"),
 			},
 		])
 		promise[0][0].open()
@@ -203,13 +233,13 @@ export default class Experience extends Mmodule {
 		const newNumber = this.states.number - 1
 		const events = new Map([
 			[250, "call:initTree"],
-			[230, "call:initHidden:hidden:hidden"],
+			[230, "initHidden"],
 			[150, "call:initMorse:morse:morse"],
 			// [25, "call:initNumber:background:bg"],
 			[100, "call:resetTree"],
 			[100, "addLog"],
 			[60, "addComment"],
-			[50, "call:resetHidden:hidden:hidden"],
+			[50, "resetHidden"],
 			[10, "call:resetMorse:morse:morse"],
 			[5, "removeComment"],
 		])
@@ -302,6 +332,22 @@ export default class Experience extends Mmodule {
 		this.animate("comment", () => {
 			this.comment?.remove()
 			this.comment = null
+		})
+	}
+
+	initHidden() {
+		this.changeHidden(true)
+	}
+
+	resetHidden() {
+		this.changeHidden(false)
+	}
+
+	changeHidden(state: boolean) {
+		const [hidden] = this.$("hidden")
+		if (!hidden) return
+		this.animate("hidden", () => {
+			hidden.classList.toggle("-active", state)
 		})
 	}
 }

@@ -35,7 +35,7 @@ export default class ModulesManager {
 		this.modules = new Map(modules.map((module) => [module.name, module]))
 		this.bus = new EventBus()
 		this.plugins = this.initPlugins(plugins || [])
-		this.optimalSelector = this.buildOptimalSelector()
+		this.optimalSelector = this.buildOptimalSelector(this.modules.keys())
 		this.initEvents()
 		this.update({ scope: parent || document, init: true })
 	}
@@ -65,7 +65,7 @@ export default class ModulesManager {
 
 	initEvents() {
 		this.bus.on("app:update", this.update.bind(this))
-		this.bus.on("app:addAloneModules", this.addAloneModules.bind(this))
+		this.bus.on("app:addModules", this.addModules.bind(this))
 		this.bus.on("app:destroy", this.destroy.bind(this))
 	}
 
@@ -73,8 +73,8 @@ export default class ModulesManager {
 	 * @description Build an optimal CSS selector to find all elements that have a data attribute corresponding to any of the registered modules. This method is used internally by the addModules and removeModules methods to efficiently find elements that need to be initialized or destroyed.
 	 * @return A string containing the CSS selector to find all elements with a data attribute corresponding to any of the registered modules.
 	 */
-	private buildOptimalSelector(): string {
-		const selectors = Array.from(this.modules.keys(), (name) => {
+	private buildOptimalSelector(keys: MapIterator<string>): string {
+		const selectors = Array.from(keys, (name) => {
 			return `[data-module-${name}]`
 		})
 		return selectors.join(", ")
@@ -192,17 +192,21 @@ export default class ModulesManager {
 		})
 	}
 
-	async addAloneModules(
-		items: Array<{
-			element: Element
-			moduleItem: ModuleConfig
-		}>,
-	): Promise<Mmodule[] | void> {
+	async addModules(items: Array<ModuleConfig>): Promise<Mmodule[] | void> {
 		return new Promise(async (resolve) => {
-			const promises: Array<Promise<any>> = []
-			items.forEach(async (itemData) => {
-				this.modules.set(itemData.moduleItem.name, itemData.moduleItem)
-				promises.push(this.mountModule(itemData))
+			const promises: Array<Promise<Mmodule | void>> = []
+			const modulesToAdd = new Map(
+				items.map((moduleItem) => [moduleItem.name, moduleItem]),
+			)
+			const optimalSelector = this.buildOptimalSelector(modulesToAdd.keys())
+			const elementsModule = document.querySelectorAll(optimalSelector)
+
+			elementsModule.forEach((element) => {
+				modulesToAdd.forEach((moduleItem, name) => {
+					if (element.hasAttribute(`data-module-${name}`)) {
+						promises.push(this.mountModule({ element, moduleItem }))
+					}
+				})
 			})
 
 			Promise.all(promises).then(() => {
@@ -221,11 +225,12 @@ export default class ModulesManager {
 					...this.currentModules,
 					...this.newModules,
 				])
+
 				resolve(newModulesArray)
 
-				this.optimalSelector = this.buildOptimalSelector()
-
 				this.newModules = new Map()
+				this.modules = new Map([...this.modules, ...modulesToAdd])
+				this.optimalSelector = this.buildOptimalSelector(this.modules.keys())
 			})
 		})
 	}

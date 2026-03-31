@@ -100,12 +100,17 @@ const currentPath = Astro.url.pathname
 			<p
 				class="m-interactive hidden md:flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
 			>
-				<Button variant="primary-gray-300" icon="arrow" href="/experience">
-					Rapporter les codes d'erreur
+				<Button
+					variant="primary-gray-300"
+					icon="arrow"
+					href="/experience"
+					attributes={{ target: "_blank" }}
+				>
+					La quête
 				</Button>
 				<span
 					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse"
-					data-module-morse="morse"
+					data-experience="morse"
 				>
 				</span>
 			</p>

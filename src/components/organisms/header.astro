@@ -5,28 +5,15 @@ import nav from "@content/nav"
 import { formatLink } from "@utils/helpers"
 // Components
 import Button from "@components/atoms/button.astro"
-import Text from "@components/atoms/text.astro"
 import Progress from "@components/atoms/progress.astro"
 
 export interface Props {
 	explorer?: boolean
 }
 
-const { explorer = true } = Astro.props
 const currentPath = Astro.url.pathname
 ---
 
-<!-- {
-	explorer && (
-		<div class="o-explorer hidden md:block absolute top-0 left-[50%] w-full translate-x-[-50%] pt-md pl-sm md:pl-lg max-w-[140rem] mx-auto z-10 pointer-events-none">
-			<Text
-				variant="tag"
-				class="md:w-[50%] md:max-w-[30rem]"
-				attributes={{ "data-module-message": "message" }}
-			/>
-		</div>
-	)
-} -->
 <header
 	class="o-header fixed top-0 left-[50%] z-11 w-full translate-x-[-50%] py-sm px-sm md:px-lg max-w-[140rem] mx-auto flex items-start"
 >
@@ -63,8 +50,6 @@ const currentPath = Astro.url.pathname
 				))
 			}
 		</ul>
-		<Progress
-			class="hidden md:block md:relative md:top-[-0.1rem] -order-1 md:order-3"
-		/>
+		<Progress class="hidden md:relative md:top-[-0.1rem] -order-1 md:order-3" />
 	</nav>
 </header>

@@ -7,7 +7,7 @@ import Button from "@components/atoms/button.astro"
 import Footer from "@components/organisms/footer.astro"
 import Header from "@components/organisms/header.astro"
 import Prefooter from "@components/organisms/prefooter.astro"
-import BackInTime from "@components/organisms/back-in-time.astro"
+// import BackInTime from "@components/organisms/back-in-time.astro"
 import Message from "@components/molecules/message.astro"
 // Styles
 import "../styles/tailwind.css"
@@ -109,7 +109,7 @@ const {
 			<span class="sr-only">Retour en haut</span>
 		</Button>
 		<Button
-			class="absolute top-md left-md z-12"
+			class="hidden md:flex absolute top-md left-md z-12"
 			href="/experience"
 			attributes={{ target: "_blank" }}
 			variant="link-gray-900"
@@ -124,7 +124,7 @@ const {
 			data-transition="container"
 		>
 		</div>
-		<Message />
+		<!-- <Message /> -->
 		<!-- <BackInTime /> -->
 		<noscript>
 			<style type="text/css">

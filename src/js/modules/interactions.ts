@@ -17,16 +17,31 @@ export default class Interactions extends Mmodule {
 		if (!interactionsParam || interactionsParam !== "1") {
 			return
 		}
-		const background = document.querySelector("[data-module-background]")
-		const promise = await this.emitAsync("app:addAloneModules", [
+		const promise = await this.emitAsync("app:addModules", [
 			{
-				element: background,
-				moduleItem: {
-					name: "background",
-					loader: () => import("./background"),
-				},
+				name: "background",
+				loader: () => import("./background"),
 			},
+			// {
+			// 	name: "morse",
+			// 	loader: () => import("./morse"),
+			// },
+			{
+				name: "experience",
+				loader: () => import("./experience"),
+			},
+			{
+				name: "tree",
+				loader: () => import("./tree"),
+			},
+			{
+				name: "message",
+				loader: () => import("./message"),
+			},
+			// {
+			// 	name: "hidden",
+			// 	loader: () => import("./hidden"),
+			// },
 		])
-		// promise[0][0].open()
 	}
 }
