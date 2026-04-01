@@ -1,0 +1,13 @@
+.m-terminal {
+	// &__content {
+	// 	&::after {
+	// 		content: "\2192  ~";
+	// 	}
+	// }
+
+	&.-active {
+		opacity: 1;
+		pointer-events: auto;
+		transition: opacity 0.3s ease-in-out;
+	}
+}

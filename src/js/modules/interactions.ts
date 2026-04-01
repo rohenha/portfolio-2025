@@ -1,6 +1,12 @@
 import Mmodule from "@js/classes/module"
 import { isReduced, isMobile } from "@js/utils/tools"
 
+declare global {
+	interface Window {
+		experience?: any
+	}
+}
+
 export default class Interactions extends Mmodule {
 	constructor(params: any) {
 		super(params)
@@ -10,7 +16,7 @@ export default class Interactions extends Mmodule {
 		if (isReduced() || isMobile()) {
 			return
 		}
-
+		// window.experience = this.callExperience.bind(this)
 		const url = new URL(location.href)
 		const params = new URLSearchParams(url.search)
 		const interactionsParam = params.get("interactions")
@@ -22,10 +28,10 @@ export default class Interactions extends Mmodule {
 				name: "background",
 				loader: () => import("./background"),
 			},
-			// {
-			// 	name: "morse",
-			// 	loader: () => import("./morse"),
-			// },
+			{
+				name: "terminal",
+				loader: () => import("./terminal"),
+			},
 			{
 				name: "experience",
 				loader: () => import("./experience"),
@@ -38,10 +44,6 @@ export default class Interactions extends Mmodule {
 				name: "message",
 				loader: () => import("./message"),
 			},
-			// {
-			// 	name: "hidden",
-			// 	loader: () => import("./hidden"),
-			// },
 		])
 	}
 }

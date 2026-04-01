@@ -111,9 +111,7 @@ export default class Experience extends Mmodule {
 					parent.style.display = "block"
 				})
 				this.addListeners()
-				if (this.experience.loop === 1) {
-					this.setIntroPopin()
-				}
+				this.setIntroPopin()
 			} else {
 				this.off(`toggleExperience:${this.moduleKey}`)
 			}
@@ -157,7 +155,6 @@ export default class Experience extends Mmodule {
 	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
 	 */
 	async setIntroPopin() {
-		console.log("setIntroPopin")
 		document.body.setAttribute(
 			"data-module-popin-intro",
 			"experience-intro-popin",

@@ -100,6 +100,7 @@ const {
 	<body
 		data-module-transition="transition"
 		data-module-interactions="interactions"
+		data-module-terminal="terminal"
 	>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
@@ -109,13 +110,11 @@ const {
 			<span class="sr-only">Retour en haut</span>
 		</Button>
 		<Button
-			class="hidden md:flex absolute top-md left-md z-12"
-			href="/experience"
-			attributes={{ target: "_blank" }}
+			class="hidden absolute top-md left-md z-12"
 			variant="link-gray-900"
-			icon="arrow"
+			attributes={{ "data-terminal": "openButton" }}
 		>
-			DXKjhf
+			Aide
 		</Button>
 		<Prefooter />
 		<Footer />
