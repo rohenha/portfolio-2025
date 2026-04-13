@@ -116,4 +116,9 @@
 		font-size: calc(100% / 1.6);
 		/* view-transition-name: hero; */
 	}
+
+	html.-experience {
+		--color-gray-900: #021a54;
+		--color-green-700: #ff85bb;
+	}
 }

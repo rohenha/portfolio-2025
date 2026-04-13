@@ -48,7 +48,7 @@ export default class Background extends Mmodule {
 	// private frequency: number = 1.5
 	private speed: number = 0.05
 	private brightness: number = 0.1
-	private color: [number, number, number] = [1.0, 1.0, 1.0]
+	private color: [number, number, number] = [0.8078, 0.8019, 0.3294] // #021a54
 	private digit: number = 7
 	private digitOpacity: number = 0
 	private updateDigit: boolean = false
@@ -84,6 +84,7 @@ export default class Background extends Mmodule {
 				"background",
 				() => {
 					this.render()
+					trigger.classList.add("-active")
 				},
 				true,
 			)

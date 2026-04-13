@@ -29,6 +29,13 @@
 		display: none;
 	}
 
+	&__btn {
+		bottom: min(10.6vw, 15.4rem);
+		&.-active {
+			display: block;
+		}
+	}
+
 	[data-module-hero="heroTitle"] {
 		letter-spacing: -0.115em;
 	}
