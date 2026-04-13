@@ -103,6 +103,7 @@ export default class Experience extends Mmodule {
 			this.animate("initExperience", () => {
 				parent.style.display = "block"
 			})
+			this.toggleExperience({ enable: true })
 			this.setIntroPopin()
 		} else {
 			this.experience = JSON.parse(cookieValue)
@@ -112,6 +113,7 @@ export default class Experience extends Mmodule {
 				})
 				this.addListeners()
 				this.setIntroPopin()
+				this.toggleExperience({ enable: true })
 			} else {
 				this.off(`toggleExperience:${this.moduleKey}`)
 			}
@@ -213,10 +215,12 @@ export default class Experience extends Mmodule {
 			document.body.classList.toggle("-experience", enable)
 		})
 		if (this.experience.finished || (enable && this.interval) || isMobile()) {
+			this.setEvents({ time: this.states.number, start: true })
 			return
 		}
 		if (enable) {
 			this.interval = setInterval(this.onUpdateTime, 1000)
+			this.setEvents({ time: this.states.number, start: true })
 		} else {
 			clearInterval(this.interval!)
 			this.interval = null
@@ -228,32 +232,47 @@ export default class Experience extends Mmodule {
 	 */
 	onUpdateTime() {
 		const newNumber = this.states.number - 1
-		const events = new Map([
-			[250, "call:initTree"],
-			[230, "initHidden"],
-			[150, "call:initMorse:morse:morse"],
-			// [25, "call:initNumber:background:bg"],
-			[100, "call:resetTree"],
-			[100, "addLog"],
-			[60, "addComment"],
-			[50, "resetHidden"],
-			[10, "call:resetMorse:morse:morse"],
-			[5, "removeComment"],
-		])
 		if (this.states.number <= 0) {
 			this.loop()
 			return
 		}
+		this.setEvents({ time: newNumber })
 
-		if (events.has(newNumber)) {
-			const eventName = events.get(newNumber)!
+		this.states.number = newNumber
+	}
+
+	setEvents({ time, start = false }: { time: number; start?: boolean }): void {
+		const events = new Map([
+			[250, "call:initTree"],
+			[230, "initHidden"],
+			[150, "initMorse"],
+			[100, "call:resetTree"],
+			[90, "addLog"],
+			[60, "addComment"],
+			[50, "resetHidden"],
+			[10, "resetMorse"],
+			[5, "removeComment"],
+		])
+		if (start) {
+			events.forEach((eventName, timeValue) => {
+				if (timeValue >= time) {
+					if (eventName.startsWith("call")) {
+						this.emit(eventName)
+					} else {
+						this[eventName]()
+					}
+				}
+			})
+			return
+		}
+		if (events.has(time)) {
+			const eventName = events.get(time)!
 			if (eventName.startsWith("call")) {
 				this.emit(eventName)
 			} else {
 				this[eventName]()
 			}
 		}
-		this.states.number = newNumber
 	}
 
 	/**
@@ -332,6 +351,22 @@ export default class Experience extends Mmodule {
 		})
 	}
 
+	initMorse() {
+		this.changeMorse(true)
+	}
+
+	resetMorse() {
+		this.changeMorse(false)
+	}
+
+	changeMorse(state: boolean) {
+		const [morse] = this.$("morse", document.documentElement)
+		if (!morse) return
+		this.animate("toggleMorse", () => {
+			morse.classList.toggle("-active", state)
+		})
+	}
+
 	initHidden() {
 		this.changeHidden(true)
 	}
@@ -341,9 +376,9 @@ export default class Experience extends Mmodule {
 	}
 
 	changeHidden(state: boolean) {
-		const [hidden] = this.$("hidden")
+		const [hidden] = this.$("hidden", document.documentElement)
 		if (!hidden) return
-		this.animate("hidden", () => {
+		this.animate("toggleHidden", () => {
 			hidden.classList.toggle("-active", state)
 		})
 	}

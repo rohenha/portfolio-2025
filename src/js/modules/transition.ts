@@ -19,10 +19,12 @@ export default class Transition extends Mmodule {
 			html.classList.add("-animating")
 			this.animate("enter", () => {
 				this.onPageView()
-				const url = new URL(location.href)
-				this.emit("toggleExperience:experience:experience", {
-					enable: ["/", "/methodo", "/a-propos"].includes(url.pathname),
-				})
+				// const url = new URL(location.href)
+				// console.log(`Initial page load: ${url.pathname}`)
+				// console.log(["/", "/methodo", "/a-propos"].includes(url.pathname))
+				// this.emit("toggleExperience:experience:experience", {
+				// 	enable: ["/", "/methodo", "/a-propos"].includes(url.pathname),
+				// })
 			})
 			setTimeout(() => {
 				this.animate("enter", () => {
@@ -62,7 +64,6 @@ export default class Transition extends Mmodule {
 				link.target === "_blank" ||
 				link.getAttribute("data-prevent")
 			) {
-				console.log("prevent")
 				return
 			}
 			e.preventDefault()

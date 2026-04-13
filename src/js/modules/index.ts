@@ -1,7 +1,7 @@
 import { type ModuleConfig } from "@js/classes/modular"
-import Experience from "./experience"
-import Morse from "./morse"
-import Message from "./message"
+// import Experience from "./experience"
+// import Morse from "./morse"
+// import Message from "./message"
 import Transition from "./transition"
 import Interactions from "./interactions"
 

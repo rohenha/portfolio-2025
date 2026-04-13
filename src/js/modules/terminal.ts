@@ -31,8 +31,7 @@ export default class Terminal extends Mmodule {
 			<div class="text-center px-sm py-xsm text-[1rem] tracking-sm shrink-0">user@RomainBreton</div>
 			<button data-terminal="close" class="absolute top-xsm left-xsm w-xsm h-xsm bg-green-700 rounded-[50%] cursor-pointer"><span class="sr-only">Fermer</span></button>
 			<div data-terminal="content" class="m-terminal__content pt-xsm px-sm flex flex-col gapx-xsm h-full overflow-y-auto">
-				<p class="text-[1rem] tracking-sm">&rarr; ~ Pour avoir un indice, tapez : \`indice : [index]\`</p>
-				<p class="text-[1rem] tracking-sm">&rarr; ~ Pour un connaître l'emplacement d'un chiffre, tapez : \`emplacement : [index]\`</p>
+				<p class="text-[1rem] tracking-sm">&rarr; ~ Pour connaitre les commandes : \`help\`</p>
 				<p class="text-[1rem] tracking-sm text-gray-500/60">&rarr; ~ <input type="text" class="shrink-0 text-[1rem] tracking-sm focus:outline-0" data-terminal="input" /></p>
 			</div>
 			`
@@ -70,70 +69,132 @@ export default class Terminal extends Mmodule {
 			const target = e.target as HTMLInputElement
 			const value = target.value.trim().toLowerCase()
 			target.value = ""
-			if (value.startsWith("indice :")) {
-				const place = value.split("indice :")[1].trim()
-				const index = parseInt(place, 10) - 1
-				if (!place) {
+			this.addMessage(value, "success").then(() => {
+				if (value === "help") {
 					this.addMessage(
-						"Veuillez entrer un chiffre après 'indice :'",
-						"error",
+						"Usage : help, hint : [chiffre], place : [chiffre]",
+						"success",
+						false,
 					)
 					return
 				}
-				const indice = this.getIndice(index)
-				if (!indice) {
-					this.addMessage(
-						`Aucun indice trouvé pour le chiffre ${index}`,
-						"error",
+				if (value.startsWith("hint ")) {
+					this.checkCommand(
+						"hint",
+						value,
+						{
+							error: "Veuillez entrer un index après 'hint '",
+							success: "Voici l'indice {index} : {message}",
+							notFound: "Aucun indice trouvé pour l'index {index}",
+						},
+						this.getIndice,
 					)
 					return
 				}
-				this.addMessage(`Voici l'indice ${index} : ${indice}`, "success")
-				return
-			}
 
-			if (value.startsWith("emplacement :")) {
-				const place = value.split("emplacement :")[1].trim()
-				const index = parseInt(place, 10) - 1
-				if (!place) {
-					this.addMessage(
-						"Veuillez entrer un chiffre après 'emplacement :'",
-						"error",
+				if (value.startsWith("place ")) {
+					this.checkCommand(
+						"place",
+						value,
+						{
+							error: "Veuillez entrer un index après 'place '",
+							success: "Voici l'emplacement de l'indice {index} : {message}",
+							notFound: "Aucun emplacement trouvé pour l'index {index}",
+						},
+						this.getPlace,
 					)
 					return
 				}
-				const emplacement = this.getPlace(index)
-				if (!emplacement) {
-					this.addMessage(
-						`Aucun emplacement trouvé pour le chiffre ${index}`,
-						"error",
-					)
-					return
-				}
+
 				this.addMessage(
-					`Voici l'emplacement de l'indice ${index} : ${emplacement}`,
-					"success",
+					`La commande "${value}" n'est pas reconnue.`,
+					"error",
+					false,
 				)
-				return
-			}
-
-			this.addMessage(`La commande "${value}" n'est pas reconnue.`, "error")
+			})
 		}
 	}
 
-	addMessage(message: string, type: "success" | "error") {
-		if (!this.parent) {
+	checkCommand(
+		command: string,
+		value: string,
+		messages: { error: string; success: string; notFound: string },
+		callback:
+			| ((index: string | number) => string | boolean)
+			| ((index: number) => string | boolean),
+	): void {
+		const place = value.split(`${command} `)[1].trim()
+		const indexBase = parseInt(place, 10)
+		const index = indexBase - 1
+		if (!place) {
+			this.addMessage(messages.error, "error", false)
 			return
 		}
-		const [content] = this.$("content")
+		const message = callback(index)
+		if (!message || typeof message === "boolean") {
+			this.addMessage(
+				`${messages.notFound.replace("{index}", indexBase.toString())}`,
+				// `Aucun indice trouvé pour l'index ${index}`,
+				"error",
+				false,
+			)
+			return
+		}
+		this.addMessage(
+			`${messages.success.replace("{index}", indexBase.toString()).replace("{message}", message)}`,
+			"success",
+			false,
+		)
+		return
+	}
+
+	createMessage(
+		message: string,
+		type: "success" | "error",
+		prefix: boolean = true,
+	): HTMLElement {
 		const messageElement = document.createElement("p")
 		messageElement.classList.add("text-[1rem]", "tracking-sm")
 		if (type === "error") {
 			messageElement.classList.add("text-green-700")
 		}
-		messageElement.innerHTML = `&rarr; ~ ${message}`
-		this.animate("addTerminalMessage", () => {
-			content.insertBefore(messageElement, content.lastElementChild!)
+		messageElement.innerHTML = prefix ? `&rarr; ~ ${message}` : message
+		return messageElement
+	}
+
+	addMultipleMessages(
+		messages: { message: string; type: "success" | "error" }[],
+	): Promise<void> {
+		if (!this.parent) {
+			return Promise.resolve()
+		}
+		const els = messages.map((m) => this.createMessage(m.message, m.type))
+		return new Promise((resolve) => {
+			const [content] = this.$("content")
+			this.animate("addTerminalMessage", () => {
+				els.forEach((el) => {
+					content.insertBefore(el, content.lastElementChild!)
+				})
+				resolve()
+			})
+		})
+	}
+
+	addMessage(
+		message: string,
+		type: "success" | "error",
+		prefix: boolean = true,
+	): Promise<void> {
+		if (!this.parent) {
+			return Promise.resolve()
+		}
+		return new Promise((resolve) => {
+			const [content] = this.$("content")
+			const messageElement = this.createMessage(message, type, prefix)
+			this.animate("addTerminalMessage", () => {
+				content.insertBefore(messageElement, content.lastElementChild!)
+				resolve()
+			})
 		})
 	}
 
