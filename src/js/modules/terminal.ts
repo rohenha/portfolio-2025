@@ -16,7 +16,7 @@ export default class Terminal extends Mmodule {
 			"bottom-md",
 			"left-md",
 			"z-10",
-			"bg-gray-900",
+			"bg-[#01123c]",
 			"w-[35rem]",
 			"h-[20rem]",
 			"rounded-md",

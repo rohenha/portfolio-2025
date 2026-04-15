@@ -29,6 +29,10 @@ export default class Interactions extends Mmodule {
 				loader: () => import("./background"),
 			},
 			{
+				name: "fireworks",
+				loader: () => import("./fireworks"),
+			},
+			{
 				name: "terminal",
 				loader: () => import("./terminal"),
 			},

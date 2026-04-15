@@ -84,7 +84,7 @@ export default class Background extends Mmodule {
 				"background",
 				() => {
 					this.render()
-					trigger.classList.add("-active")
+					trigger?.classList.add("-active")
 				},
 				true,
 			)

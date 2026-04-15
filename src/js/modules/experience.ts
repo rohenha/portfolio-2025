@@ -16,7 +16,7 @@ export default class Experience extends Mmodule {
 	constructor(params: any) {
 		super(params)
 		this.interval = null
-		this.defaultTimer = 60 * 5 // 30 seconds for testing
+		this.defaultTimer = 60 * 1 // 30 seconds for testing
 		// this.defaultTimer = 60 * 5 // 5 minutes
 		this.busMap = {
 			toggleExperience: "toggleExperience",
@@ -160,17 +160,17 @@ export default class Experience extends Mmodule {
 	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
 	 */
 	async setIntroPopin() {
-		document.body.setAttribute(
-			"data-module-popin-intro",
-			"experience-intro-popin",
-		)
-		const promise = await this.emitAsync("app:addModules", [
-			{
-				name: "popin-intro",
-				loader: () => import("./popin-intro"),
-			},
-		])
-		setTimeout(() => {
+		setTimeout(async () => {
+			document.body.setAttribute(
+				"data-module-popin-intro",
+				"experience-intro-popin",
+			)
+			const promise = await this.emitAsync("app:addModules", [
+				{
+					name: "popin-intro",
+					loader: () => import("./popin-intro"),
+				},
+			])
 			promise[0][0].open()
 		}, 3000)
 	}
