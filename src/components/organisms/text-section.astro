@@ -21,7 +21,7 @@ const { variant = "gray-900", title1 = "", title2 = "", link, secret } = Astro.p
 ---
 
 <section class:list={[variants[variant], "py-giant relative"]}>
-	<Grid>
+	<Grid class="relative">
 		{title1 && (
 			<Text
 				variant="tlg"
@@ -53,7 +53,7 @@ const { variant = "gray-900", title1 = "", title2 = "", link, secret } = Astro.p
 		{link && (
 			<Button
 				variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
-				class="col-span-full justify-self-start md:justify-self-end lg:col-end-22"
+				class="absolute bottom-md left-0 col-span-full justify-self-start md:justify-self-end lg:col-end-22 md:relative md:bottom-0"
 				attributes={formatLink(link)}
 				href={link.url}
 			>

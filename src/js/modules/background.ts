@@ -23,6 +23,7 @@ import noiseFragmentSource from "@js/shaders/noise-fragment.glsl?raw"
 import asciiFragmentSource from "@js/shaders/ascii-fragment.glsl?raw"
 
 export default class Background extends Mmodule {
+	private timeout: ReturnType<typeof setTimeout> | null = null
 	private gl!: WebGL2RenderingContext | null
 	private canvas!: HTMLCanvasElement
 
@@ -74,23 +75,25 @@ export default class Background extends Mmodule {
 			this.initNumber()
 		})
 
-		try {
-			await this.initWebGL()
-			this.observe(true)
-			this.buildPipeline()
-			this.onResize()
-			this.startTime = performance.now()
-			this.animate(
-				"background",
-				() => {
-					this.render()
-					trigger?.classList.add("-active")
-				},
-				true,
-			)
-		} catch {
-			return
-		}
+		this.timeout = setTimeout(async () => {
+			try {
+				await this.initWebGL()
+				this.observe(true)
+				this.buildPipeline()
+				this.onResize()
+				this.startTime = performance.now()
+				this.animate(
+					"background",
+					() => {
+						this.render()
+						trigger?.classList.add("-active")
+					},
+					true,
+				)
+			} catch {
+				return
+			}
+		}, 2000)
 	}
 
 	private async initWebGL(): Promise<boolean> {
@@ -226,6 +229,7 @@ export default class Background extends Mmodule {
 	// ── Cleanup ────────────────────────────────────────────────────
 
 	onUnMount(): void {
+		clearTimeout(this.timeout!)
 		this.active = false
 		this.cleanAnimation("background")
 

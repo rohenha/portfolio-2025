@@ -9,48 +9,56 @@ export default class Terminal extends Mmodule {
 
 	onMount() {
 		const [openButton] = this.$("openButton")
-		const parent = document.createElement("div")
-		parent.classList.add(
-			"m-terminal",
-			"fixed",
-			"bottom-md",
-			"left-md",
-			"z-10",
-			"bg-[#01123c]",
-			"w-[35rem]",
-			"h-[20rem]",
-			"rounded-md",
-			"text-gray-300",
-			"flex",
-			"flex-col",
-			"flex-nowrap",
-			"opacity-0",
-			"pointer-events-none",
-		)
-		parent.innerHTML = `
-			<div class="text-center px-sm py-xsm text-[1rem] tracking-sm shrink-0">user@RomainBreton</div>
-			<button data-terminal="close" class="absolute top-xsm left-xsm w-xsm h-xsm bg-green-700 rounded-[50%] cursor-pointer"><span class="sr-only">Fermer</span></button>
-			<div data-terminal="content" class="m-terminal__content pt-xsm px-sm flex flex-col gapx-xsm h-full overflow-y-auto">
-				<p class="text-[1rem] tracking-sm">&rarr; ~ Pour connaitre les commandes : \`help\`</p>
-				<p class="text-[1rem] tracking-sm text-gray-500/60">&rarr; ~ <input type="text" class="shrink-0 text-[1rem] tracking-sm focus:outline-0" data-terminal="input" /></p>
-			</div>
-			`
-
-		this.parent = parent
 		this.animate("initTerminal", () => {
-			document.body.appendChild(parent)
 			openButton.style.display = "flex"
-			const [input] = this.$("input")
-			const [closeButton] = this.$("close")
-			closeButton.addEventListener("click", () => {
-				this.disable()
-			})
-			input.addEventListener("keydown", this.onKeyDown.bind(this))
 			if (openButton) {
 				openButton.addEventListener("click", () => {
 					this.enable()
 				})
 			}
+		})
+	}
+
+	setIntroPopin(): Promise<void> {
+		return new Promise((resolve) => {
+			const parent = document.createElement("div")
+			parent.classList.add(
+				"m-terminal",
+				"fixed",
+				"bottom-md",
+				"left-md",
+				"z-10",
+				"bg-[#01123c]",
+				"w-[35rem]",
+				"h-[20rem]",
+				"rounded-md",
+				"text-gray-300",
+				"flex",
+				"flex-col",
+				"flex-nowrap",
+				"opacity-0",
+				"pointer-events-none",
+			)
+			parent.innerHTML = `
+				<div class="text-center px-sm py-xsm text-[1rem] tracking-sm shrink-0">user@RomainBreton</div>
+				<button data-terminal="close" class="absolute top-xsm left-xsm w-xsm h-xsm bg-green-700 rounded-[50%] cursor-pointer"><span class="sr-only">Fermer</span></button>
+				<div data-terminal="content" class="m-terminal__content pt-xsm px-sm flex flex-col gapx-xsm h-full overflow-y-auto">
+					<p class="text-[1rem] tracking-sm">&rarr; ~ Pour connaitre les commandes : \`help\`</p>
+					<p class="text-[1rem] tracking-sm text-gray-500/60">&rarr; ~ <input type="text" class="shrink-0 text-[1rem] tracking-sm focus:outline-0" data-terminal="input" /></p>
+				</div>
+				`
+
+			this.parent = parent
+			this.animate("initTerminal", () => {
+				document.body.appendChild(parent)
+				const [input] = this.$("input")
+				const [closeButton] = this.$("close")
+				closeButton.addEventListener("click", () => {
+					this.disable()
+				})
+				input.addEventListener("keydown", this.onKeyDown.bind(this))
+				resolve()
+			})
 		})
 	}
 
@@ -225,9 +233,9 @@ export default class Terminal extends Mmodule {
 		return indices[index] || false
 	}
 
-	enable() {
+	async enable() {
 		if (!this.parent) {
-			return
+			await this.setIntroPopin()
 		}
 		const [openButton] = this.$("openButton")
 		this.animate("toggleTerminal", () => {

@@ -98,13 +98,12 @@ export default class Experience extends Mmodule {
 
 		const parent = this.el.parentNode as HTMLElement
 		const html = document.documentElement
+		this.animate("initExperienceStyle", () => {
+			html.classList.add("-experience")
+		})
 		if (!cookieValue) {
 			this.addListeners()
 			setCookie("experience", JSON.stringify({ finished: false, loop: 1 }), 365)
-			this.animate("initExperience", () => {
-				parent.style.display = "block"
-				html.classList.add("-experience")
-			})
 			this.toggleExperience({ enable: true })
 			this.setIntroPopin()
 		} else {
@@ -112,7 +111,6 @@ export default class Experience extends Mmodule {
 			if (!this.experience.finished) {
 				this.animate("initExperience", () => {
 					parent.style.display = "block"
-					html.classList.add("-experience")
 				})
 				this.addListeners()
 				this.setIntroPopin()

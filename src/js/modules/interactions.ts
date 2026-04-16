@@ -44,10 +44,6 @@ export default class Interactions extends Mmodule {
 				name: "tree",
 				loader: () => import("./tree"),
 			},
-			{
-				name: "message",
-				loader: () => import("./message"),
-			},
 		])
 	}
 }

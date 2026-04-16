@@ -35,7 +35,7 @@ const {
 ---
 
 <section class:list={[variants[variant], "py-giant"]}>
-	<Grid>
+	<Grid class="relative">
 		{title && (
 			<Text
 				variant="tlg"
@@ -50,7 +50,7 @@ const {
 				{link && (
 					<Button
 						variant={variant === "gray-900" ? "secondary-gray-300" : "secondary-gray-900"}
-						class="justify-self-start"
+						class="absolute -bottom-md left-0 justify-self-start md:relative md:bottom-0"
 						attributes={formatLink(link)}
 						href={link.url}
 					>
