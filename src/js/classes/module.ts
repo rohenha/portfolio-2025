@@ -27,6 +27,7 @@ export default class Mmodule {
 		this.dataName = dataName
 		this.id = id
 		this.moduleKey = `${dataName}:${id}`
+		// this.moduleKey = `${this.constructor.name}:${id}`
 		this.visible = false
 		this.bus = bus
 		this.busEvents = new Map()

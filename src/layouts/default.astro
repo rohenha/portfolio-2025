@@ -7,8 +7,6 @@ import Button from "@components/atoms/button.astro"
 import Footer from "@components/organisms/footer.astro"
 import Header from "@components/organisms/header.astro"
 import Prefooter from "@components/organisms/prefooter.astro"
-// import BackInTime from "@components/organisms/back-in-time.astro"
-import Message from "@components/molecules/message.astro"
 // Styles
 import "../styles/tailwind.css"
 import "../styles/global.scss"
@@ -99,8 +97,8 @@ const {
 	</head>
 	<body
 		data-module-transition="transition"
-		data-module-interactions="interactions"
 		data-module-terminal="terminal"
+		data-module-popin-intro="popinIntro"
 	>
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />

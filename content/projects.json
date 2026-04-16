@@ -1,19 +1,43 @@
 {
 	"list": [
 		{
+			"id": "wearwoodid",
+			"name": "Woodid",
+			"title": "Woodid",
+			"description": "Site E-commerce de vente de trophées en bois personnalisables afin de créer des souvenirs uniques pour les performances de chacun.",
+			"url": "https://wearewoodid.com",
+			"tags": ["Prestashop", "Tailwind", "Strava API", "GPX"],
+			"role": "Développeur Fullstack chez Troa",
+			"credits": ["Troa - Développement"],
+			"year": 2026
+		},
+		{
 			"id": "strava-explorer",
 			"name": "Strava Explorer",
-			"description": "Aplication de suivi de performances sportifve et de statistiques avancées",
+			"title": "Strava Explorer",
+			"description": "Application de suivi d'import de données strava avec analyse de performance et affichage de statistiques avancées",
 			"url": "https://strava-explorer.romain-breton.com",
-			"tags": ["AdonisJS", "ShadcnUI", "VueJS"],
+			"tags": ["AdonisJS", "ShadcnUI", "VueJS", "Strava API", "Map"],
 			"role": "Développeur Fullstack",
 			"credits": [],
-			"year": 2026
+			"year": 2025
+		},
+		{
+			"id": "mat&seb",
+			"name": "Mat & Seb",
+			"title": "Mat & Seb",
+			"description": "Site vitrine pour Mat & Seb, une agence immobilière, avec un une connexion à leur CRM pour afficher les biens immobiliers disponibles.",
+			"url": "https://mat-seb-immo.com",
+			"tags": ["KirbyCMS", "Eco conception", "Accessibilité", "API"],
+			"role": "Développeur Fullstack chez Troa",
+			"credits": [],
+			"year": 2025
 		},
 		{
 			"id": "toulousefc",
 			"name": "Toulouse FC",
-			"description": "Site vitrine du club de football de Toulouse, avec des fonctionnalités de gestion de contenu et d'actualités.",
+			"title": "Toulouse FC",
+			"description": "Site vitrine du club de football de Toulouse, Avec une gestion des data via l'API d'Opta, et une interrface React pour suivre le match en live",
 			"url": "https://toulousefc.com",
 			"tags": ["Kirby CMS", "ReactJS", "Opta API"],
 			"role": "Développeur Fullstack chez Troa",
@@ -25,34 +49,48 @@
 			"year": 2024
 		},
 		{
-			"id": "mat&seb",
-			"name": "Mat & Seb",
-			"description": "Site vitrine pour Mat & Seb, une agence immobilière spécialisée dans les propriétés de luxe, avec une interface élégante et des fonctionnalités de recherche avancées.",
-			"url": "https://mat-seb-immo.com",
-			"tags": ["KirbyCMS", "Eco conception", "Animations"],
+			"id": "justhappiness",
+			"name": "Just Happiness",
+			"title": "Just Happiness",
+			"description": "Site vitrine de l'agence, reposant sur plusieurs animations pour présenter leurs services et leur portfolio.",
+			"url": "https://justhappiness.fr/",
+			"tags": ["Kirby CMS", "Eco conception", "Animations"],
 			"role": "Développeur Frontend chez Troa",
 			"credits": [],
-			"year": 2025
+			"year": 2024
+		},
+		{
+			"id": "vestiairecollectif",
+			"name": "Vestiaire Collective",
+			"title": "Reporting 2022 de Vestiaire Collective",
+			"description": "Site évènemeniel pour présenter le rapport de durabilité de Vestiaire Collective, avec des animations pour illustrer les données et les initiatives de l'entreprise en matière de durabilité.",
+			"url": "https://fashion-sustainability-report.vestiairecollective.com/2022/fashion-sustainability-report/",
+			"tags": ["Kirby CMS", "Animations", "Reporting"],
+			"role": "Développeur Frontend chez Troa",
+			"credits": [],
+			"year": 2022
 		},
 		{
 			"id": "lespoupeesrusses",
 			"name": "Les poupées russes",
+			"title": "Les poupées russes",
 			"description": "Site vitrine de l'agence de communication Les poupées russes, avec une interface moderne et des animations pour présenter leurs services et leur portfolio.",
 			"url": "https://www.lespoupees.paris/",
 			"tags": ["Middleman", "Eco conception"],
-			"role": "Développeur Frontend ches Les poupées russes",
+			"role": "Développeur Frontend chez Les poupées russes",
 			"credits": [],
-			"year": 2019
+			"year": 2020
 		},
 		{
-			"id": "justhappiness",
-			"name": "Just Happiness",
-			"description": "Site vitrine de l'agence de communication Just Happiness, avec une interface moderne et des animations pour présenter leurs services et leur portfolio.",
-			"url": "https://justhappiness.fr/",
-			"tags": ["Kirby CMS", "Eco conception"],
-			"role": "Développeur Frontend chez Troa",
+			"id": "daciauk",
+			"name": "Dacia Uk",
+			"title": "Configurateur de voiture Dacia Uk",
+			"description": "Application de configuration de voiture pour Dacia UK, permettant aux utilisateurs de personnaliser leur voiture en choisissant différentes options et en visualisant les changements en temps réel, et financer leur achat via un système de crédit intégré.",
+			"url": "https://www.dacia.co.uk/",
+			"tags": ["Angular", "Application", "Agile"],
+			"role": "Développeur Frontend chez Keley Live",
 			"credits": [],
-			"year": 2024
+			"year": 2018
 		}
 	]
 }

@@ -23,7 +23,7 @@ export default class Interactions extends Mmodule {
 		if (!interactionsParam || interactionsParam !== "1") {
 			return
 		}
-		const promise = await this.emitAsync("app:addModules", [
+		await this.emitAsync("app:addModules", [
 			{
 				name: "background",
 				loader: () => import("./background"),

@@ -84,17 +84,18 @@ import InputQuest from "@components/atoms/input-quest.astro"
 
 	// Séquence de touches encodée en base64
 	const COMBO_ENCODED: string[] = [
-		"SEFVVA==", // HAUT
-		"SEFVVA==", // HAUT
-		"QkFT", // BAS
-		"QkFT", // BAS
+		"SEFVVA==", // HAUT (ArrowUp)
+		"QkFT", // BAS (ArrowDown)
+		"cg==", // r
+		"Yg==", // b
 		"R0FVR0hF", // GAUCHE
 		"RFJPSVRF", // DROITE
-		"R0FVR0hF", // GAUCHE
-		"RFJPSVRF", // DROITE
-		"Qg==", // B
-		"QQ==", // A
+		"KA==", // (
+		"KA==", // (
+		"RW50cmVy", // Entrer
 	]
+
+	// HAUT, BAS, r, b, GAUCHE, DROITE, (, (, Entrer
 
 	function decodeCombo(arr: string[]): string[] {
 		return arr.map((str: string) => atob(str))

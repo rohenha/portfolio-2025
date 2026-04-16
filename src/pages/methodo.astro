@@ -16,24 +16,38 @@ import TextSection from "@components/organisms/text-section.astro"
 		>
 			<Fragment slot="content1">
 				<Text variant="pmd" class="">
-					Écrire du code c’est bien, et ça devient de plus en plus facile à
-					l’ère de l’IA, qu’il puisse traverser les années c’est mieux. Un code
+					Écrire du code c’est bien, ça devient de plus en plus facile à l’ère
+					de l’IA. Qu’il puisse traverser les années, c’est mieux.. Un code
 					propre et structuré, c’est faciliter la maintenance et la transmission
 					d’un projet. Grâce à des outils comme Eslint, Stylelint et Prettier,
-					je peux maintenir une cohérence à travers les lignes via un ensemble
-					de règles pour vérifier, ordonner et uniformiser ce que j’écris.
+					je peux maintenir une cohérence dans le code via un ensemble de règles
+					pour vérifier, ordonner et uniformiser ce que j’écris.
 				</Text>
+				<Text variant="tmd" Tag="h3" class="pt-sm md:pt-xlg"
+					>Structurer le Front-end</Text
+				>
 				<Text variant="pmd">
 					Côté Front, je suis adepte de l’Atomic Design. Cette architecture
-					permet de séparer le site en composants réutilisables qui seront
-					réutilisés et assemblés ensemble, et ainsi faciliter le développement,
-					la maintenance, et les mises à jour futures.
+					permet de séparer le site en composants réutilisables, assemblés
+					ensemble afin de faciliter le développement, la maintenance et les
+					mises à jour futures.
 				</Text>
 				<Text variant="pmd">
-					Pour ce qui est des gros projets NodeJs, Typescript est un
-					indispensable. L’outil permet de faciliter la compréhension du code et
-					de valider le code pour prévenir d’éventuelles erreurs de typage ou de
-					structures de données.
+					Pour ce qui est des gros projets NodeJS, TypeScript est un
+					indispensable. Cet outil facilite la compréhension et la validation du
+					code pour prévenir d’éventuelles erreurs de typage ou de structures de
+					données. Il en est de même pour Vitest afin de réaliser des tests
+					unitaires et valider le bon comportement de mes composants.
+				</Text>
+				<Text variant="tmd" Tag="h3" class="pt-sm md:pt-xlg"
+					>Back-end et déploiement</Text
+				>
+				<Text variant="pmd">
+					Côté déploiement, je privilégie des outils comme Github Actions afin
+					d’automatiser les processus de build et de déploiement, ce qui permet
+					de gagner du temps et d’éviter les erreurs humaines. Avec le PHP,
+					j'utilise l'architecture de microservices lorsque j'ai besoin de
+					développer des fonctionnalités supplémentaires sur Kirby ou WordPress.
 				</Text>
 			</Fragment>
 			<Fragment slot="content2">
@@ -62,56 +76,60 @@ import TextSection from "@components/organisms/text-section.astro"
 		>
 			<Fragment slot="content1">
 				<Text variant="pmd" class="">
-					Avoir des sites qui soient esthétiques est bien codés c’est important,
+					Avoir des sites qui soient esthétiques et bien codés c’est important,
 					mais le nerf de la guerre reste la vitesse. De mauvaises performances
-					peuvent être pénalisantes pour Google et ainsi réduire la visibilité
-					sur son moteur de recherche. Mais ce n’est pas qu’une histoire de
-					référencement. Nous ne sommes pas tous égaux face au numérique. Il y a
-					une grande disparité dans la puissance des terminaux. Certains sites
-					vont logiquement mieux tourner sur des appareils plus récents. Et
-					j’estime qu’on ne peut pas proposer une mauvaise expérience ou même
-					bloquer l’accès à une partie du public car il n’a pas le dernier
-					smartphone. Comme l’accessibilité, l’analyse du public cible permet de
-					voir s’il y a un effort particulier à faire en termes de performance
-					et de compatibilité.
+					peuvent pénaliser le site et réduire la visibilité du site sur les
+					moteurs de recherche. Mais ce n’est pas qu’une histoire de
+					référencement. Nous ne sommes pas tous égaux face au numérique. Il
+					existe une disparité dans la puissance des terminaux des utilisateurs.
+					Certains sites vont logiquement mieux tourner sur des appareils plus
+					récents. J’estime qu’on ne peut pas proposer une mauvaise expérience,
+					ou même bloquer l’accès à une partie du public, simplement parce qu’il
+					n’a pas le dernier smartphone. Comme pour l’accessibilité, l’analyse
+					du public cible permet de déterminer s’il y a un effort supplémentaire
+					à fournir en termes de performance et de compatibilité.
 				</Text>
+				<Text variant="tmd" Tag="h3" class="pt-sm md:pt-xlg"
+					>Le bon outil pour le bon usage</Text
+				>
 				<Text variant="pmd">
-					C’est pour toutes ces raisons que je fais très attention aux outils
-					que j’utilise lors de mes développements afin réduire non seulement le
-					nombre de dépendance à des outils tiers qui pourraient ne plus être
-					maintenus et minimiser le poids de mes sites. C’est aussi une raison
-					pour laquelle je n’utilise pas systématiquement du Vue ou React ou
-					Angular. J’essaie d’apporter la meilleure réponse technologique en
-					fonction du projet sans pour autant compromettre l'accessibilité au
-					plus grand nombre.
+					Il m'est donc important de prêter attention aux outils que j’utilise
+					lors de mes développements afin de réduire non seulement le nombre de
+					dépendances à des outils tiers qui pourraient ne plus être maintenus
+					et complexifier la maintenance future mais aussi de minimiser le poids
+					de mes sites. C’est aussi une raison pour laquelle je n’utilise pas
+					systématiquement un framework comme Vue, React ou Angular. J’essaie
+					d’apporter la meilleure réponse technologique en fonction du projet
+					sans pour autant compromettre l’accessibilité pour le plus grand
+					nombre.
 				</Text>
 			</Fragment>
 			<Fragment slot="content2">
 				<Text variant="pmd" class="">
 					L’inclusion est une valeur fondamentale pour moi. Je prône un web plus
-					frugal, qui permette à chacun d’utiliser cet outil. L’accès à internet
-					devrait être un droit universel au même titre que la liberté
-					d’expression. Le web a été créé dans le but de partager ensemble à
-					travers le monde. J’essaie donc dans mes projets de faciliter leurs
-					accès au plus grand nombre en mettant un accent sur l’accessibilité.
-					Personne ne devrait se sentir exclu en visitant un site web car il ne
-					peut pas l’utiliser. Sémantique, texte, compréhension, visuel,
-					interactions. Tout est fait au mieux pour que ces sites répondent au
-					mieux aux plus de situations de handicap possible dans le contexte du
-					public cible.
+					frugal, qui permette à chacun d’utiliser cet outil. Le web a été créé
+					dans le but de partager ensemble à travers le monde. J’essaie donc de
+					faciliter l'accès aux sites que je développe au plus grand nombre en
+					mettant l'accent sur l’accessibilité. Personne ne devrait se sentir
+					exclu en visitant un site web, car il ne peut pas l’utiliser.
+					Sémantique, texte, compréhension, visuel, interactions. Tout est fait
+					pour que les sites répondent au mieux au plus grand nombre de
+					situations de handicap possible, dans le contexte du public cible.
 				</Text>
+				<Text variant="tmd" Tag="h3" class="pt-sm md:pt-xlg"
+					>Ne pas se limiter aux derniers équipements</Text
+				>
 				<Text variant="pmd">
-					L'accessibilité ne se limite pas qu’aux personnes en situation de
+					L'accessibilité ne se limite pas aux personnes en situation de
 					handicap, cela fait partie d’un plus grand ensemble, l'inclusivité. Ça
 					inclut aussi les personnes avec une connexion plus faible ou un
 					appareil plus ancien. Avoir le dernier smartphone n’est pas donné à
 					tout le monde. C’est pourquoi l’éco-conception que je pousse dans mes
 					projets est importante car elle permet de faciliter l’accès au web
-					avec des sites plus rapides à charger et demandant moins de ressources
-					car plus légers. Cela permet à mon niveau de ne pas participer à
-					l’obsolescence programmée de nos terminaux, et ne pas participer à la
-					course à la puissance pour à la base transmettre juste de
-					l’information.
+					grâce à des sites plus rapides à charger et demandant moins de
+					ressources, car plus légers. Cela permet à mon niveau de ne pas
+					participer à l’obsolescence programmée de nos terminaux, ainsi qu’à la
+					course à la puissance.
 				</Text>
 			</Fragment>
 		</TextSection>

@@ -17,6 +17,10 @@ export default class Popin extends Mmodule {
 		this.onClick = this.onClick.bind(this)
 		this.open = this.change.bind(this, true)
 		this.close = this.change.bind(this, false)
+		this.busMap = {
+			open: "open",
+			close: "leave",
+		}
 	}
 
 	toggleEvents(state: boolean): void {

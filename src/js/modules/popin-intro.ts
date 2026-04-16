@@ -1,10 +1,6 @@
 import Popin from "./popin"
 
 export default class PopinIntro extends Popin {
-	constructor(params: any) {
-		super(params)
-	}
-
 	renderContent(): string {
 		return `
 			<p class="text-pmd tracking-sm">Bienvenue,</p>
@@ -16,10 +12,4 @@ export default class PopinIntro extends Popin {
 	renderFooter(): string {
 		return ``
 	}
-
-	// afterLeave() {
-	// 	this.emit("call:terminal:terminal", {
-	// 		method: "enable",
-	// 	})
-	// }
 }

@@ -37,24 +37,24 @@ const nav: NavProps = {
 			name: "Repos",
 			url: "/repos",
 		},
-		{
-			id: "Sport",
-			name: "Sport",
-			url: "https://sport.romain-breton.com",
-			external: true,
-		},
-		{
-			id: "lab",
-			name: "Lab",
-			url: "https://lab.romain-breton.com",
-			external: true,
-		},
-		{
-			id: "travel",
-			name: "Voyages",
-			url: "https://voyages.romain-breton.com",
-			external: true,
-		},
+		// {
+		// 	id: "Sport",
+		// 	name: "Sport",
+		// 	url: "https://sport.romain-breton.com",
+		// 	external: true,
+		// },
+		// {
+		// 	id: "lab",
+		// 	name: "Lab",
+		// 	url: "https://lab.romain-breton.com",
+		// 	external: true,
+		// },
+		// {
+		// 	id: "travel",
+		// 	name: "Voyages",
+		// 	url: "https://voyages.romain-breton.com",
+		// 	external: true,
+		// },
 	],
 	footerSecondary: [
 		{
@@ -65,11 +65,6 @@ const nav: NavProps = {
 			id: "terms",
 			name: "Mentions légales",
 			url: "/mentions-legales",
-		},
-		{
-			id: "privacy",
-			name: "Politique de confidentialité",
-			url: "/politique-de-confidentialite",
 		},
 	],
 	socials: [

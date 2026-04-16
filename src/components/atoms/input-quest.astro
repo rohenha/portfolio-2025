@@ -48,8 +48,22 @@ const { name = "", id = "", label = "" } = Astro.props
 	}
 	inputQuests.forEach((input) => {
 		input.addEventListener("keydown", (e) => {
+			if (e.key === "Backspace") {
+				e.preventDefault()
+				const prevInput =
+					input.parentElement?.previousElementSibling?.querySelector("input")
+				if (input.value !== "") {
+					input.value = ""
+				}
+				if (prevInput) {
+					;(prevInput as HTMLInputElement).focus()
+					if (input.value === "") {
+						prevInput.value = ""
+					}
+				}
+				return
+			}
 			if (e.key.length !== 1) return
-
 			e.preventDefault()
 			input.value = e.key.toUpperCase()
 

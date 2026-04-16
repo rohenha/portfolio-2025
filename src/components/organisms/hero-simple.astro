@@ -26,14 +26,14 @@ const { title = "", photo = false } = Astro.props
 					<span class="relative">
 						{title}
 						<button
-							class="w-[7rem] absolute top-0 right-xsm transform translate-y-[-50%] lg:translate-y-[-20%] translate-x-[-10%] rotate-4 cursor-pointer"
+							class="w-[7rem] lg:w-[9rem] absolute bottom-full left-xsm transform md:translate-y-[20%] md:translate-x-[10%] rotate-4 cursor-pointer"
 							data-module-fireworks="fireworks"
 						>
 							<Image
 								src={Avatar}
 								alt="Photo de profil de Romain Breton"
 								class="w-full"
-								sizes="70px"
+								sizes="90px"
 								widths={[140]}
 								quality="100"
 							/>

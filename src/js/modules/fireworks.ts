@@ -6,8 +6,8 @@ export default class Fireworks extends Mmodule {
 	private imageUrl: string
 	private image: HTMLImageElement | null = null
 	private sparks: any[] = []
-	private sparksCount: number = 100
-	private sparkWidth: number = 60
+	private sparksCount: number = 70
+	private sparkWidth: number = 70
 	private speed: number = 0.5
 	constructor(params: any) {
 		super(params)
@@ -15,7 +15,9 @@ export default class Fireworks extends Mmodule {
 			"plugins:resizer:resize": "onResize",
 		}
 		const imgEl = this.el.querySelector("img")
-		this.imageUrl = imgEl ? imgEl.getAttribute("src") || "" : ""
+		this.imageUrl = imgEl ? imgEl.getAttribute("srcset") || "" : ""
+		const imgArray = this.imageUrl.split(" ")
+		this.imageUrl = imgArray[0]
 		if (this.imageUrl) {
 			this.image = new window.Image()
 			this.image.src = this.imageUrl
@@ -63,7 +65,7 @@ export default class Fireworks extends Mmodule {
 			const height = width * 1.2
 			this.sparks.push({
 				// x: Math.random() * (this.screen.width - size),
-				x: Math.random() * (this.screen.width / 2) + this.screen.width / 4,
+				x: Math.random() * (this.screen.width / 3) + this.screen.width / 3,
 				y: this.screen.height + height,
 				vx: Math.random() * 10 - 5,
 				vy: Math.random() * 10 + 15,

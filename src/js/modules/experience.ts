@@ -11,12 +11,12 @@ export default class Experience extends Mmodule {
 	private backInTime: HTMLElement | null
 	private comment: CharacterData | null
 	private static readonly COMBO_HASH =
-		"d7e9b6abf3c848b4a5b797b0fb64ba2bea63e6853464384d0ba83b9bc2f25dc4"
-	private static readonly COMBO_LENGTH = 10
+		"d8af3f34b00d55d5ec600bc30e67f2480994da87cd7ea52c9325697701257e50"
+	private static readonly COMBO_LENGTH = 9
 	constructor(params: any) {
 		super(params)
 		this.interval = null
-		this.defaultTimer = 60 * 1 // 30 seconds for testing
+		this.defaultTimer = 60 * 5 // 30 seconds for testing
 		// this.defaultTimer = 60 * 5 // 5 minutes
 		this.busMap = {
 			toggleExperience: "toggleExperience",
@@ -57,7 +57,6 @@ export default class Experience extends Mmodule {
 	 */
 	async onKeyDown(e: KeyboardEvent) {
 		this.combination.push(e.key)
-
 		// Keep only the last N keys (combo length)
 		if (this.combination.length > Experience.COMBO_LENGTH) {
 			this.combination.shift()
@@ -90,11 +89,8 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description Initialize the experience state from a cookie and set up the timer if the experience is not finished
 	 */
-	onMount() {
+	async onMount() {
 		const cookieValue = getCookie("experience")
-		if (isMobile()) {
-			return
-		}
 
 		const parent = this.el.parentNode as HTMLElement
 		const html = document.documentElement
@@ -114,11 +110,20 @@ export default class Experience extends Mmodule {
 				})
 				this.addListeners()
 				this.setIntroPopin()
+
+				// this.emit("experience:loop", { loop: this.experience.loop })
+
 				this.toggleExperience({ enable: true })
 			} else {
 				this.off(`toggleExperience:${this.moduleKey}`)
 			}
 		}
+	}
+
+	setIntroPopin(): void {
+		setTimeout(() => {
+			this.emit("open:popin-intro:popinIntro", {})
+		}, 3000)
 	}
 
 	/**
@@ -152,25 +157,6 @@ export default class Experience extends Mmodule {
 			parent.style.display = "none"
 			this.setFinishPopin()
 		})
-	}
-
-	/**
-	 * @description Method to set the finish popin by emitting an event to add a new module instance of the popin module and open it once it's loaded
-	 */
-	async setIntroPopin() {
-		setTimeout(async () => {
-			document.body.setAttribute(
-				"data-module-popin-intro",
-				"experience-intro-popin",
-			)
-			const promise = await this.emitAsync("app:addModules", [
-				{
-					name: "popin-intro",
-					loader: () => import("./popin-intro"),
-				},
-			])
-			promise[0][0].open()
-		}, 3000)
 	}
 
 	/**

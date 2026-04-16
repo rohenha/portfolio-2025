@@ -1,5 +1,5 @@
 const contact = {
-	email: "romain.breton.pro@gmail.com",
+	email: "romain.breton@ik.me",
 }
 
 export default contact
