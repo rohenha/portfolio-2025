@@ -2,6 +2,7 @@ import Mmodule from "@js/classes/module"
 
 export default class Terminal extends Mmodule {
 	private parent: HTMLElement | null
+	private messageId: number = 0
 	constructor(params: any) {
 		super(params)
 		this.parent = null
@@ -43,8 +44,9 @@ export default class Terminal extends Mmodule {
 				<div class="text-center px-sm py-xsm text-[1rem] tracking-sm shrink-0">user@RomainBreton</div>
 				<button data-terminal="close" class="absolute top-xsm left-xsm w-xsm h-xsm bg-green-700 rounded-[50%] cursor-pointer"><span class="sr-only">Fermer</span></button>
 				<div data-terminal="content" class="m-terminal__content pt-xsm px-sm flex flex-col gapx-xsm h-full overflow-y-auto">
+					<p class="text-[1rem] tracking-sm">&rarr; ~ Il existe 7 codes à trouver allant de 1 à 7</p>
 					<p class="text-[1rem] tracking-sm">&rarr; ~ Pour connaitre les commandes : \`help\`</p>
-					<p class="text-[1rem] tracking-sm text-gray-500/60">&rarr; ~ <input type="text" class="shrink-0 text-[1rem] tracking-sm focus:outline-0" data-terminal="input" /></p>
+					<p class="flex items-center gap-tiny text-[1rem] tracking-sm text-gray-500/60"><span class="shrink-0">&rarr; ~</span> <input type="text" class="w-full text-[1rem] tracking-sm focus:outline-0" data-terminal="input" /></p>
 				</div>
 				`
 
@@ -55,6 +57,9 @@ export default class Terminal extends Mmodule {
 				const [closeButton] = this.$("close")
 				closeButton.addEventListener("click", () => {
 					this.disable()
+				})
+				parent.addEventListener("click", () => {
+					input.focus()
 				})
 				input.addEventListener("keydown", this.onKeyDown.bind(this))
 				resolve()
@@ -79,20 +84,45 @@ export default class Terminal extends Mmodule {
 			target.value = ""
 			this.addMessage(value, "success").then(() => {
 				if (value === "help") {
+					this.addMessage("&nbsp;", "success", false)
+					this.addMessage("<strong>Usage : \`help\`</strong>", "success", false)
 					this.addMessage(
-						"Usage : help, hint : [chiffre], place : [chiffre]",
+						"Permet de voir toutes les commandes disponibles",
 						"success",
 						false,
 					)
+					this.addMessage("&nbsp;", "success", false)
+					this.addMessage(
+						"<strong>Usage : \`indice [chiffre]\`</strong>",
+						"success",
+						false,
+					)
+					this.addMessage(
+						"Vous donne une indication pour trouver l'indice en fonction du chiffre entré. Remplacez [chiffre] par un nombre",
+						"success",
+						false,
+					)
+					this.addMessage("&nbsp;", "success", false)
+					this.addMessage(
+						"<strong>Usage : \`emplacement [chiffre]\`</strong>",
+						"success",
+						false,
+					)
+					this.addMessage(
+						"Vous donne l'emplacement de l'indice en fonction du chiffre entré. Remplacez [chiffre] par un nombre",
+						"success",
+						false,
+					)
+					this.addMessage("&nbsp;", "success", false, true)
 					return
 				}
-				if (value.startsWith("hint ")) {
+				if (value.startsWith("indice ")) {
 					this.checkCommand(
-						"hint",
+						"indice",
 						value,
 						{
 							error: "Veuillez entrer un index après 'hint '",
-							success: "Voici l'indice {index} : {message}",
+							success: "Voici l'indice {index}",
 							notFound: "Aucun indice trouvé pour l'index {index}",
 						},
 						this.getIndice,
@@ -100,13 +130,13 @@ export default class Terminal extends Mmodule {
 					return
 				}
 
-				if (value.startsWith("place ")) {
+				if (value.startsWith("emplacement ")) {
 					this.checkCommand(
-						"place",
+						"emplacement",
 						value,
 						{
 							error: "Veuillez entrer un index après 'place '",
-							success: "Voici l'emplacement de l'indice {index} : {message}",
+							success: "Voici l'emplacement de l'indice {index}",
 							notFound: "Aucun emplacement trouvé pour l'index {index}",
 						},
 						this.getPlace,
@@ -114,11 +144,13 @@ export default class Terminal extends Mmodule {
 					return
 				}
 
+				this.addMessage("&nbsp;", "success", false)
 				this.addMessage(
 					`La commande "${value}" n'est pas reconnue.`,
 					"error",
 					false,
 				)
+				this.addMessage("&nbsp;", "success", false, true)
 			})
 		}
 	}
@@ -134,25 +166,29 @@ export default class Terminal extends Mmodule {
 		const place = value.split(`${command} `)[1].trim()
 		const indexBase = parseInt(place, 10)
 		const index = indexBase - 1
+		this.addMessage("&nbsp;", "success", false)
 		if (!place) {
 			this.addMessage(messages.error, "error", false)
+			this.addMessage("&nbsp;", "success", false, true)
 			return
 		}
 		const message = callback(index)
 		if (!message || typeof message === "boolean") {
 			this.addMessage(
 				`${messages.notFound.replace("{index}", indexBase.toString())}`,
-				// `Aucun indice trouvé pour l'index ${index}`,
 				"error",
 				false,
 			)
+			this.addMessage("&nbsp;", "success", false, true)
 			return
 		}
 		this.addMessage(
-			`${messages.success.replace("{index}", indexBase.toString()).replace("{message}", message)}`,
+			`<strong>${messages.success.replace("{index}", indexBase.toString())}</strong>`,
 			"success",
 			false,
 		)
+		this.addMessage(message, "success", false)
+		this.addMessage("&nbsp;", "success", false, true)
 		return
 	}
 
@@ -192,15 +228,20 @@ export default class Terminal extends Mmodule {
 		message: string,
 		type: "success" | "error",
 		prefix: boolean = true,
+		end: boolean = false,
 	): Promise<void> {
 		if (!this.parent) {
 			return Promise.resolve()
 		}
 		return new Promise((resolve) => {
+			this.messageId += 1
 			const [content] = this.$("content")
 			const messageElement = this.createMessage(message, type, prefix)
-			this.animate("addTerminalMessage", () => {
+			this.animate(`addTerminalMessage${this.messageId}`, () => {
 				content.insertBefore(messageElement, content.lastElementChild!)
+				if (end) {
+					content.scrollTop = content.scrollHeight
+				}
 				resolve()
 			})
 		})
@@ -208,13 +249,13 @@ export default class Terminal extends Mmodule {
 
 	getPlace(index: number): string | boolean {
 		const places = [
-			"Hero Accueil",
-			"Footer",
-			"DOM HTML",
-			"Devtools",
-			"Page à propos",
-			"Méthodologie",
-			"Quête",
+			"Allez dans la page d'accueil et le hero et survolez le titre",
+			"Regardez dans le footer, et chercher du morse",
+			"Jetez un oeil au DOM HTML dans l'inspecteur",
+			"Regardez les messages dans la console",
+			"Allez dans la page à propos de moi et cherchez du texte caché",
+			"Allez dans la page Méthodologie, et regardez les technologies utilisées",
+			"Rendez-vous directement sur la page de la quête",
 		]
 
 		return places[index] || false
@@ -222,10 +263,10 @@ export default class Terminal extends Mmodule {
 
 	getIndice(index: number): string | boolean {
 		const indices = [
-			"Chercher un bouton",
-			"Bip Bip Bip",
-			"Inspecter le DOM",
-			"Inspecter la console",
+			"Chercher un bouton caché sur une des lettres",
+			"Cherchez du morse à côté du bouton de quête",
+			"Inspecter le DOM, cherchez des commentaires cachés",
+			"Attendez devant la console et regardez les messages qui s'y affichent",
 			"Survoler les compétences",
 			"Noir sur noir ça ne se voit pas",
 			"Vraiment ?",
