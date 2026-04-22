@@ -17,6 +17,10 @@ const text = defineCollection({
 	loader: glob({ pattern: "*.{md,mdx}", base: "./content/text" }),
 	schema: z.object({
 		title: z.string(),
+		seoTitle: z.string().optional(),
+		ogTitle: z.string().optional(),
+		seoDescription: z.string().optional(),
+		ogDescription: z.string().optional(),
 		draft: z.boolean(),
 	}),
 })

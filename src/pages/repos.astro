@@ -11,7 +11,13 @@ import Button from "@components/atoms/button.astro"
 const repos = await getCollection("repos")
 ---
 
-<DefaultLayout explorer={false}>
+<DefaultLayout
+	explorer={false}
+	seoTitle="Mes contributions open source"
+	ogTitle="Mes contributions open source"
+	ogDescription="Découvrez mes contributions à l'open source, des projets que j'ai développé et que 'j'utilise pour aider d'autres développeurs et contribuer à un web plus collaboratif et accessible."
+	seoDescription="Découvrez mes contributions à l'open source, des projets que j'ai développé et que 'j'utilise pour aider d'autres développeurs et contribuer à un web plus collaboratif et accessible."
+>
 	<main id="main" data-transition="container">
 		<HeroAlt title="Mes contributions open source">
 			<Text variant="pmd" class=""

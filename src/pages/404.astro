@@ -6,7 +6,13 @@ import Text from "@components/atoms/text.astro"
 import Button from "@components/atoms/button.astro"
 ---
 
-<SimpleLayout>
+<SimpleLayout
+	seoTitle="Erreur"
+	ogTitle="Erreur"
+	robots="noindex, nofollow"
+	seoDescription="Désolé, la page que tu cherches n’existe pas."
+	ogDescription="Désolé, la page que tu cherches n’existe pas."
+>
 	<main id="main">
 		<HeroAlt title="Erreur 404">
 			<Text variant="pmd" class="">

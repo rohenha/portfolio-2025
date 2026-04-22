@@ -19,11 +19,17 @@ export async function getStaticPaths() {
 }
 // 2. Pour votre modèle, vous pouvez obtenir l'entrée directement à partir de la propriété
 const { post } = Astro.props
-const { title } = post.data
+const { title, ogTitle, seoTitle, seoDescription, ogDescription } = post.data
 const { Content } = await render(post)
 ---
 
-<DefaultLayout explorer={false}>
+<DefaultLayout
+	explorer={false}
+	ogTitle={ogTitle}
+	seoTitle={seoTitle}
+	seoDescription={seoDescription}
+	ogDescription={ogDescription}
+>
 	<main id="main" data-transition="container">
 		<HeroAlt title={title} />
 		<Grid class="mb-giant">

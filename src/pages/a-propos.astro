@@ -7,9 +7,14 @@ import Button from "@components/atoms/button.astro"
 import TextTree from "@components/organisms/text-tree.astro"
 ---
 
-<DefaultLayout seoTitle="A propos de moi">
+<DefaultLayout
+	seoTitle="À propos de moi"
+	ogTitle="À propos de moi"
+	seoDescription="Découvrez mon parcours, de mes études à mes expériences professionnelles qui m'ont façonné en tant que développeur web et en savoir plus sur les langages et technologies que j'affectionne pour construire des projets performants, accessibles et durables."
+	ogDescription="Découvrez mon parcours, de mes études à mes expériences professionnelles qui m'ont façonné en tant que développeur web et en savoir plus sur les langages et technologies que j'affectionne pour construire des projets performants, accessibles et durables.."
+>
 	<main id="main" data-transition="container">
-		<HeroSimple title="A propos de moi" photo={true} />
+		<HeroSimple title="À propos de moi" photo={true} />
 		<TextTree
 			variant="gray-900"
 			title="Pur produit Sarthois avec des notes du sud"
