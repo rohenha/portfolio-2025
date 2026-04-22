@@ -10,11 +10,11 @@ const nav: NavProps = {
 			name: "À propos",
 			url: "/a-propos",
 		},
-		{
-			id: "blog",
-			name: "Parlons code",
-			url: "/parlons-code",
-		},
+		// {
+		// 	id: "blog",
+		// 	name: "Parlons code",
+		// 	url: "/parlons-code",
+		// },
 	],
 	footerPrimary: [
 		{
@@ -27,11 +27,11 @@ const nav: NavProps = {
 			name: "À propos",
 			url: "/a-propos",
 		},
-		{
-			id: "blog",
-			name: "Parlons code",
-			url: "/parlons-code",
-		},
+		// {
+		// 	id: "blog",
+		// 	name: "Parlons code",
+		// 	url: "/parlons-code",
+		// },
 		{
 			id: "repos",
 			name: "Repos",
@@ -71,7 +71,7 @@ const nav: NavProps = {
 		{
 			id: "email",
 			name: "Email",
-			url: "romain.breton.pro@gmail.com",
+			url: "mailto:romain.breton@ik.me",
 		},
 		{
 			id: "github",

@@ -60,10 +60,23 @@ export default class Transition extends Mmodule {
 			const href = link.getAttribute("href")
 			if (
 				!href ||
-				href.startsWith("#") ||
 				link.target === "_blank" ||
 				link.getAttribute("data-prevent")
 			) {
+				return
+			}
+
+			if (href.startsWith("#")) {
+				e.preventDefault()
+				const targetId = href.substring(1)
+				const targetElement = document.getElementById(targetId)
+				if (targetElement) {
+					window.scrollTo({
+						top: targetElement.offsetTop - 20,
+						behavior: "smooth",
+					})
+					// targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+				}
 				return
 			}
 			e.preventDefault()

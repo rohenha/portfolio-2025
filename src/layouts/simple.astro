@@ -22,6 +22,7 @@ export interface Props {
 	twitterCreator?: string
 	colorMeta?: string
 	metas?: Array<{ content: string; type: string; key: string }>
+	htmlClass?: string
 }
 
 const {
@@ -38,10 +39,14 @@ const {
 	twitterCreator = metadata.twitterCreator,
 	colorMeta = metadata.colorMeta,
 	metas = metadata.metas,
+	htmlClass = "",
 } = Astro.props
 ---
 
-<html lang={lang} class="bg-gray-900 text-gray-300 font-mono">
+<html
+	lang={lang}
+	class:list={["bg-gray-900 text-gray-300 font-mono", htmlClass]}
+>
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />

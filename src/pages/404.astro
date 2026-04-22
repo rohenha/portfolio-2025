@@ -1,0 +1,23 @@
+---
+// Components
+import SimpleLayout from "@layouts/simple.astro"
+import HeroAlt from "@components/organisms/hero-alt.astro"
+import Text from "@components/atoms/text.astro"
+import Button from "@components/atoms/button.astro"
+---
+
+<SimpleLayout>
+	<main id="main">
+		<HeroAlt title="Erreur 404">
+			<Text variant="pmd" class="">
+				Désolé, la page que tu cherches n’existe pas. Mais ne t’en fais pas, tu
+				n’es pas perdu pour autant. Reviens à la page d’accueil et continue ton
+				exploration. Qui sait, peut-être que tu trouveras quelque chose
+				d’intéressant en chemin.
+			</Text>
+			<Button href="/" class="justify-self-start" variant="primary-gray-300"
+				>Retourner à la page d'accueil</Button
+			>
+		</HeroAlt>
+	</main>
+</SimpleLayout>

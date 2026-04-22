@@ -4,7 +4,7 @@ export default class PopinFinish extends Popin {
 	renderContent(): string {
 		return `
 			<p class="text-pmd tracking-sm">Bravo, tu as désactivé la boucle. Tu peux désormais naviguer sur le site sans retour à la case départ toutes les 5 minutes.</p>
-			<p class="text-pmd tracking-sm mt-md">Merci d’avoir participé à mon enquête. Le but était de trouver un mini concept fun qui puisse agrémenter l’expérience tout en gardant un site très léger et le plus éco conçu possible. C’était aussi pour moi l’occasion de rendre un hommage au jeu Outer Wilds, qui m’a grandement inspiré. Si tu aimes l’exploration et les univers poétiques, fonce.</p>
+			<p class="text-pmd tracking-sm mt-md">Merci d’avoir participé à ma quête. Le but était de trouver un mini concept fun qui puisse agrémenter l’expérience tout en gardant le site le plus léger et le plus éco conçu possible. C’était aussi pour moi l’occasion de rendre un hommage au jeu Outer Wilds, qui m’a grandement inspiré. Si tu aimes l’exploration et les univers poétiques, fonce.</p>
 			<p class="text-pmd tracking-sm mt-md">A bientôt !</p>
 		`
 	}

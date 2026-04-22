@@ -8,31 +8,35 @@ import Button from "@components/atoms/button.astro"
 import InputQuest from "@components/atoms/input-quest.astro"
 ---
 
-<SimpleLayout>
+<SimpleLayout htmlClass="-experience">
 	<main id="main">
 		<HeroAlt title="La quête">
 			<Text variant="pmd" class="">
-				Vous voilà ici. Vous avez désormais pris connaissance des choses
-				étranges qui se passent sur mon site internet. Une boucle temporelle a
-				pris le contrôle. Impossible à désactiver naturellement.
+				Te voilà ici. Une boucle temporelle de 5 minutes a été mise en place
+				pour te mettre au défi. Impossible à désactiver naturellement.
 			</Text>
 			<Text variant="pmd" class=""
-				>La légende raconte que 8 codes y ont été cachés, et que les trouver,
-				permettra de connaître la combinaison permettant de stopper la boucle.
+				>7 codes ont été dispersés sur le site. Les trouver te permettra de
+				découvrir la combinaison qui stoppera la boucle.
 			</Text>
 			<Text variant="pmd" class=""
-				>Parcours le site, certains évènements peuvent se produire à un moment
-				précis de la boucle. Soit vigilant, regarde bien les détails.
+				>Parcours le site, à la recherche des codes. Certains peuvent apparaître
+				à un moment précis de la boucle. Sois vigilant, regarde bien les
+				détails. Sur le site, tu trouveras un terminal d'aide qui pourra te
+				donner des indices.
+			</Text>
+			<Text variant="pmd" class=""
+				>Voici quelques indices pour t’aider dans ta quête :
 			</Text>
 			<ul class="list-disc list-inside py-md pl-md flex flex-col gap-tiny">
 				<Text Tag="li" variant="bmd" class="italic"
 					>Le premier est plus faible que le deuxième.</Text
 				>
 				<Text Tag="li" variant="bmd" class="italic"
-					>Le deuxième est le plus puissant de tous.</Text
+					>Le deuxième est le plus puissant de la suite.</Text
 				>
 				<Text Tag="li" variant="bmd" class="italic"
-					>Le troisième est le plus faible de tous.</Text
+					>Le troisième est le plus faible de la suite.</Text
 				>
 				<Text Tag="li" variant="bmd" class="italic"
 					>Le quatrième est le deuxième plus grand de la suite.</Text
@@ -48,7 +52,10 @@ import InputQuest from "@components/atoms/input-quest.astro"
 				>
 				<Text Tag="li" variant="bmd" class="italic">Le septième est pair.</Text>
 			</ul>
-			<Text variant="pmd" class="">Bonne chance, tu en auras besoin.</Text>
+			<Text variant="pmd" class="">
+				N'oublie pas que tu es sur le portfolio d'un développeur 😎. Bonne
+				chance, tu en auras besoin!</Text
+			>
 		</HeroAlt>
 		<Grid class="mb-giant">
 			<form

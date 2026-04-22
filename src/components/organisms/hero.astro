@@ -53,12 +53,6 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 				</Button>
 			) : null
 		}
-		<button
-			class="o-hero__btn absolute hidden lg:block left-[41%] w-[2.5%] h-[4.5%] focus:outline-2 focus:outline-gray-300 focus:outline-offset-2 z-2 cursor-pointer"
-			data-background="trigger"
-		>
-			<span class="sr-only">Activer</span>
-		</button>
 		<Text
 			variant="thuge"
 			Tag="h1"
@@ -74,6 +68,14 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 						class={letter === " " ? " -space" : ""}
 						style={`--delay:${index * 0.05 + 0.1}s;`}
 					>
+						{letter === "i" && (
+							<button
+								class="o-hero__btn absolute hidden lg:block top-0 left-[20%] w-[80%] h-[20%] focus:outline-2 focus:outline-gray-300 focus:outline-offset-2 z-2 cursor-pointer"
+								data-background="trigger"
+							>
+								<span class="sr-only">Activer</span>
+							</button>
+						)}
 						{letter === " " ? "\u00A0" : letter}
 					</span>
 				))

@@ -70,15 +70,19 @@ const {
 					)
 				}
 			</Text>
-			<Button
-				variant="primary-gray-300"
-				attributes={{ target: "_blank" }}
-				icon="arrow"
-				href={url}
-				class="shrink-0"
-			>
-				Voir le projet
-			</Button>
+			{
+				url && (
+					<Button
+						variant="primary-gray-300"
+						attributes={{ target: "_blank" }}
+						icon="arrow"
+						href={url}
+						class="shrink-0"
+					>
+						Voir le projet
+					</Button>
+				)
+			}
 		</div>
 	</header>
 </article>
