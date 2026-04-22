@@ -31,7 +31,7 @@
 	"scripts": {
 		"dev": "astro dev --host",
 		"build": "astro build --space preprod",
-		"build:prod": "astro build --space prod",
+		"build:prod": "astro build --space main",
 		"preview": "astro preview",
 		"astro": "astro",
 		"sprite": "node ./tools/sprite.js",

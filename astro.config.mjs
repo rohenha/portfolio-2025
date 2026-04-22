@@ -16,7 +16,7 @@ const { SPACE } = loadEnv(
 	process.cwd(),
 	"",
 )
-const isProdSpaceValue = SPACE === "prod"
+const isProdSpaceValue = SPACE === "main"
 export default defineConfig({
 	site: isProdSpaceValue
 		? "https://romain-breton.com"
