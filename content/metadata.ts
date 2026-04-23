@@ -22,6 +22,7 @@ const metadata: MetadataProps = {
 	twitterCreator: "@romain_breton",
 	colorMeta: "#ff3e00",
 	metas: [],
+	googleVerification: "",
 }
 
 export default metadata

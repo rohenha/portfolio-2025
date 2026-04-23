@@ -23,6 +23,7 @@ export interface Props {
 	colorMeta?: string
 	metas?: Array<{ content: string; type: string; key: string }>
 	htmlClass?: string
+	googleVerification?: string
 }
 
 const {
@@ -30,7 +31,7 @@ const {
 	locale = metadata.locale,
 	seoTitle = metadata.seoTitle,
 	seoDescription = metadata.seoDescription,
-	// ogImage = metadata.ogImage,
+	ogImage = metadata.ogImage,
 	robots = metadata.robots,
 	ogType = metadata.ogType,
 	ogTitle = metadata.ogTitle,
@@ -40,6 +41,7 @@ const {
 	colorMeta = metadata.colorMeta,
 	metas = metadata.metas,
 	htmlClass = "",
+	googleVerification = metadata.googleVerification,
 } = Astro.props
 ---
 
@@ -54,6 +56,11 @@ const {
 			name="viewport"
 			content="width=device-width, initial-scale=1, maximum-scale=5"
 		/>
+		{
+			googleVerification && (
+				<meta name="google-site-verification" content={googleVerification} />
+			)
+		}
 		<meta name="language" content={locale} />
 		<meta name="robots" content={robots} />
 		<!-- data -->
@@ -72,6 +79,15 @@ const {
 		<meta name="twitter:creator" content={twitterCreator} />
 		<meta name="twitter:title" content={ogTitle} />
 		<meta name="twitter:description" content={ogDescription} />
+		{
+			ogImage && (
+				<>
+					<meta property="og:image" content={ogImage} />
+					<meta property="og:image:secure_url" content={ogImage} />
+					<meta name="twitter:image" content={ogImage} />
+				</>
+			)
+		}
 		<!-- Icon -->
 		<link
 			rel="icon"
