@@ -8,6 +8,7 @@ import { loadEnv } from "vite"
 import mdx from "@astrojs/mdx"
 import mdxClasses from "./config/mdx-classes.ts"
 import rehypeClassNames from "rehype-class-names"
+// import astroCriticalCss from "./tools/astro-critical-css.js"
 
 // https://astro.build/config
 
@@ -51,11 +52,12 @@ export default defineConfig({
 
 	integrations: [
 		// criticalCss({
-		//   // silent: true,
-		//   // htmlPathRegex: "**/test.html",
-		//   height: 1080,
-		//   width: 1920,
+		// 	// silent: true,
+		// 	// htmlPathRegex: "**/test.html",
+		// 	height: 865,
+		// 	width: 1440,
 		// }),
+		// astroCriticalCss(),
 		sitemap({
 			filter: (page) => {
 				const excludedPages = ["/design-system"]
