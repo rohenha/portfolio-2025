@@ -17,9 +17,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 	const posts = await getCollection("blog", ({ data }) => {
 		return import.meta.env.PROD ? data.draft !== true : true
 	})
-	const sortedPosts = posts.sort(
-		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
-	)
+	const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 	return paginate(sortedPosts, { pageSize: 15 })
 }) satisfies GetStaticPaths
 
@@ -36,39 +34,16 @@ const baseUrl = page.url.first ? page.url.first : page.url.current
 			) : (
 				<HeroAlt title="Parlons bien, parlons code">
 					<Text variant="pmd" class="">
-						L'idée de cette partie du site est de partager des outils ou
-						techniques que j'utilise, retours d'expérience sur des projets, ou
-						tout simplement mon avis sur des sujets liés au développement web.
+						L'idée de cette partie du site est de partager des outils ou techniques que j'utilise, retours d'expérience sur des projets, ou tout simplement mon avis sur des sujets liés au
+						développement web.
 					</Text>
 				</HeroAlt>
 			)
 		}
 		<Grid class="mb-giant">
-			<section
-				class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-[0.8rem]"
-			>
-				{
-					page.data.map((post) => (
-						<ArticleListItem
-							title={post.data.title}
-							url={`${baseUrl}/${post.id}`}
-							date={post.data.date}
-							tags={post.data.tags}
-						/>
-					))
-				}
-				{
-					page.lastPage > 1 && (
-						<Pagination
-							baseUrl={baseUrl}
-							currentUrl={page.url.current}
-							prevUrl={page.url.prev}
-							nextUrl={page.url.next}
-							total={page.lastPage}
-							class="mt-md"
-						/>
-					)
-				}
+			<section class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-[0.8rem]">
+				{page.data.map((post) => <ArticleListItem title={post.data.title} url={`${baseUrl}/${post.id}`} date={post.data.date} tags={post.data.tags} />)}
+				{page.lastPage > 1 && <Pagination baseUrl={baseUrl} currentUrl={page.url.current} prevUrl={page.url.prev} nextUrl={page.url.next} total={page.lastPage} class="mt-md" />}
 			</section>
 		</Grid>
 	</main>

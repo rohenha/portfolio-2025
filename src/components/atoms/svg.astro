@@ -1,28 +1,19 @@
 ---
-
 const variants = {
-  sm: 'w-6 h-6',
+	sm: "w-6 h-6",
 }
 
-const icons = [
-  'arrow',
-]
+const icons = ["arrow"]
 
 export interface Props {
-  variant?: keyof typeof variants;
-  class?: string;
-  icon: typeof icons[number];
+	variant?: keyof typeof variants
+	class?: string
+	icon: (typeof icons)[number]
 }
 
-const {
-  icon,
-  variant= "sm",
-  class: className
-} = Astro.props
-
+const { icon, variant = "sm", class: className } = Astro.props
 ---
 
-
-<svg class:list={[variants[variant], className]} aria-hidden="true" focusable="false" >
-  <use href={`/images/svg/sprite.symbol.svg#icon-${icon}`} />
+<svg class:list={[variants[variant], className]} aria-hidden="true" focusable="false">
+	<use href={`/images/svg/sprite.symbol.svg#icon-${icon}`}></use>
 </svg>

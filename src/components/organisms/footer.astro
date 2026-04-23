@@ -13,24 +13,16 @@ const currentPath = Astro.url.pathname
 
 <footer class="o-footer bg-gray-900 text-gray-300 py-xxlg transition-fade">
 	<Grid Tag="div">
-		<nav
-			class="col-span-full lg:col-span-12 flex flex-row flex-wrap gap-y-md lg:gap-x-xlg lg:gap-y-sm"
-			aria-labelledby="footer-nav-label"
-		>
+		<nav class="col-span-full lg:col-span-12 flex flex-row flex-wrap gap-y-md lg:gap-x-xlg lg:gap-y-sm" aria-labelledby="footer-nav-label">
 			<span id="footer-nav-label" class="sr-only">Navigation complète</span>
-			<ul
-				role="list"
-				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
-			>
+			<ul role="list" class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start">
 				<li class="relative -top-px">
 					<a
 						href="/"
 						class="flex flex-row font-serif text-btn uppercase tracking-md font-700 gap-0 rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700 focus:text-green-700 focus:outline-offset-1"
 						data-transition="navLink"
 					>
-						R<span class="sr-only">omain</span> B<span class="sr-only">
-							reton
-						</span>
+						R<span class="sr-only">omain</span> B<span class="sr-only">reton</span>
 					</a>
 				</li>
 				{
@@ -55,19 +47,11 @@ const currentPath = Astro.url.pathname
 					))
 				}
 			</ul>
-			<ul
-				role="list"
-				class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start"
-			>
+			<ul role="list" class="w-[50%] md:w-[30%] lg:w-auto flex flex-col gap-xsm md:gap-tiny items-start">
 				{
 					nav.socials.map((social) => (
 						<li>
-							<Button
-								attributes={{ target: "_blank" }}
-								href={social.url}
-								variant="link-gray-300"
-								icon="arrow"
-							>
+							<Button attributes={{ target: "_blank" }} href={social.url} variant="link-gray-300" icon="arrow">
 								{social.name}
 							</Button>
 						</li>
@@ -75,50 +59,19 @@ const currentPath = Astro.url.pathname
 				}
 			</ul>
 		</nav>
-		<div
-			class="m-interactive hidden col-span-full lg:col-span-12 md:flex flex-col gap-sm items-start lg:items-end md:mt-xlg lg:mt-0"
-		>
+		<div class="m-interactive hidden col-span-full lg:col-span-12 md:flex flex-col gap-sm items-start lg:items-end md:mt-xlg lg:mt-0">
 			<Text class="md:text-left lg:text-right max-w-[40rem]" variant="bmd"
-				>Dans une optique d’éco-conception et d'accessibilité, le site est
-				allégé par défaut. Et si on re découvrait le site avec un peu de piquant
-				?</Text
+				>Dans une optique d’éco-conception et d'accessibilité, le site est allégé par défaut. Et si on re découvrait le site avec un peu de piquant ?</Text
 			>
-			<Button
-				variant="primary-gray-300"
-				icon="arrow"
-				href=`${currentPath}?interactions=1`
-				attributes={{ "data-prevent": "true" }}>Ajouter des paillettes</Button
-			>
+			<Button variant="primary-gray-300" icon="arrow" href=`${currentPath}?interactions=1` attributes={{ "data-prevent": "true" }}>Ajouter des paillettes</Button>
 		</div>
-		<Text
-			variant="thuge"
-			class="col-span-full mt-lg mb-md md:mt-xlg md:mb-lg lg:mt-giant lg:mb-xlg"
-			>Romain Breton</Text
-		>
-		<div
-			class="col-span-full mb-xlg flex flex-col items-start gap-sm lg:flex-row lg:justify-between lg:items-center"
-		>
-			<p
-				class="m-interactive hidden md:flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start"
-			>
-				<Button
-					variant="primary-gray-300"
-					icon="arrow"
-					href="/experience"
-					attributes={{ target: "_blank" }}
-				>
-					La quête
-				</Button>
-				<span
-					class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse"
-					data-experience="morse"
-				>
-				</span>
+		<Text variant="thuge" class="col-span-full mt-lg mb-md md:mt-xlg md:mb-lg lg:mt-giant lg:mb-xlg">Romain Breton</Text>
+		<div class="col-span-full mb-xlg flex flex-col items-start gap-sm lg:flex-row lg:justify-between lg:items-center">
+			<p class="m-interactive hidden md:flex flex-wrap items-center gap-y-tiny gap-x-sm justify-center lg:justify-start">
+				<Button variant="primary-gray-300" icon="arrow" href="/experience" attributes={{ target: "_blank" }}> La quête </Button>
+				<span class="w-[0.6rem] h-[0.8rem] flex flex-center items-center a-morse" data-experience="morse"></span>
 			</p>
-			<ul
-				role="list"
-				class="flex flex-wrap gap-sm justify-start lg:justify-end"
-			>
+			<ul role="list" class="flex flex-wrap gap-sm justify-start lg:justify-end">
 				{
 					nav.footerSecondary.map((item) => {
 						return item.url ? (
@@ -144,24 +97,16 @@ const currentPath = Astro.url.pathname
 				}
 			</ul>
 		</div>
-		<Text
-			class="col-span-full md:text-center max-w-[50rem] md:justify-self-center"
-			variant="tag"
-			>Ce site a été conçu dans un but de limiter son impact sur
-			l'environnement.<br />Voir le calcul de <a
+		<Text class="col-span-full md:text-center max-w-[50rem] md:justify-self-center" variant="tag"
+			>Ce site a été conçu dans un but de limiter son impact sur l'environnement.<br />Voir le calcul de <a
 				href="https://www.websitecarbon.com/website/romain-breton-com/"
 				class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2"
 				target="_blank"
 			>
 				Website carbon
-			</a> et <a
-				href="https://www.ecoindex.fr/resultat/?id=66645cb9-ac7d-44ed-98ca-32c4ae0077ed"
-				class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2"
-				target="_blank"
-			>
+			</a> et <a href="https://www.ecoindex.fr/resultat/?id=60c59157-ed60-4280-93c4-b9322d720055" class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2" target="_blank">
 				Ecoindex
-			</a><br /><br />Le site est hébergé par O2 Switch, un hébergeur français
-			avec des <a
+			</a><br /><br />Le site est hébergé par O2 Switch, un hébergeur français avec des <a
 				href="https://www.o2switch.fr/green/"
 				class="underline focus:outline-2 focus:outline-gray-300 focus:outline-offset-2"
 				target="_blank"

@@ -16,27 +16,13 @@ const { title = "", photo = false } = Astro.props
 
 <header class="o-heroCanvas" data-module-background="bg">
 	<Grid Tag="div" class="pt-[43rem] pb-[2rem] items-end">
-		<Text
-			variant="txlg"
-			Tag="h1"
-			class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2"
-		>
+		<Text variant="txlg" Tag="h1" class="col-span-full mb-sm md:mb-0 md:mt-sm md:order-2">
 			{
 				photo ? (
 					<span class="relative">
 						{title}
-						<button
-							class="w-[7rem] lg:w-[9rem] absolute bottom-full left-xsm transform md:translate-y-[20%] md:translate-x-[10%] rotate-4 cursor-pointer"
-							data-module-fireworks="fireworks"
-						>
-							<Image
-								src={Avatar}
-								alt="Photo de profil de Romain Breton"
-								class="w-full"
-								sizes="90px"
-								widths={[140]}
-								quality="100"
-							/>
+						<button class="w-[7rem] lg:w-[9rem] absolute bottom-full left-xsm transform md:translate-y-[20%] md:translate-x-[10%] rotate-4 cursor-pointer" data-module-fireworks="fireworks">
+							<Image src={Avatar} alt="Photo de profil de Romain Breton" class="w-full" sizes="90px" widths={[140]} quality="100" />
 						</button>
 					</span>
 				) : (

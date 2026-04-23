@@ -1,7 +1,6 @@
 ---
 export const variants = {
-	thuge:
-		"text-thuge font-serif tracking-md md:text-txhuge md:whitespace-nowrap",
+	thuge: "text-thuge font-serif tracking-md md:text-txhuge md:whitespace-nowrap",
 	txlg: "text-[6rem] leading-[1] md:text-txlgm lg:text-txlg font-serif tracking-md",
 	tlg: "text-tmd md:text-tlg font-serif tracking-md",
 	tmd: "text-tsm md:text-tmd font-serif tracking-md",
@@ -22,12 +21,7 @@ export interface Props {
 	class?: string
 }
 
-const {
-	Tag = "p",
-	variant = "pmd",
-	attributes = {},
-	class: className,
-} = Astro.props
+const { Tag = "p", variant = "pmd", attributes = {}, class: className } = Astro.props
 ---
 
 <Tag class:list={[variants[variant], className]} {...attributes}><slot /></Tag>

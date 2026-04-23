@@ -14,23 +14,12 @@ export interface Props {
 	year: number
 }
 
-const {
-	id = "",
-	title = "",
-	tags = [],
-	description = "",
-	role = "",
-	credits = [],
-	url = "",
-	year = 0,
-} = Astro.props
+const { id = "", title = "", tags = [], description = "", role = "", credits = [], url = "", year = 0 } = Astro.props
 ---
 
 <article>
 	<header id={id} class="p-md bg-gray-900 text-gray-300 rounded-md">
-		<div
-			class="mb-md md:mb-xsm flex flex-col md:flex-row items-start md:items-center justify-between gap-tiny"
-		>
+		<div class="mb-md md:mb-xsm flex flex-col md:flex-row items-start md:items-center justify-between gap-tiny">
 			<div class="flex flex-wrap gap-tiny shrink-0">
 				{
 					tags.map((tag) => (
@@ -49,9 +38,7 @@ const {
 			{title}
 		</Text>
 		<Text variant="pmd" class="mb-giant">{description}</Text>
-		<div
-			class="flex flex-col items-start md:flex-row md:items-end justify-between gap-sm md:gap-md"
-		>
+		<div class="flex flex-col items-start md:flex-row md:items-end justify-between gap-sm md:gap-md">
 			<Text variant="bmd" class="italic">
 				<span class="font-700">Rôle :</span>
 				{role}
@@ -72,13 +59,7 @@ const {
 			</Text>
 			{
 				url && (
-					<Button
-						variant="primary-gray-300"
-						attributes={{ target: "_blank" }}
-						icon="arrow"
-						href={url}
-						class="shrink-0"
-					>
+					<Button variant="primary-gray-300" attributes={{ target: "_blank" }} icon="arrow" href={url} class="shrink-0">
 						Voir le projet
 					</Button>
 				)

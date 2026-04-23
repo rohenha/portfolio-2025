@@ -1,41 +1,30 @@
 ---
-import { Picture } from 'astro:assets'
+import { Picture } from "astro:assets"
 
 export interface Props {
-  src: ImageMetadata
-  alt: string
-  class?: string
-  sizes?: string
-  widths?: number[]
-  formats?: string[]
-  quality?: number
-  loading?: 'lazy' | 'eager'
-  densities?: number[]
+	src: ImageMetadata
+	alt: string
+	class?: string
+	sizes?: string
+	widths?: number[]
+	formats?: string[]
+	quality?: number
+	loading?: "lazy" | "eager"
+	densities?: number[]
 }
 
 const {
-  src,
-  alt,
-  class: className = '',
-  sizes = '(max-width: 768px) 95vw, (max-width: 1024px) 55vw, 647px',
-  widths = [400, 640, 768, 1024],
-  formats = ['avif', 'webp'],
-  quality = 80,
-  loading = 'lazy',
-  densities = [1], // Pas de haute densité par défaut
-  ...props
+	src,
+	alt,
+	class: className = "",
+	sizes = "(max-width: 768px) 95vw, (max-width: 1024px) 55vw, 647px",
+	widths = [400, 640, 768, 1024],
+	formats = ["avif", "webp"],
+	quality = 80,
+	loading = "lazy",
+	densities = [1], // Pas de haute densité par défaut
+	...props
 } = Astro.props
 ---
 
-<Picture
-  src={src}
-  alt={alt}
-  class={className}
-  sizes={sizes}
-  widths={widths}
-  formats={formats}
-  quality={quality}
-  loading={loading}
-  densities={densities}
-  {...props}
-/>
+<Picture src={src} alt={alt} class={className} sizes={sizes} widths={widths} formats={formats} quality={quality} loading={loading} densities={densities} {...props} />

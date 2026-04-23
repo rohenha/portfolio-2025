@@ -32,10 +32,7 @@ const relativePost = posts.find((p) => p.id === relative)
 
 <DefaultLayout explorer={false}>
 	<Grid class="py-giant" attributes={{ "data-transition": "container" }}>
-		<main
-			id="main"
-			class="m-markdown col-span-full md:col-end-16 lg:col-start-3 lg:col-end-15 mb-xlg lg:mb-0"
-		>
+		<main id="main" class="m-markdown col-span-full md:col-end-16 lg:col-start-3 lg:col-end-15 mb-xlg lg:mb-0">
 			<HeroArticle title={title} date={date} tags={tags} />
 			<Content />
 			<!-- <nav>
@@ -48,9 +45,7 @@ const relativePost = posts.find((p) => p.id === relative)
 				</Button>
 			</nav> -->
 		</main>
-		<aside
-			class="col-span-full md:col-end-18 lg:col-start-17 lg:col-end-24 xlg:col-end-23 md:sticky md:top-xxlg self-start"
-		>
+		<aside class="col-span-full md:col-end-18 lg:col-start-17 lg:col-end-24 xlg:col-end-23 md:sticky md:top-xxlg self-start">
 			{
 				relativePost && (
 					<>
@@ -59,10 +54,7 @@ const relativePost = posts.find((p) => p.id === relative)
 						</Text>
 						<section class="bg-gray-500 p-md rounded-md">
 							<Text Tag="h3" variant="tsm" class="mb-xsm">
-								<a
-									href={relativePost.id}
-									class="rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700"
-								>
+								<a href={relativePost.id} class="rounded-sm hover:text-green-700 focus:outline-2 focus:outline-green-700">
 									{relativePost.data.title}
 								</a>
 							</Text>

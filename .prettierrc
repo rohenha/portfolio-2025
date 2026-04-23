@@ -14,10 +14,10 @@
 			"files": "*.astro",
 			"options": {
 				"parser": "astro",
-				"printWidth": 80,
+				"printWidth": 200,
 				"bracketSameLine": false,
 				"htmlWhitespaceSensitivity": "ignore",
-				"proseWrap": "always",
+				"proseWrap": "never",
 				"tabWidth": 2
 			}
 		}

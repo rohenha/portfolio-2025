@@ -53,17 +53,10 @@ const {
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, maximum-scale=5"
-		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
 		<meta name="language" content={locale} />
 		<meta name="robots" content={robots} />
-		{
-			googleVerification && (
-				<meta name="google-site-verification" content={googleVerification} />
-			)
-		}
+		{googleVerification && <meta name="google-site-verification" content={googleVerification} />}
 		<!-- data -->
 		<title>{seoTitle + metadata.suffixTitle}</title>
 		<meta name="description" content={seoDescription} />
@@ -91,19 +84,10 @@ const {
 		}
 
 		<!-- Icon -->
-		<link
-			rel="icon"
-			type="image/png"
-			href="/favicon/favicon-96x96.png"
-			sizes="96x96"
-		/>
+		<link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="/favicon/apple-touch-icon.png"
-		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="Romain Breton" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<!-- Others -->
@@ -112,11 +96,7 @@ const {
 		<meta name="theme-color" content={colorMeta} />
 		<meta name="generator" content={Astro.generator} />
 	</head>
-	<body
-		data-module-transition="transition"
-		data-module-terminal="terminal"
-		data-module-popin-intro="popinIntro"
-	>
+	<body data-module-transition="transition" data-module-terminal="terminal" data-module-popin-intro="popinIntro">
 		<AccessibilityButton href="#main" text="Voir le contenu principal" />
 		<AccessibilityButton href="#footer" text="Accéder au footer" />
 		<Header explorer={explorer} />
@@ -124,40 +104,24 @@ const {
 		<Button class="a-btnTop fixed bottom-md right-md" href="#main" icon="arrow">
 			<span class="sr-only">Retour en haut</span>
 		</Button>
-		<Button
-			class="hidden absolute top-md left-md z-12"
-			variant="link-gray-900"
-			attributes={{ "data-terminal": "openButton" }}
-		>
-			Aide
-		</Button>
+		<Button class="hidden absolute top-md left-md z-12" variant="link-gray-900" attributes={{ "data-terminal": "openButton" }}> Aide </Button>
 		<Prefooter />
 		<Footer />
-		<div
-			class="a-tile bg-gray-900 fixed top-0 left-0 w-full h-full"
-			data-transition="container"
-		>
-		</div>
-		<!-- <Message /> -->
-		<!-- <BackInTime /> -->
+		<div class="a-tile bg-gray-900 fixed top-0 left-0 w-full h-full" data-transition="container"></div>
 		<noscript>
 			<style type="text/css">
 				.t-initTemplate .o-header {
 					opacity: 1;
 				}
-
 				.m-interactive {
 					visibility: hidden;
 				}
-
 				.t-initTemplate .o-progress {
 					display: none;
 				}
-
 				.t-initTemplate [data-transition="container"] {
 					opacity: 1;
 				}
-
 				.t-initTemplate [data-transition="container"] ~ *:not(.m-message) {
 					opacity: 1;
 				}

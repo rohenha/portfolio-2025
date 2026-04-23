@@ -31,14 +31,12 @@ export default class Terminal extends Mmodule {
 				"z-10",
 				"bg-[#01123c]",
 				"w-[35rem]",
-				"h-[20rem]",
+				"h-[30rem]",
 				"rounded-md",
 				"text-gray-300",
-				"flex",
 				"flex-col",
 				"flex-nowrap",
-				"opacity-0",
-				"pointer-events-none",
+				"hidden",
 			)
 			parent.innerHTML = `
 				<div class="text-center px-sm py-xsm text-[1rem] tracking-sm shrink-0">user@RomainBreton</div>

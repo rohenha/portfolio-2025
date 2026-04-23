@@ -23,19 +23,11 @@ const { title, ogTitle, seoTitle, seoDescription, ogDescription } = post.data
 const { Content } = await render(post)
 ---
 
-<DefaultLayout
-	explorer={false}
-	ogTitle={ogTitle}
-	seoTitle={seoTitle}
-	seoDescription={seoDescription}
-	ogDescription={ogDescription}
->
+<DefaultLayout explorer={false} ogTitle={ogTitle} seoTitle={seoTitle} seoDescription={seoDescription} ogDescription={ogDescription}>
 	<main id="main" data-transition="container">
 		<HeroAlt title={title} />
 		<Grid class="mb-giant">
-			<div
-				class="m-markdown col-span-full lg:col-start-3 lg:col-end-15 flex flex-col"
-			>
+			<div class="m-markdown col-span-full lg:col-start-3 lg:col-end-15 flex flex-col">
 				<Content />
 			</div>
 		</Grid>

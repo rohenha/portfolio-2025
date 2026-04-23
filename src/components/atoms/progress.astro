@@ -8,13 +8,7 @@ export interface Props {
 const { class: className = "", attributes = {} } = Astro.props
 ---
 
-<svg
-	class:list={[
-		"a-progress w-[1.8rem] h-[1.8rem] bg-gray-900 rounded-full p-[0.3rem]",
-		className,
-	]}
-	{...attributes}
->
+<svg class:list={["a-progress w-[1.8rem] h-[1.8rem] bg-gray-900 rounded-full p-[0.3rem]", className]} {...attributes}>
 	<circle
 		cx="50%"
 		cy="50%"

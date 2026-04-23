@@ -55,7 +55,12 @@ export default class Transition extends Mmodule {
 
 		this.el.addEventListener("click", (e: MouseEvent) => {
 			const target = e.target as HTMLElement
-			const link = target.closest("a")
+			let link: HTMLAnchorElement | null = null
+			if (target.nodeName !== "A") {
+				link = target.closest("a")
+			} else {
+				link = target as HTMLAnchorElement
+			}
 			if (!link) return
 			const href = link.getAttribute("href")
 			if (
@@ -156,44 +161,48 @@ export default class Transition extends Mmodule {
 		fromPath: string,
 		push: boolean = true,
 	) {
-		const response = await fetch(toPath)
-		const data = await response.text()
-		const [container] = this.$("container")
-		const newDoc = new DOMParser().parseFromString(data, "text/html")
-		const newContainer = newDoc.querySelector('[data-transition="container"]')
-		if (!newContainer) {
-			console.error("No container found in the new page")
-			return
-		}
-		if (push) {
-			history.pushState(null, "", toPath)
-		}
-		const params: TransitionParams = {
-			from: { url: fromPath, container, title: document.title },
-			to: {
-				url: toPath,
-				container: newContainer as HTMLElement,
-				title: newDoc.title,
-			},
-		}
+		try {
+			const response = await fetch(toPath)
+			if (!response.ok) {
+				throw new Error(`Failed to load page: ${response.statusText}`)
+			}
+			const data = await response.text()
+			const [container] = this.$("container")
+			const newDoc = new DOMParser().parseFromString(data, "text/html")
+			const newContainer = newDoc.querySelector('[data-transition="container"]')
+			if (!newContainer) {
+				throw new Error(`No container found in the new page`)
+			}
+			if (push) {
+				history.pushState(null, "", toPath)
+			}
+			const params: TransitionParams = {
+				from: { url: fromPath, container, title: document.title },
+				to: {
+					url: toPath,
+					container: newContainer as HTMLElement,
+					title: newDoc.title,
+				},
+			}
 
-		if (isReduced()) {
+			if (isReduced()) {
+				this.beforeLeave(params)
+				await this.afterLeave(params)
+				this.afterEnter(params)
+				this.loading = false
+				return
+			}
+
 			this.beforeLeave(params)
+			newContainer.classList.add("-animating")
+			await this.leave(params)
 			await this.afterLeave(params)
+			await this.enter(params)
 			this.afterEnter(params)
 			this.loading = false
-			return
+		} catch (error) {
+			this.loading = false
 		}
-
-		this.beforeLeave(params)
-		newContainer.classList.add("-animating")
-		await this.leave(params)
-		await this.afterLeave(params)
-		await this.enter(params)
-		this.afterEnter(params)
-		this.loading = false
-		// 	},
-		// })
 	}
 
 	beforeLeave(params: TransitionParams) {}

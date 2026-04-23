@@ -13,15 +13,7 @@ export interface Props {
 	class?: string
 }
 
-const {
-	total,
-	currentUrl,
-	prevUrl,
-	baseUrl,
-	nextUrl,
-	class: className,
-} = Astro.props
-
+const { total, currentUrl, prevUrl, baseUrl, nextUrl, class: className } = Astro.props
 ---
 
 <nav class:list={["", className]} aria-labelledby="pagination-label">

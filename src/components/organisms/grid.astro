@@ -8,10 +8,4 @@ export interface Props {
 const { Tag = "div", class: className, attributes } = Astro.props
 ---
 
-<Tag
-	class:list={[
-		"px-sm md:px-lg grid grid-cols-24 sm:gap-x-sm max-w-[140rem] mx-auto @container",
-		className,
-	]}
-	{...attributes}><slot /></Tag
->
+<Tag class:list={["px-sm md:px-lg grid grid-cols-24 sm:gap-x-sm max-w-[140rem] mx-auto @container", className]} {...attributes}><slot /></Tag>

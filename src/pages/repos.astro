@@ -21,33 +21,13 @@ const repos = await getCollection("repos")
 	<main id="main" data-transition="container">
 		<HeroAlt title="Mes contributions open source">
 			<Text variant="pmd" class=""
-				>À côté de mes projets, j'essaie de partager certains de mes outils afin
-				de participer à aider d'autres développeurs et ainsi rendre ma part au
-				monde de l'open source
+				>À côté de mes projets, j'essaie de partager certains de mes outils afin de participer à aider d'autres développeurs et ainsi rendre ma part au monde de l'open source
 			</Text>
 		</HeroAlt>
 		<Grid class="mb-giant">
-			<section
-				class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-sm"
-			>
-				{
-					repos.map((item) => (
-						<ReposListItem
-							title={item.data.name}
-							url={item.data.url}
-							tags={item.data.tags}
-							description={item.data.description}
-						/>
-					))
-				}
-				<Button
-					class="mt-md self-start"
-					href="https://www.github.com/rohenha"
-					icon="arrow"
-					attributes={{ target: "_blank" }}
-				>
-					Voir mon github
-				</Button>
+			<section class="col-span-full lg:col-start-3 lg:col-end-15 flex flex-col gap-y-sm">
+				{repos.map((item) => <ReposListItem title={item.data.name} url={item.data.url} tags={item.data.tags} description={item.data.description} />)}
+				<Button class="mt-md self-start" href="https://www.github.com/rohenha" icon="arrow" attributes={{ target: "_blank" }}> Voir mon github </Button>
 			</section>
 		</Grid>
 	</main>

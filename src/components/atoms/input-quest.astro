@@ -39,9 +39,7 @@ const { name = "", id = "", label = "" } = Astro.props
 </style>
 
 <script>
-	const inputQuests = document.querySelectorAll(
-		".js-inputQuest",
-	) as NodeListOf<HTMLInputElement>
+	const inputQuests = document.querySelectorAll(".js-inputQuest") as NodeListOf<HTMLInputElement>
 	const submitButton = document.querySelector(".js-submitQuest") as HTMLElement
 	if (!inputQuests.length || !submitButton) {
 		throw new Error("Input quests or submit button not found")
@@ -50,8 +48,7 @@ const { name = "", id = "", label = "" } = Astro.props
 		input.addEventListener("keydown", (e) => {
 			if (e.key === "Backspace") {
 				e.preventDefault()
-				const prevInput =
-					input.parentElement?.previousElementSibling?.querySelector("input")
+				const prevInput = input.parentElement?.previousElementSibling?.querySelector("input")
 				if (input.value !== "") {
 					input.value = ""
 				}
@@ -67,8 +64,7 @@ const { name = "", id = "", label = "" } = Astro.props
 			e.preventDefault()
 			input.value = e.key.toUpperCase()
 
-			const nextInput =
-				input.parentElement?.nextElementSibling?.querySelector("input")
+			const nextInput = input.parentElement?.nextElementSibling?.querySelector("input")
 			if (nextInput) {
 				;(nextInput as HTMLInputElement).focus()
 			} else {

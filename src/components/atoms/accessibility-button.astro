@@ -6,9 +6,6 @@ export interface Props {
 const { text = "Voir le contenu principal", href = "#main" } = Astro.props
 ---
 
-<a
-	href={href}
-	class="sr-only focusable bg-gray-900 text-gray-300 text-btn tracking-sm focus:outline-2 focus:outline-gray-900 focus:outline-offset-2 rounded-sm px-[1.2rem] py-[0.7rem]"
->
+<a href={href} class="sr-only focusable bg-gray-900 text-gray-300 text-btn tracking-sm focus:outline-2 focus:outline-gray-900 focus:outline-offset-2 rounded-sm px-[1.2rem] py-[0.7rem]">
 	{text}
 </a>

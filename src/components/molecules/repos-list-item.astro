@@ -21,9 +21,7 @@ const { title = "", tags = [], url = "", description } = Astro.props
 		>
 			{title}
 		</Text>
-		<hr
-			class="w-full border-gray-400 mt-[0.2rem] mb-[0.2rem] md:mt-[0.8rem] md:mb-0"
-		/>
+		<hr class="w-full border-gray-400 mt-[0.2rem] mb-[0.2rem] md:mt-[0.8rem] md:mb-0" />
 		{
 			tags.map((tag) => (
 				<Tag variant="gray-500" class="shrink-0" tag="p">

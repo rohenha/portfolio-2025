@@ -18,16 +18,10 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 ---
 
 <header class="o-hero o-heroCanvas relative" data-module-background="bg">
-	<Grid
-		Tag="div"
-		class="o-hero__row pt-[43rem] pb-[2rem] items-end relative z-index-1"
-	>
+	<Grid Tag="div" class="o-hero__row pt-[30rem] lg:pt-[43rem] pb-[2rem] items-end relative z-index-1">
 		{
 			suptitle || description ? (
-				<div
-					class="o-hero__content col-span-full md:col-span-16"
-					data-transition="introHero:enter"
-				>
+				<div class="o-hero__content col-span-full md:col-span-16" data-transition="introHero:enter">
 					{suptitle ? (
 						<Text variant="tsm" class="mb-tiny">
 							{suptitle}
@@ -43,12 +37,7 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 		}
 		{
 			link ? (
-				<Button
-					class="o-hero__content col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1"
-					icon="arrow"
-					href={link.url}
-					attributes={link.attributes}
-				>
+				<Button class="o-hero__content col-span-full md:col-span-8 justify-self-start md:justify-self-end order-3 md:order-2 relative z-1" icon="arrow" href={link.url} attributes={link.attributes}>
 					{link.label}
 				</Button>
 			) : null
@@ -63,11 +52,7 @@ const { title = "", description = "", suptitle = "", link = null } = Astro.props
 		>
 			{
 				title.split("").map((letter, index) => (
-					<span
-						data-hero="letter"
-						class={letter === " " ? " -space" : ""}
-						style={`--delay:${index * 0.05 + 0.1}s;`}
-					>
+					<span data-hero="letter" class={letter === " " ? " -space" : ""} style={`--delay:${index * 0.05 + 0.1}s;`}>
 						{letter === "i" && (
 							<button
 								class="o-hero__btn absolute hidden lg:block top-0 left-[20%] w-[80%] h-[20%] focus:outline-2 focus:outline-gray-300 focus:outline-offset-2 z-2 cursor-pointer"

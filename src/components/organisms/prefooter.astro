@@ -6,24 +6,13 @@ import Text from "@components/atoms/text.astro"
 import Button from "@components/atoms/button.astro"
 ---
 
-<section
-	id="footer"
-	class="o-prefooter px-sm md:px-lg py-xxlg border-t border-current transition-fade"
->
+<section id="footer" class="o-prefooter px-sm md:px-lg py-xxlg border-t border-current transition-fade">
 	<Text variant="tlg" class="text-center max-w-[40rem] mx-auto mb-lg" Tag="h2">
 		Envie d'en<br />savoir plus ?
 	</Text>
-	<div
-		class="flex flex-col lg:flex-row items-center gap-y-sm lg:gap-x-sm justify-center"
-	>
-		<Button
-			variant="primary-gray-900"
-			icon="arrow"
-			href={`mailto:${contact.email}`}>Discutons ensemble</Button
-		>
+	<div class="flex flex-col lg:flex-row items-center gap-y-sm lg:gap-x-sm justify-center">
+		<Button variant="primary-gray-900" icon="arrow" href={`mailto:${contact.email}`}>Discutons ensemble</Button>
 		<Text class="bmd">ou</Text>
-		<Button variant="secondary-gray-900" icon="arrow" href="/a-propos"
-			>en apprendre plus sur moi</Button
-		>
+		<Button variant="secondary-gray-900" icon="arrow" href="/a-propos">en apprendre plus sur moi</Button>
 	</div>
 </section>

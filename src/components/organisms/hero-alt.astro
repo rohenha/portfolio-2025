@@ -11,19 +11,10 @@ const hasChildren = Astro.slots.default !== undefined
 ---
 
 <Grid Tag="header" class="pt-giant mb-xlg items-end">
-	<Text
-		variant="tlg"
-		Tag="h1"
-		class:list={[
-			"col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-16",
-			hasChildren ? "mb-lg" : "mb-0",
-		]}
-	>
+	<Text variant="tlg" Tag="h1" class:list={["col-span-full md:col-start-1 md:col-end-14 lg:col-start-3 lg:col-end-16", hasChildren ? "mb-lg" : "mb-0"]}>
 		{title}
 	</Text>
-	<div
-		class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-15"
-	>
+	<div class="grid grid-col-1 gap-md col-span-full md:col-start-2 md:col-end-16 lg:col-start-4 lg:col-end-15">
 		<slot />
 	</div>
 </Grid>

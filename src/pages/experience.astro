@@ -18,58 +18,27 @@ import InputQuest from "@components/atoms/input-quest.astro"
 >
 	<main id="main">
 		<HeroAlt title="La quête">
-			<Text variant="pmd" class="">
-				Te voilà ici. Une boucle temporelle de 5 minutes a été mise en place
-				pour te mettre au défi. Impossible à désactiver naturellement.
-			</Text>
+			<Text variant="pmd" class=""> Te voilà ici. Une boucle temporelle de 5 minutes a été mise en place pour te mettre au défi. Impossible à désactiver naturellement. </Text>
+			<Text variant="pmd" class="">7 codes ont été dispersés sur le site. Les trouver te permettra de découvrir la combinaison qui stoppera la boucle. </Text>
 			<Text variant="pmd" class=""
-				>7 codes ont été dispersés sur le site. Les trouver te permettra de
-				découvrir la combinaison qui stoppera la boucle.
+				>Parcours le site, à la recherche des codes. Certains peuvent apparaître à un moment précis de la boucle. Sois vigilant, regarde bien les détails. Sur le site, tu trouveras un terminal d'aide
+				qui pourra te donner des indices.
 			</Text>
-			<Text variant="pmd" class=""
-				>Parcours le site, à la recherche des codes. Certains peuvent apparaître
-				à un moment précis de la boucle. Sois vigilant, regarde bien les
-				détails. Sur le site, tu trouveras un terminal d'aide qui pourra te
-				donner des indices.
-			</Text>
-			<Text variant="pmd" class=""
-				>Voici quelques indices pour t’aider dans ta quête :
-			</Text>
+			<Text variant="pmd" class="">Voici quelques indices pour t’aider dans ta quête : </Text>
 			<ul class="list-disc list-inside py-md pl-md flex flex-col gap-tiny">
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le premier est plus faible que le deuxième.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le deuxième est le plus puissant de la suite.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le troisième est le plus faible de la suite.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le quatrième est le deuxième plus grand de la suite.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le cinquième signal vaut 5.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le quatrième domine le cinquième, qui domine le sixième.</Text
-				>
-				<Text Tag="li" variant="bmd" class="italic"
-					>Le sixième est le plus petit des trois derniers.</Text
-				>
+				<Text Tag="li" variant="bmd" class="italic">Le premier est plus faible que le deuxième.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le deuxième est le plus puissant de la suite.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le troisième est le plus faible de la suite.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le quatrième est le deuxième plus grand de la suite.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le cinquième signal vaut 5.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le quatrième domine le cinquième, qui domine le sixième.</Text>
+				<Text Tag="li" variant="bmd" class="italic">Le sixième est le plus petit des trois derniers.</Text>
 				<Text Tag="li" variant="bmd" class="italic">Le septième est pair.</Text>
 			</ul>
-			<Text variant="pmd" class="">
-				N'oublie pas que tu es sur le portfolio d'un développeur 😎. Bonne
-				chance, tu en auras besoin!</Text
-			>
+			<Text variant="pmd" class=""> N'oublie pas que tu es sur le portfolio d'un développeur 😎. Bonne chance, tu en auras besoin!</Text>
 		</HeroAlt>
 		<Grid class="mb-giant">
-			<form
-				action="#"
-				method="POST"
-				class="col-span-full lg:col-start-4 lg:col-end-15 flex flex-col gap-y-sm js-form"
-			>
+			<form action="#" method="POST" class="col-span-full lg:col-start-4 lg:col-end-15 flex flex-col gap-y-sm js-form">
 				<div class="flex items-center">
 					<InputQuest name="i1" label="lettre 1" id="i1" />
 					<InputQuest name="i2" label="lettre 2" id="i2" />
@@ -79,22 +48,14 @@ import InputQuest from "@components/atoms/input-quest.astro"
 					<InputQuest name="i6" label="lettre 6" id="i6" />
 					<InputQuest name="i7" label="lettre 7" id="i7" />
 				</div>
-				<Button
-					class="mt-md self-start js-submitQuest"
-					icon="arrow"
-					attributes={{}}
-					variant="primary-gray-300"
-				>
-					Tester le code
-				</Button>
+				<Button class="mt-md self-start js-submitQuest" icon="arrow" attributes={{}} variant="primary-gray-300"> Tester le code </Button>
 			</form>
 		</Grid>
 	</main>
 </SimpleLayout>
 
 <script>
-	const CODE_HASH =
-		"d2f29c4528181c2aef2e24f21023a746349a49f624e7885680e6b6d553333681"
+	const CODE_HASH = "d2f29c4528181c2aef2e24f21023a746349a49f624e7885680e6b6d553333681"
 
 	// Séquence de touches encodée en base64
 	const COMBO_ENCODED: string[] = [
@@ -124,9 +85,7 @@ import InputQuest from "@components/atoms/input-quest.astro"
 	}
 
 	const form = document.querySelector(".js-form") as HTMLFormElement
-	const buttonSubmit = form.querySelector(
-		".js-submitQuest",
-	) as HTMLButtonElement
+	const buttonSubmit = form.querySelector(".js-submitQuest") as HTMLButtonElement
 	let timeout: ReturnType<typeof setTimeout> | undefined
 
 	form.addEventListener("submit", async (e) => {
@@ -137,25 +96,13 @@ import InputQuest from "@components/atoms/input-quest.astro"
 		const hash = await hashCode(code)
 		if (hash === CODE_HASH) {
 			const content = document.createElement("div")
-			content.classList.add(
-				"bg-gray-300",
-				"text-gray-900",
-				"rounded-md",
-				"p-md",
-				"col-span-full",
-				"lg:col-start-4",
-				"lg:col-end-19",
-				"mt-md",
-			)
+			content.classList.add("bg-gray-300", "text-gray-900", "rounded-md", "p-md", "col-span-full", "lg:col-start-4", "lg:col-end-19", "mt-md")
 			content.innerHTML = `
 				<p class="text-tag tracking-md mb-sm">Code déverrouillé.<br />Pour désactiver la boucle temporelle réalisez
 				l’enchainement suivant :</p>
 				<div class="flex flex-row flex-wrap gap-xsm">
 					${decodeCombo(COMBO_ENCODED)
-						.map(
-							(key: string) =>
-								`<span class=\"bg-gray-900 text-gray-300 rounded-sm text-btn tracking-sm py-[0.4rem] px-[0.8rem]\">${key}</span>`,
-						)
+						.map((key: string) => `<span class=\"bg-gray-900 text-gray-300 rounded-sm text-btn tracking-sm py-[0.4rem] px-[0.8rem]\">${key}</span>`)
 						.join("")}
 				</div>
 			`
