@@ -11,6 +11,7 @@
 @use "atoms/tree-item";
 @use "atoms/link";
 @use "atoms/hidden";
+@use "atoms/accessibility" as atomsAccessibility;
 // Molecules
 @use "molecules/tree";
 @use "molecules/repos-list-item";
