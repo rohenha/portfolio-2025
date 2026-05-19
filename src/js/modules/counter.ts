@@ -1,26 +1,18 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 
 export default class Counter extends Mmodule {
-	private interval: ReturnType<typeof setInterval> | null
-	constructor(params: any) {
+	private interval: ReturnType<typeof setInterval> | null = null
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.interval = null
-		this.states = {
-			number: 0,
-		}
+		this.states = { number: 0 }
 	}
 
 	onMount() {
-		this.emit("plugins:observer:on", {
-			el: this.el,
-			key: `${this.moduleKey}`,
-		})
-		console.log("Counter mounted")
+		this.observe(true)
 	}
 
-	onPageUpdate() {
-		console.log("Counter updated")
-	}
+	onPageUpdate() {}
 
 	onUpdateView(state: boolean) {
 		if (state) {
@@ -40,13 +32,11 @@ export default class Counter extends Mmodule {
 	}
 
 	onRender(text: HTMLElement) {
-		console.log(`Counter rendered: ${this.states.number}`)
 		text.textContent = `Counter: ${this.states.number}`
 	}
 
 	onUnMount(): void {
-		console.log("Counter unmounted")
-		this.emit("plugins:observer:off", this.el)
+		this.observe(false)
 	}
 
 	test() {

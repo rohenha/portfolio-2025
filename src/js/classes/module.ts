@@ -1,5 +1,6 @@
 import { debounce } from "@js/utils/tools"
 import type EventBus from "@js/classes/event-bus"
+import EventEmitter from "@js/classes/event-emitter"
 
 export interface ModuleConstructorParams {
 	el: HTMLElement
@@ -8,34 +9,25 @@ export interface ModuleConstructorParams {
 	bus: EventBus
 }
 
-export default class Mmodule {
+export default class Mmodule extends EventEmitter {
 	public el: HTMLElement
 	public id: string
 	public dataName: string
 	public moduleKey: string
 	protected visible: boolean
 	protected states: Record<string, any>
-	protected bus: EventBus
-	protected busEvents: Map<string, () => void>
-	protected _busMap: Record<string, string>
-	protected busMap: Record<string, string>;
-
-	[key: string]: any
 
 	constructor({ el, id, dataName, bus }: ModuleConstructorParams) {
+		super(bus)
 		this.el = el
 		this.dataName = dataName
 		this.id = id
 		this.moduleKey = `${dataName}:${id}`
-		// this.moduleKey = `${this.constructor.name}:${id}`
 		this.visible = false
-		this.bus = bus
-		this.busEvents = new Map()
 		this._busMap = {
-			"app:onUpdate": "onUpdate",
+			"app:onUpdate": "onPageUpdate",
 			call: "call",
 		}
-		this.busMap = {}
 		this.states = {}
 	}
 
@@ -71,39 +63,8 @@ export default class Mmodule {
 	 */
 	onUnMount() {}
 
-	on(event: string, handler: (payload?: any) => void) {
-		const off = this.bus.on(event, handler)
-		this.busEvents.set(event, off)
-	}
-
-	emit(event: string, payload?: any) {
-		return this.bus.emit(event, payload)
-	}
-
-	emitAsync(event: string, payload?: any): Promise<any[]> {
-		return this.bus.emitAsync(event, payload)
-	}
-
-	off(event: string) {
-		const eventHandler = this.busEvents.get(event)
-		if (!eventHandler) {
-			return
-		}
-		eventHandler()
-		this.busEvents.delete(event)
-		this.bus.off(event, eventHandler)
-	}
-
-	initEvents() {
-		const events = Object.assign({}, this._busMap, this.busMap)
-		Object.keys(events).forEach((id) => {
-			const handlerName = events[id]
-			const handler = this[handlerName]
-			if (typeof handler !== "function") {
-				return
-			}
-			this.on(`${id}:${this.moduleKey}`, handler.bind(this))
-		})
+	protected initEvents(): void {
+		super.initEvents((id) => `${id}:${this.moduleKey}`)
 	}
 
 	call({ method, payload }: { method: string; payload?: any }): any {
@@ -112,11 +73,6 @@ export default class Mmodule {
 			return
 		}
 		return this[method](payload)
-	}
-
-	removeEvents() {
-		this.busEvents.forEach((off) => off())
-		this.busEvents = new Map()
 	}
 
 	/**
@@ -135,11 +91,11 @@ export default class Mmodule {
 		this.onUpdateView(state)
 	}
 
-	onUpdateView(state: boolean) {}
+	onUpdateView(_state: boolean) {}
 	/**
 	 * @description This method is called when the window is resized. You can implement this method to adjust the layout, recalculate dimensions, etc. Make sure to debounce any expensive operations to avoid performance issues.
 	 */
-	onRender(params?: any): void {}
+	onRender(_params?: any): void {}
 
 	/**
 	 * @description This method is called to render the module. You can call this method to re-render the module
@@ -188,7 +144,7 @@ export default class Mmodule {
 	/**
 	 * @description This method is called whenever a reactive state property is updated. You can implement this method to perform side effects, trigger additional renders, etc. The library will automatically debounce calls to this method to avoid performance issues.
 	 */
-	onWatch<T extends Record<string, any>>(newValue: T, oldValue: T) {}
+	onWatch<T extends Record<string, any>>(_newValue: T): void {}
 
 	/**
 	 * @description Create a reactive state object. When any property of the state is updated, the module will automatically re-render.
@@ -201,9 +157,8 @@ export default class Mmodule {
 		const debouncedWatch = debounce(this.onWatch.bind(this), 50)
 		return new Proxy(initialState, {
 			set: (target, prop, value) => {
-				const oldTarget = { ...initialState }
 				target[prop as keyof T] = value
-				debouncedWatch(target, oldTarget)
+				debouncedWatch(target)
 				return true
 			},
 		})

@@ -1,19 +1,21 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 import { isReduced, isMobile } from "@js/utils/tools"
 
 export default class Fireworks extends Mmodule {
+	protected busMap = {
+		"plugins:resizer:resize": "onResize",
+	}
+
 	private canvas!: HTMLCanvasElement
 	private imageUrl: string
 	private image: HTMLImageElement | null = null
 	private sparks: any[] = []
-	private sparksCount: number = 70
-	private sparkWidth: number = 70
-	private speed: number = 0.5
-	constructor(params: any) {
+	private readonly sparksCount: number = 70
+	private readonly sparkWidth: number = 70
+	private readonly speed: number = 0.5
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.busMap = {
-			"plugins:resizer:resize": "onResize",
-		}
 		const imgEl = this.el.querySelector("img")
 		this.imageUrl = imgEl ? imgEl.getAttribute("srcset") || "" : ""
 		const imgArray = this.imageUrl.split(" ")

@@ -1,15 +1,19 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 import { throttle } from "@js/utils/tools"
-export default class Hidden extends Mmodule {
-	constructor(params: any) {
+
+export default class Projects extends Mmodule {
+	protected busMap = {
+		"plugins:resizer:resize": "onResize",
+	}
+
+	private range: [number, number] = [0, 0]
+	private index: number = 0
+	private items: HTMLElement[] = []
+	private readonly onScroll: () => void
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.busMap = {
-			"plugins:resizer:resize": "onResize",
-		}
-		this.range = [0, 0]
-		this.index = 0
-		this.active = false
-		this.onScroll = throttle(this.onScroll.bind(this), 100)
+		this.onScroll = throttle(this._onScroll.bind(this), 100)
 	}
 
 	onMount() {
@@ -19,7 +23,7 @@ export default class Hidden extends Mmodule {
 		this.items = this.$("item", this.el.parentElement as HTMLElement)
 	}
 
-	onScroll() {
+	private _onScroll() {
 		if (!this.visible) return
 		const progress = Math.min(
 			Math.max(

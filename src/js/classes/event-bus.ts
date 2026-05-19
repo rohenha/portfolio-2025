@@ -3,13 +3,17 @@ type Handler<T = any> = (payload: T) => void
 export default class EventBus {
 	private listeners = new Map<string, Set<Handler>>()
 	private prefixListeners = new Map<string, Set<Handler>>()
+	private prefixCache = new Map<string, string[]>()
 
 	private getPrefixes(event: string): string[] {
+		const cached = this.prefixCache.get(event)
+		if (cached) return cached
 		const parts = event.split(":")
 		const prefixes: string[] = []
 		for (let i = 1; i < parts.length; i += 1) {
 			prefixes.push(parts.slice(0, i).join(":"))
 		}
+		this.prefixCache.set(event, prefixes)
 		return prefixes
 	}
 
@@ -46,24 +50,28 @@ export default class EventBus {
 		})
 	}
 
-	getHandlers(event: string): Handler[] {
-		const handlers = new Set<Handler>()
-		this.listeners.get(event)?.forEach((h) => handlers.add(h))
-		this.prefixListeners.get(event)?.forEach((h) => handlers.add(h))
-		// console.log(`Getting handlers for event "${event}":`, Array.from(handlers))
-		// console.log(this.listeners, this.prefixListeners)
-		return Array.from(handlers)
-	}
-
 	emit<T>(event: string, payload?: T): any[] {
-		return this.getHandlers(event).map((handler) => handler(payload))
+		const exact = this.listeners.get(event)
+		const byPrefix = this.prefixListeners.get(event)
+		if (!exact && !byPrefix) return []
+		const results: any[] = []
+		exact?.forEach((h) => results.push(h(payload)))
+		byPrefix?.forEach((h) => {
+			if (!exact?.has(h)) results.push(h(payload))
+		})
+		return results
 	}
 
 	async emitAsync<T, R = any>(event: string, payload?: T): Promise<R[]> {
-		return Promise.all(
-			this.getHandlers(event).map((handler) =>
-				Promise.resolve(handler(payload) as R),
-			),
-		)
+		const exact = this.listeners.get(event)
+		const byPrefix = this.prefixListeners.get(event)
+		if (!exact && !byPrefix) return []
+		const promises: Promise<R>[] = []
+		exact?.forEach((h) => promises.push(Promise.resolve(h(payload) as R)))
+		byPrefix?.forEach((h) => {
+			if (!exact?.has(h))
+				promises.push(Promise.resolve(h(payload) as R))
+		})
+		return Promise.all(promises)
 	}
 }

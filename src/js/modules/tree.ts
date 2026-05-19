@@ -1,30 +1,24 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 
 export default class Tree extends Mmodule {
-	// private interval: ReturnType<typeof setInterval> | null
-	private last: HTMLElement | null
-	private originalText: string | null
-	private state: boolean
-	private then: number
-	private index: number
-	constructor(params: any) {
-		super(params)
-		this.busMap = {
-			"experience:loop": "resetExperience",
-			"call:initTree": "initTree",
-			"call:resetTree": "resetExperience",
-		}
+	protected busMap = {
+		"experience:loop": "resetExperience",
+		"call:initTree": "initTree",
+		"call:resetTree": "resetExperience",
+	}
 
-		this.then = new Date().getTime()
+	private last: HTMLElement | null = null
+	private originalText: string | null = null
+	private state: boolean = false
+	private then: number = performance.now()
+	private index: number = 0
+	private readonly onMouseEnter = this.toggleHover.bind(this, true)
+	private readonly onMouseLeave = this.toggleHover.bind(this, false)
+
+	constructor(params: ModuleConstructorParams) {
+		super(params)
 		this.interval = 1000 / 10
-		this.index = 0
-		this.last = null
-		this.active = false
-		this.originalText = null
 		this.visible = true
-		this.state = false
-		this.onMouseEnter = this.toggleHover.bind(this, true)
-		this.onMouseLeave = this.toggleHover.bind(this, false)
 	}
 
 	onMount() {
@@ -39,7 +33,7 @@ export default class Tree extends Mmodule {
 	}
 
 	onRender() {
-		const now = new Date().getTime()
+		const now = performance.now()
 		const delta = now - this.then
 		if (!this.last || !this.originalText || delta < this.interval) return
 		this.then = now - (delta % this.interval)
@@ -60,7 +54,7 @@ export default class Tree extends Mmodule {
 		this.cleanAnimation("treehover")
 		this.state = state
 		if (state) {
-			this.then = new Date().getTime()
+			this.then = performance.now()
 			this.animate(
 				"treeanim",
 				() => {

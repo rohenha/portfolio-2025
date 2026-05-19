@@ -13,9 +13,16 @@ export default class ResizePlugin extends ModularPlugin {
 	protected debounceResize: () => void
 	constructor(m: ModulePluginInit) {
 		super(m)
-
 		this.debounceResize = debounce(this.resize.bind(this), 450)
+	}
+
+	onMount(): void {
 		window.addEventListener("resize", this.debounceResize)
+	}
+
+	unmount(): void {
+		window.removeEventListener("resize", this.debounceResize)
+		super.unmount()
 	}
 
 	resize() {

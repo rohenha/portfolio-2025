@@ -26,9 +26,9 @@ new Modular({
 #### Component file
 
 ```js
-import Mmodule from "@js/classes/module"
+import BaseModule from "@js/classes/module"
 
-export default class Scroll extends Mmodule {
+export default class Scroll extends BaseModule {
 	onMount() {
 		console.log("Scroooooooooool")
 	}

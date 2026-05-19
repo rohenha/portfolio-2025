@@ -1,15 +1,16 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 
 export default class Morse extends Mmodule {
-	constructor(params: any) {
+	protected busMap = {
+		"experience:loop": "resetExperience",
+		"call:initMorse": "initMorse",
+		"call:resetMorse": "resetExperience",
+	}
+
+	private active: boolean = false
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.index = 0
-		this.busMap = {
-			"experience:loop": "resetExperience",
-			"call:initMorse": "initMorse",
-			"call:resetMorse": "resetExperience",
-		}
-		this.active = false
 	}
 
 	onMount() {

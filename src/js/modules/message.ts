@@ -1,17 +1,17 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 
 export default class Message extends Mmodule {
-	private onReset: boolean
-	private timeout: ReturnType<typeof setTimeout> | null
-	constructor(params: any) {
+	protected busMap = {
+		"experience:loop": "resetExperience",
+		"website:loaded": "startMessage",
+	}
+
+	private onReset: boolean = true
+	private timeout: ReturnType<typeof setTimeout> | null = null
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.timeout = null
-		this.busMap = {
-			"experience:loop": "resetExperience",
-			"website:loaded": "startMessage",
-		}
 		this.visible = true
-		this.onReset = true
 		this.active = false
 	}
 

@@ -3,9 +3,9 @@
 ## Creation
 
 ```js
-import Mmodule from "@js/classes/module"
+import BaseModule from "@js/classes/module"
 
-export default class CustomComponent extends Mmodule {
+export default class CustomComponent extends BaseModule {
 	onMount() {
 		console.log("Custom module")
 	}

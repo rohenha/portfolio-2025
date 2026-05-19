@@ -12,17 +12,14 @@ export default class ObserverPlugin extends ModularPlugin {
 	public name: string = "observer"
 	protected observer: IntersectionObserver
 	protected elements: Map<Element, string>
+	protected once: Set<string>
 	constructor(m: ModulePluginInit) {
 		super(m)
 		this.elements = new Map()
 		this.once = new Set()
 		this.observer = new IntersectionObserver(
 			this.handleIntersect.bind(this),
-			Object.assign(m.params || {}, {
-				root: null,
-				rootMargin: "0px",
-				threshold: 0,
-			}),
+			{ root: null, rootMargin: "0px", threshold: 0, ...(m.params || {}) },
 		)
 		this.busMap = {
 			"plugins:observer:on": "observe",
@@ -41,8 +38,9 @@ export default class ObserverPlugin extends ModularPlugin {
 	unobserve(el: HTMLElement) {
 		if (!this.elements.has(el) || !el) return
 		this.observer.unobserve(el)
+		const key = this.elements.get(el)!
 		this.elements.delete(el)
-		this.once.delete(el)
+		this.once.delete(key)
 	}
 
 	handleIntersect(
@@ -51,7 +49,7 @@ export default class ObserverPlugin extends ModularPlugin {
 	) {
 		entries.forEach((entry) => {
 			if (!this.elements.has(entry.target)) return
-			const key = this.elements.get(entry.target)
+			const key = this.elements.get(entry.target)!
 			this.bus.emit(`call:${key}`, {
 				method: "updateView",
 				payload: entry.isIntersecting,

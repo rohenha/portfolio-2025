@@ -1,40 +1,49 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 import { getCookie, setCookie } from "@js/utils/cookies"
 import { animateCss } from "@js/utils/animations"
 import { isMobile } from "@js/utils/tools"
 
 export default class Experience extends Mmodule {
-	private interval: ReturnType<typeof setInterval> | null
-	private defaultTimer: number
-	private circleLength: number
-	private experience: { finished: boolean; loop: number }
-	private backInTime: HTMLElement | null
-	private comment: CharacterData | null
+	protected busMap = {
+		toggleExperience: "toggleExperience",
+		"website:loaded": "onWebsiteLoaded",
+	}
+
+	private interval: ReturnType<typeof setInterval> | null = null
+	private readonly defaultTimer: number = 60 * 5
+	private circleLength: number = 33
+	private experience: { finished: boolean; loop: number } = { finished: false, loop: 1 }
+	private backInTime: HTMLElement | null = null
+	private comment: CharacterData | null = null
+	private combination: string[] = []
 	private static readonly COMBO_HASH =
 		"d8af3f34b00d55d5ec600bc30e67f2480994da87cd7ea52c9325697701257e50"
 	private static readonly COMBO_LENGTH = 9
-	constructor(params: any) {
+	private static readonly TIMELINE = new Map<number, string>([
+		[250, "call:initTree"],
+		[230, "initHidden"],
+		[150, "initMorse"],
+		[100, "call:resetTree"],
+		[90, "addLog"],
+		[60, "addComment"],
+		[50, "resetHidden"],
+		[10, "resetMorse"],
+		[5, "removeComment"],
+	])
+
+	private readonly onUpdateTime: () => void
+	private readonly onBeforeUnload: () => void
+	private readonly onChangeVisibility: () => void
+	private readonly onKeyDown: (e: KeyboardEvent) => void
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.interval = null
-		this.defaultTimer = 60 * 5 // 30 seconds for testing
-		// this.defaultTimer = 60 * 5 // 5 minutes
-		this.busMap = {
-			toggleExperience: "toggleExperience",
-			"website:loaded": "onWebsiteLoaded",
-		}
-		this.comment = null
-		this.experience = { finished: false, loop: 1 }
-		this.states = {
-			number: this.defaultTimer,
-		}
-		this.backInTime = null
-		this.circleLength = 33
+		this.states = { number: this.defaultTimer }
 		this.visible = true
-		this.onUpdateTime = this.onUpdateTime.bind(this)
-		this.combination = []
-		this.onBeforeUnload = this.onBeforeUnload.bind(this)
-		this.onChangeVisibility = this.onChangeVisibility.bind(this)
-		this.onKeyDown = this.onKeyDown.bind(this)
+		this.onUpdateTime = this._updateTime.bind(this)
+		this.onBeforeUnload = this._beforeUnload.bind(this)
+		this.onChangeVisibility = this._changeVisibility.bind(this)
+		this.onKeyDown = this._keyDown.bind(this)
 	}
 
 	getExperienceStatus(): { finished: boolean; loop: number } {
@@ -55,7 +64,7 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description Listen for keydown events. It check user combination to finish the experience when the user enter the good combination.
 	 */
-	async onKeyDown(e: KeyboardEvent) {
+	private async _keyDown(e: KeyboardEvent) {
 		this.combination.push(e.key)
 		// Keep only the last N keys (combo length)
 		if (this.combination.length > Experience.COMBO_LENGTH) {
@@ -75,14 +84,14 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description Save the experience state in a cookie when the user leaves the page
 	 */
-	onBeforeUnload() {
+	private _beforeUnload() {
 		setCookie("experience", JSON.stringify(this.experience), 365)
 	}
 
 	/**
 	 * @description Toggle the experience timer based on the page visibility to pause the timer when the user is not actively viewing the page
 	 */
-	onChangeVisibility() {
+	private _changeVisibility() {
 		this.toggleExperience({ enable: document.visibilityState === "visible" })
 	}
 
@@ -149,7 +158,7 @@ export default class Experience extends Mmodule {
 	 */
 	finishExperience() {
 		this.experience.finished = true
-		this.onBeforeUnload()
+		this._beforeUnload()
 		this.removeListeners()
 		this.emit("experience:loop", { loop: this.experience.loop })
 		const parent = this.el.parentNode as HTMLElement
@@ -167,13 +176,16 @@ export default class Experience extends Mmodule {
 			"data-module-popin-finish",
 			"experience-finish-popin",
 		)
-		const promise = await this.emitAsync("app:addModules", [
+		const results = await this.emitAsync("app:addModules", [
 			{
 				name: "popin-finish",
 				loader: () => import("./popin-finish"),
 			},
 		])
-		promise[0][0].open()
+		const popin = results?.[0]?.[0]
+		if (popin && typeof popin.open === "function") {
+			popin.open()
+		}
 	}
 
 	onWebsiteLoaded() {
@@ -217,7 +229,7 @@ export default class Experience extends Mmodule {
 	/**
 	 * @description Update the experience timer, decrementing the number and resetting it when it reaches zero for new loop
 	 */
-	onUpdateTime() {
+	private _updateTime() {
 		const newNumber = this.states.number - 1
 		if (this.states.number <= 0) {
 			this.loop()
@@ -229,19 +241,8 @@ export default class Experience extends Mmodule {
 	}
 
 	setEvents({ time, start = false }: { time: number; start?: boolean }): void {
-		const events = new Map([
-			[250, "call:initTree"],
-			[230, "initHidden"],
-			[150, "initMorse"],
-			[100, "call:resetTree"],
-			[90, "addLog"],
-			[60, "addComment"],
-			[50, "resetHidden"],
-			[10, "resetMorse"],
-			[5, "removeComment"],
-		])
 		if (start) {
-			events.forEach((eventName, timeValue) => {
+			Experience.TIMELINE.forEach((eventName, timeValue) => {
 				if (timeValue >= time) {
 					if (eventName.startsWith("call")) {
 						this.emit(eventName)
@@ -252,8 +253,8 @@ export default class Experience extends Mmodule {
 			})
 			return
 		}
-		if (events.has(time)) {
-			const eventName = events.get(time)!
+		const eventName = Experience.TIMELINE.get(time)
+		if (eventName) {
 			if (eventName.startsWith("call")) {
 				this.emit(eventName)
 			} else {

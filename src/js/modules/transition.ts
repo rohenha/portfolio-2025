@@ -103,7 +103,7 @@ export default class Transition extends Mmodule {
 		this.emit("website:loaded")
 	}
 
-	async leave({ from }: TransitionParams): Promise<CancelledPromise<void>> {
+	async leave({ from: _from }: TransitionParams): Promise<CancelledPromise<void>> {
 		const tile = document.querySelector(".a-tile") as HTMLElement
 		const animationLeave = animateCss({
 			name: "container",
@@ -205,13 +205,13 @@ export default class Transition extends Mmodule {
 		}
 	}
 
-	beforeLeave(params: TransitionParams) {}
-	afterLeave({ from, to }: TransitionParams) {
+	beforeLeave(_params: TransitionParams) {}
+	async afterLeave({ from, to }: TransitionParams): Promise<void> {
+		this.emit("app:destroy", { scope: from.container })
+		await this.emitAsync("app:update", { scope: to.container })
+		window.scrollTo(0, 0)
+		this.updateNav(to.url)
 		return new Promise<void>((resolve) => {
-			this.emit("app:destroy", { scope: from.container })
-			this.emit("app:update", { scope: to.container })
-			window.scrollTo(0, 0)
-			this.updateNav(to.url)
 			this.animate("transition:enter", () => {
 				document.title = to.title
 				from.container.replaceWith(to.container)

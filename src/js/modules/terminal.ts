@@ -1,22 +1,22 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 
 export default class Terminal extends Mmodule {
-	private parent: HTMLElement | null
+	private parent: HTMLElement | null = null
+	private contentEl: HTMLElement | null = null
 	private messageId: number = 0
-	constructor(params: any) {
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.parent = null
 	}
 
 	onMount() {
 		const [openButton] = this.$("openButton")
+		if (!openButton) return
 		this.animate("initTerminal", () => {
 			openButton.style.display = "flex"
-			if (openButton) {
-				openButton.addEventListener("click", () => {
-					this.enable()
-				})
-			}
+			openButton.addEventListener("click", () => {
+				this.enable()
+			})
 		})
 	}
 
@@ -51,8 +51,10 @@ export default class Terminal extends Mmodule {
 			this.parent = parent
 			this.animate("initTerminal", () => {
 				document.body.appendChild(parent)
-				const [input] = this.$("input")
-				const [closeButton] = this.$("close")
+				const [input] = this.$("input", parent)
+				const [closeButton] = this.$("close", parent)
+				const [content] = this.$("content", parent)
+				this.contentEl = content
 				closeButton.addEventListener("click", () => {
 					this.disable()
 				})
@@ -207,12 +209,12 @@ export default class Terminal extends Mmodule {
 	addMultipleMessages(
 		messages: { message: string; type: "success" | "error" }[],
 	): Promise<void> {
-		if (!this.parent) {
+		if (!this.parent || !this.contentEl) {
 			return Promise.resolve()
 		}
+		const content = this.contentEl
 		const els = messages.map((m) => this.createMessage(m.message, m.type))
 		return new Promise((resolve) => {
-			const [content] = this.$("content")
 			this.animate("addTerminalMessage", () => {
 				els.forEach((el) => {
 					content.insertBefore(el, content.lastElementChild!)
@@ -228,12 +230,12 @@ export default class Terminal extends Mmodule {
 		prefix: boolean = true,
 		end: boolean = false,
 	): Promise<void> {
-		if (!this.parent) {
+		if (!this.parent || !this.contentEl) {
 			return Promise.resolve()
 		}
+		const content = this.contentEl
 		return new Promise((resolve) => {
 			this.messageId += 1
-			const [content] = this.$("content")
 			const messageElement = this.createMessage(message, type, prefix)
 			this.animate(`addTerminalMessage${this.messageId}`, () => {
 				content.insertBefore(messageElement, content.lastElementChild!)

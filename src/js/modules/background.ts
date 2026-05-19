@@ -1,4 +1,4 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 import { isReduced, isMobile } from "@js/utils/tools"
 import {
 	createProgram,
@@ -23,6 +23,12 @@ import noiseFragmentSource from "@js/shaders/noise-fragment.glsl?raw"
 import asciiFragmentSource from "@js/shaders/ascii-fragment.glsl?raw"
 
 export default class Background extends Mmodule {
+	protected busMap = {
+		"plugins:resizer:resize": "onResize",
+		"experience:loop": "resetExperience",
+		"call:initNumber": "initNumber",
+	}
+
 	private timeout: ReturnType<typeof setTimeout> | null = null
 	private gl!: WebGL2RenderingContext | null
 	private canvas!: HTMLCanvasElement
@@ -55,13 +61,8 @@ export default class Background extends Mmodule {
 	private updateDigit: boolean = false
 	// private color: [number, number, number] = [0.0, 0.5, 0.95]
 
-	constructor(params: any) {
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.busMap = {
-			"plugins:resizer:resize": "onResize",
-			"experience:loop": "resetExperience",
-			"call:initNumber": "initNumber",
-		}
 		this.visible = true
 	}
 
@@ -90,37 +91,31 @@ export default class Background extends Mmodule {
 					},
 					true,
 				)
-			} catch {
-				return
+			} catch (e) {
+				if (e instanceof Error) console.warn(e.message)
 			}
 		}, 2000)
 	}
 
-	private async initWebGL(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.canvas = document.createElement("canvas")
-
-			const gl = this.canvas.getContext("webgl2", {
-				alpha: true,
-				premultipliedAlpha: false,
-				antialias: false,
-			})
-
-			if (!gl) {
-				console.warn("WebGL2 not supported – background shader disabled")
-				reject(false)
-			}
-
+	private async initWebGL(): Promise<void> {
+		this.canvas = document.createElement("canvas")
+		const gl = this.canvas.getContext("webgl2", {
+			alpha: true,
+			premultipliedAlpha: false,
+			antialias: false,
+		})
+		if (!gl) {
+			throw new Error("WebGL2 not supported – background shader disabled")
+		}
+		this.gl = gl
+		await new Promise<void>((resolve) => {
 			this.animate("addBackground", () => {
 				this.el.appendChild(this.canvas)
-				this.gl = gl
-				resolve(true)
-				setTimeout(() => {
-					this.animate("addBackground", () => {
-						this.canvas.classList.add("-active")
-					})
-				}, 10)
+				resolve()
 			})
+		})
+		this.animate("addBackground", () => {
+			this.canvas.classList.add("-active")
 		})
 	}
 

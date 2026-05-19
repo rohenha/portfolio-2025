@@ -1,12 +1,13 @@
-import Mmodule from "@js/classes/module"
+import Mmodule, { type ModuleConstructorParams } from "@js/classes/module"
 import { isReduced, isMobile } from "@js/utils/tools"
 
 export default class HeroTitle extends Mmodule {
-	constructor(params: any) {
+	protected busMap = {
+		"website:loaded": "onLoaded",
+	}
+
+	constructor(params: ModuleConstructorParams) {
 		super(params)
-		this.busMap = {
-			"website:loaded": "onLoaded",
-		}
 	}
 
 	onLoaded() {
