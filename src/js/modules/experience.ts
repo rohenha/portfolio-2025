@@ -12,7 +12,10 @@ export default class Experience extends Mmodule {
 	private interval: ReturnType<typeof setInterval> | null = null
 	private readonly defaultTimer: number = 60 * 5
 	private circleLength: number = 33
-	private experience: { finished: boolean; loop: number } = { finished: false, loop: 1 }
+	private experience: { finished: boolean; loop: number } = {
+		finished: false,
+		loop: 1,
+	}
 	private backInTime: HTMLElement | null = null
 	private comment: CharacterData | null = null
 	private combination: string[] = []

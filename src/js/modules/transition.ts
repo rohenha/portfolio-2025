@@ -103,7 +103,9 @@ export default class Transition extends Mmodule {
 		this.emit("website:loaded")
 	}
 
-	async leave({ from: _from }: TransitionParams): Promise<CancelledPromise<void>> {
+	async leave({
+		from: _from,
+	}: TransitionParams): Promise<CancelledPromise<void>> {
 		const tile = document.querySelector(".a-tile") as HTMLElement
 		const animationLeave = animateCss({
 			name: "container",
