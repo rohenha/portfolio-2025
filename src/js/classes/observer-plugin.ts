@@ -17,10 +17,12 @@ export default class ObserverPlugin extends ModularPlugin {
 		super(m)
 		this.elements = new Map()
 		this.once = new Set()
-		this.observer = new IntersectionObserver(
-			this.handleIntersect.bind(this),
-			{ root: null, rootMargin: "0px", threshold: 0, ...(m.params || {}) },
-		)
+		this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+			root: null,
+			rootMargin: "0px",
+			threshold: 0,
+			...(m.params || {}),
+		})
 		this.busMap = {
 			"plugins:observer:on": "observe",
 			"plugins:observer:off": "unobserve",

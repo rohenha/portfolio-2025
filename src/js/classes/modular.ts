@@ -80,9 +80,7 @@ export default class ModulesManager {
 	 * @param scope  HTMLElement or Document to limit the addition of modules. Only modules within this scope will be added.
 	 * @returns void
 	 */
-	private async mountModules(
-		scope: HTMLElement | Document,
-	): Promise<void> {
+	private async mountModules(scope: HTMLElement | Document): Promise<void> {
 		const promises: Array<Promise<Mmodule | void>> = []
 		scope.querySelectorAll(this.optimalSelector).forEach((element) => {
 			this.modules.forEach((moduleItem, name) => {
