@@ -17,17 +17,11 @@ export default class Transition extends Mmodule {
 		const html = document.documentElement
 		this.animate("enter", () => {
 			html.classList.add("-animating")
-			this.animate("enter", () => {
+			this.animate("enterT", () => {
 				this.onPageView()
-				// const url = new URL(location.href)
-				// console.log(`Initial page load: ${url.pathname}`)
-				// console.log(["/", "/methodo", "/a-propos"].includes(url.pathname))
-				// this.emit("toggleExperience:experience:experience", {
-				// 	enable: ["/", "/methodo", "/a-propos"].includes(url.pathname),
-				// })
 			})
 			setTimeout(() => {
-				this.animate("enter", () => {
+				this.animate("enterT", () => {
 					html.classList.remove("t-initTemplate")
 					html.classList.remove("-animating")
 				})
@@ -103,7 +97,9 @@ export default class Transition extends Mmodule {
 		this.emit("website:loaded")
 	}
 
-	async leave({ from: _from }: TransitionParams): Promise<CancelledPromise<void>> {
+	async leave({
+		from: _from,
+	}: TransitionParams): Promise<CancelledPromise<void>> {
 		const tile = document.querySelector(".a-tile") as HTMLElement
 		const animationLeave = animateCss({
 			name: "container",
