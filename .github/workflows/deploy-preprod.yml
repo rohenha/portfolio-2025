@@ -53,27 +53,17 @@ jobs:
           -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p 22 ${{ secrets.CPANEL_SERVER }} >> ~/.ssh/known_hosts
-
-      - name: Debug SSH connection
-        run: |
-          ssh -vvv -i ~/.ssh/deploy_key -p 22 \
-            -o StrictHostKeyChecking=no \
-            -o BatchMode=yes \
-            ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }} "echo connected" || true
-
       - name: Rsync to Distant Environment
-        run: |
-          rsync -av --delete \
-            --exclude-from="./CI/exclude.txt" \
-            -e "ssh -i ~/.ssh/deploy_key -p 22 -o StrictHostKeyChecking=no" \
-            dist/ \
-            ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -av --delete --exclude-from="./CI/exclude.txt"
+          path: dist/
+          remote_path:
+            /home/${{ secrets.CPANEL_USERNAME }}/${{ secrets.CPANEL_PATH }}
+          remote_host: ${{ secrets.CPANEL_SERVER }}
+          remote_user: ${{ secrets.CPANEL_USERNAME }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_port: 22
 
       - name: Cleaning artifacts
         uses: geekyeggo/delete-artifact@v5
