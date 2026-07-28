@@ -1,6 +1,13 @@
 {
 	"list": [
 		{
+			"id": "budget-tracker",
+			"name": "Budget tracker",
+			"description": "Web app pour centraliser son argent. Budget, dépenses, crédits, investissements, cryptos. L'objectif est d'avoir une interface simple pour analyser son argent sans avoir besoin de payer un service, et remplacer le fichier excel peu pratique.",
+			"url": "https://github.com/rohenha/budget-tracker",
+			"tags": ["AdonisJs", "React", "Shadcnui", "Inertiajs", "Recharts"]
+		},
+		{
 			"id": "vite-plugin-critical-css",
 			"name": "Vite Plugin Critical CSS",
 			"description": "Un outil pour extraire et injecter le CSS critique dans les projets Vite, améliorant ainsi les performances du LCP des pages web.",

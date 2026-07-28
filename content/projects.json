@@ -1,6 +1,16 @@
 {
 	"list": [
 		{
+			"id": "budget-tracker",
+			"name": "Budget Tracker",
+			"title": "Budget tracker",
+			"description": "Web app pour centraliser son argent. Budget, dépenses, crédits, investissements, cryptos. L'objectif est d'avoir une interface simple pour analyser son argent sans avoir besoin de payer un service, et remplacer le fichier excel peu pratique.",
+			"tags": ["AdonisJs", "React", "Shadcnui", "Inertiajs", "Recharts"],
+			"role": "Développeur Fullstack & designer",
+			"credits": [],
+			"year": 2026
+		},
+		{
 			"id": "wearwoodid",
 			"name": "Woodid",
 			"title": "Woodid",
