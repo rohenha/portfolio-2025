@@ -7,6 +7,7 @@
 			"description": "Web app pour centraliser son argent. Budget, dépenses, crédits, investissements, cryptos. L'objectif est d'avoir une interface simple pour analyser son argent sans avoir besoin de payer un service, et remplacer le fichier excel peu pratique.",
 			"tags": ["AdonisJs", "React", "Shadcnui", "Inertiajs", "Recharts"],
 			"role": "Développeur Fullstack & designer",
+			"url": "https://github.com/rohenha/budget-tracker",
 			"credits": [],
 			"year": 2026
 		},
