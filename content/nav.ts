@@ -10,11 +10,11 @@ const nav: NavProps = {
 			name: "À propos",
 			url: "/a-propos",
 		},
-		// {
-		// 	id: "blog",
-		// 	name: "Parlons code",
-		// 	url: "/parlons-code",
-		// },
+		{
+			id: "blog",
+			name: "Parlons code",
+			url: "/parlons-code",
+		},
 	],
 	footerPrimary: [
 		{
@@ -27,11 +27,11 @@ const nav: NavProps = {
 			name: "À propos",
 			url: "/a-propos",
 		},
-		// {
-		// 	id: "blog",
-		// 	name: "Parlons code",
-		// 	url: "/parlons-code",
-		// },
+		{
+			id: "blog",
+			name: "Parlons code",
+			url: "/parlons-code",
+		},
 		{
 			id: "repos",
 			name: "Repos",

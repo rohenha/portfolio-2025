@@ -16,6 +16,7 @@ const classes = {
 
 	blockquote: "px-md py-lg bg-gray-500 rounded-md",
 	"blockquote > p": "text-quote font-serif",
+	"blockquote > cite": "mt-xsm block text-psm",
 
 	code: "",
 	pre: "p-md rounded-md overflow-x-auto",

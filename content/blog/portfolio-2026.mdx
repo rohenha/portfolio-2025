@@ -1,0 +1,76 @@
+---
+title: "Portfolio 2026"
+draft: false
+tags: ["Portfolio", "Eco-conception", "Astro", "Animation"]
+date: 2026-08-10
+---
+
+## Un site résiliant qui raconte une histoire
+
+Après une décenie sans avoir mis à jour mon portfolio, il était temps de lui redonner une nouvelle impulsion. Fort de mes années d'expériences et de mon attrait pour l'éco-conception, je me suis lancé dans la création d'une nouvelle version dans l'ère du temps techniquement, sans pour autant utiliser des technologies supperflues.
+
+Il fallait aussi mettre en avant mes compétences en accessibilité et en éco-conception, 2 contraintes qui forcent à réfléchir un site internet autrement. Mais je ne voulais pas pour autant présenter un site dénué de challenge technique et qui raconte une histoire.
+
+C'est pourquoi je me suis lancé le défi d'y intégrer une expérience interactive qui se supperpose au site permettant une relecture du site.
+
+
+## La stack technique
+
+Pour la réalisation de cette nouvelle version avec ces contraintes, je me suis appuyé sur <strong>Astro Js</strong>. Utilisateur depuis plusieurs années de <strong>Kirby CMS</strong> pour l'élaboration de mes sites internet, j'ai décidé ici de m'en passer. Kirby m'aurai permis d'obtenir les mêmes performances qu'avec Astro avec son système de cache de page, sons système de flat-file cms, sont Back office simple et sa légèreté. Mais pour mes besoins je n'avais pas besoin d'une interface de Back Office. Étant développeur, travailler mon contenu directement avec des fichiers markdown me permettaient de me passer d'une instance PHP pour faire tourner mon site et de n'avoir que du HTML pur en production.
+
+Astro JS avec sa gestion du markdown et son plugin pour gérer le MDX était largement suffisant pour me laisser la main dans la contribution sans avoir besoin de modifier le HTML directement.
+
+Pour ce qui est du CSS je suis parti sur Tailwind. Ce framework CSS me permet de simplifier la conception de mon site en réduisant le nombre de fichiers CSS et d'accélérer le développement via son système de classes utilitaires en ne quittant pas le HTML pour styliser mon site.
+
+La partie JS a été le fruit d'une longue
+
+Afin d'avoir un code maintenable je me suis appuyé sur :
+- <strong>Prettier</strong> afin formater le code de façon uniforme.
+- <strong>Eslint</strong> et <strong>Typescript</strong> pour uniformiser, éviter les erreurs et typer mon javascript afin de le rendre le plus maintenable
+- <strong>Stylelint</strong> afin d'uniformiser et formater mon CSS comme je le souhaite
+
+## Un design en accord avec les performances
+
+
+## Éco-conception ne rime pas forcément avec ennuis
+
+Sorti en 2019 sur Playstation 4, <strong>Outer wilds</strong> est un jeu comme peu marquent leur époque. Bloqué dans une boucle temporelle, le jeu nous pousse à percer les mystères du système solaire et découvrir le passé afin de mieux comprendre le présent. Ce jeu a grandement marqué ma vie de joueur avec son gameplay atypique, son histoire singulière et sa bande originale d'une grande douceur.
+
+C'est en partant de cette inspiration que je me suis lancé dans l'élaboration d'une expérience originale en supperposition de mon site web plus <em>"classique"</em>.
+
+J'ai donc mis en place une boucle temporelle et j'y ai construit un jeu de pistes dont l'objectif est de retrouver un code afin de débloquer la combinaison permettant de désactiver la boucle temporelle.
+
+La boucle temporelle, gère un système de timing permettant d'activer la visibilité ou l'interaction des indices en fonction d'un interval précis pour se rapprocher de la vision de l'expérience du jeu.
+
+Afin de ne pas pénaliser les performances du site pour les visiteurs lambda, l'expérience se charge et s'active à la volée via un paramètre d'URL en chargeant la classe en asynchrone. Avec l'utilisation de <strong>Vanilla JS</strong>, cela me permet de limiter le poids de l'expérience à la différence de l'utilisation d'un framework comme React ou Vue. De plus, l'utilisation d'un framework ne se prêtait pas à rajouter des fonctionnalités sur un site statique.
+
+Pour la page qui présente l'expérience j'ai volontairement généré un fichier JS supplémentaire pour ne pas charger ces scripts sur le reste des pages.
+
+
+## Retour d'expérience
+
+Afin de toujours plus optimiser les performances du site, j'ai voulu ajouter du critical CSS, mais tailwind m'a apporté quelques problématiques en générant une feuille de style à injecter relativement lourde pour le peu de CSS que j'avais. À cause de son nombre conséquent de variables CSS nécessaires à l'ensemble des classes tailwind, je me suis retrouvé avec un critical CSS doublant le poids de mon HTML. C'est pourquoi j'ai pris la décision de désactiver le critical CSS et que dans une future évolution, retirer tailwind afin de tester si en écrivant mon CSS avec un tailwind simplifié je pourrais obtenir des gains en terme de poids.
+
+-------
+
+> L'avenir se construit toujours sur le passé, même si nous ne le voyons pas.
+>
+> <cite class="mt-xsm block text-pmd text-gray-900">Outer Wilds</cite>
+
+J'aime cette citation tirée du jeu, car elle permet de comprendre que malgré les innovations, parfois, regarder dans le passé permet de mieux construire l'avenir. Que les `low tech` peuvent être une nouvelle technologie et plus résiliante que de la `high tech`. Et c'est tout particulièrement vrai dans un web en constante évolution.
+
+C'est à mon humble échelle ce que j'essaie d'apporter à travers ma vision du web résiliant, le plus inclusif possible et se baser sur ce que l'on faisait dans le passé sans forcément avoir besoin de nouvelles technologies si l'existant est déjà performant, éprouvé et économe.
+
+--------
+
+## Ressources
+
+- [Astro](https://astro.build/)
+- [Mdx](https://mdxjs.com/)
+- [SASS](https://sass-lang.com/)
+- [Rehype](https://github.com/rehypejs/rehype)
+- [Prettier](https://prettier.io/)
+- [Eslint](https://eslint.org/)
+- [Stylelint](https://stylelint.io/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Tailwind](https://tailwindcss.com/)

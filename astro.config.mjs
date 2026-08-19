@@ -8,6 +8,7 @@ import { loadEnv } from "vite"
 import mdx from "@astrojs/mdx"
 import mdxClasses from "./config/mdx-classes.ts"
 import rehypeClassNames from "rehype-class-names"
+import { unified } from "@astrojs/markdown-remark"
 // import astroCriticalCss from "./tools/astro-critical-css.js"
 
 // https://astro.build/config
@@ -42,6 +43,16 @@ export default defineConfig({
 	},
 
 	markdown: {
+		processor: unified({
+			rehypePlugins: [
+				[
+					rehypeClassNames,
+					{
+						...mdxClasses,
+					},
+				],
+			],
+		}),
 		shikiConfig: {
 			// Choisir parmi les thèmes intégrés de Shiki (ou ajouter le vôtre)
 			// https://shiki.style/themes
@@ -87,15 +98,6 @@ export default defineConfig({
 				}
 			},
 		}),
-		mdx({
-			rehypePlugins: [
-				[
-					rehypeClassNames,
-					{
-						...mdxClasses,
-					},
-				],
-			],
-		}),
+		mdx(),
 	],
 })
